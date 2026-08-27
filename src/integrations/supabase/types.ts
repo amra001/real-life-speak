@@ -14,16 +14,404 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      categories: {
+        Row: {
+          id: string
+          name: string
+          parent_slug: string | null
+          slug: string
+          sort: number
+        }
+        Insert: {
+          id?: string
+          name: string
+          parent_slug?: string | null
+          slug: string
+          sort?: number
+        }
+        Update: {
+          id?: string
+          name?: string
+          parent_slug?: string | null
+          slug?: string
+          sort?: number
+        }
+        Relationships: []
+      }
+      dialogs: {
+        Row: {
+          german_text: string
+          id: string
+          lesson_id: string
+          position: number
+          speaker: string
+          translations: Json
+        }
+        Insert: {
+          german_text: string
+          id?: string
+          lesson_id: string
+          position?: number
+          speaker?: string
+          translations?: Json
+        }
+        Update: {
+          german_text?: string
+          id?: string
+          lesson_id?: string
+          position?: number
+          speaker?: string
+          translations?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dialogs_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      favorites: {
+        Row: {
+          created_at: string
+          lesson_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          lesson_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          lesson_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorites_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lesson_scenes: {
+        Row: {
+          german_text: string
+          id: string
+          lesson_id: string
+          position: number
+          translations: Json
+        }
+        Insert: {
+          german_text: string
+          id?: string
+          lesson_id: string
+          position?: number
+          translations?: Json
+        }
+        Update: {
+          german_text?: string
+          id?: string
+          lesson_id?: string
+          position?: number
+          translations?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_scenes_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lessons: {
+        Row: {
+          category_slug: string
+          created_at: string
+          description: string
+          duration_seconds: number
+          id: string
+          is_premium: boolean
+          level: string
+          popularity: number
+          region: string
+          slug: string
+          status: string
+          subcategory_slug: string | null
+          thumbnail_key: string | null
+          title: string
+          updated_at: string
+          video_url: string | null
+          worksheet_url: string | null
+        }
+        Insert: {
+          category_slug: string
+          created_at?: string
+          description?: string
+          duration_seconds?: number
+          id?: string
+          is_premium?: boolean
+          level?: string
+          popularity?: number
+          region?: string
+          slug: string
+          status?: string
+          subcategory_slug?: string | null
+          thumbnail_key?: string | null
+          title: string
+          updated_at?: string
+          video_url?: string | null
+          worksheet_url?: string | null
+        }
+        Update: {
+          category_slug?: string
+          created_at?: string
+          description?: string
+          duration_seconds?: number
+          id?: string
+          is_premium?: boolean
+          level?: string
+          popularity?: number
+          region?: string
+          slug?: string
+          status?: string
+          subcategory_slug?: string | null
+          thumbnail_key?: string | null
+          title?: string
+          updated_at?: string
+          video_url?: string | null
+          worksheet_url?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+          level: string
+          region: string
+          translation_lang: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id: string
+          level?: string
+          region?: string
+          translation_lang?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          level?: string
+          region?: string
+          translation_lang?: string
+        }
+        Relationships: []
+      }
+      quiz_answers: {
+        Row: {
+          id: string
+          is_correct: boolean
+          position: number
+          question_id: string
+          text: string
+        }
+        Insert: {
+          id?: string
+          is_correct?: boolean
+          position?: number
+          question_id: string
+          text: string
+        }
+        Update: {
+          id?: string
+          is_correct?: boolean
+          position?: number
+          question_id?: string
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_questions: {
+        Row: {
+          explanation: string
+          id: string
+          kind: string
+          lesson_id: string
+          position: number
+          prompt: string
+        }
+        Insert: {
+          explanation?: string
+          id?: string
+          kind?: string
+          lesson_id: string
+          position?: number
+          prompt: string
+        }
+        Update: {
+          explanation?: string
+          id?: string
+          kind?: string
+          lesson_id?: string
+          position?: number
+          prompt?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_questions_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscriptions: {
+        Row: {
+          plan: string
+          started_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          plan?: string
+          started_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          plan?: string
+          started_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_progress: {
+        Row: {
+          completed: boolean
+          id: string
+          lesson_id: string
+          quiz_score: number
+          quiz_total: number
+          seconds_learned: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          id?: string
+          lesson_id: string
+          quiz_score?: number
+          quiz_total?: number
+          seconds_learned?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          id?: string
+          lesson_id?: string
+          quiz_score?: number
+          quiz_total?: number
+          seconds_learned?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_progress_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      vocabulary: {
+        Row: {
+          id: string
+          lesson_id: string
+          position: number
+          term: string
+          translations: Json
+        }
+        Insert: {
+          id?: string
+          lesson_id: string
+          position?: number
+          term: string
+          translations?: Json
+        }
+        Update: {
+          id?: string
+          lesson_id?: string
+          position?: number
+          term?: string
+          translations?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vocabulary_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +538,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
