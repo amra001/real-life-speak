@@ -6,14 +6,19 @@ import { LessonCard } from "@/components/site/LessonCard";
 import { lessonsQuery } from "@/lib/data";
 import { CATEGORIES, LEVELS, REGIONS } from "@/lib/taxonomy";
 
-type Search = { kategorie?: string; level?: string; region?: string; q?: string };
+type Search = {
+  kategorie?: string | undefined;
+  level?: string | undefined;
+  region?: string | undefined;
+  q?: string | undefined;
+};
 
 export const Route = createFileRoute("/lektionen")({
   validateSearch: (search: Record<string, unknown>): Search => ({
-    kategorie: typeof search.kategorie === "string" ? search.kategorie : undefined,
-    level: typeof search.level === "string" ? search.level : undefined,
-    region: typeof search.region === "string" ? search.region : undefined,
-    q: typeof search.q === "string" ? search.q : undefined,
+    kategorie: typeof search['kategorie'] === "string" ? search['kategorie'] : undefined,
+    level: typeof search['level'] === "string" ? search['level'] : undefined,
+    region: typeof search['region'] === "string" ? search['region'] : undefined,
+    q: typeof search['q'] === "string" ? search['q'] : undefined,
   }),
   head: () => ({
     meta: [
@@ -38,8 +43,9 @@ function Library() {
   const navigate = useNavigate({ from: "/lektionen" });
   const { data, isLoading } = useQuery(lessonsQuery());
 
-  const set = (patch: Search) =>
-    navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true });
+  const set = (patch: Search): void => {
+    void navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true });
+  };
 
   const lessons = (data ?? []).filter((l) => {
     if (search.kategorie && l.category_slug !== search.kategorie) return false;
@@ -91,7 +97,7 @@ function Library() {
           <Button
             variant="outline"
             className="mt-4"
-            onClick={() => navigate({ search: {}, replace: true })}
+            onClick={() => void navigate({ search: {}, replace: true })}
           >
             Filter zurücksetzen
           </Button>
@@ -115,8 +121,8 @@ function FilterRow({
 }: {
   label: string;
   options: { value: string; label: string }[];
-  value?: string;
-  onChange: (v: string | undefined) => void;
+  value?: string | undefined;
+  onChange: (v: string | undefined) => void | Promise<void>;
 }) {
   return (
     <div>
