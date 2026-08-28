@@ -8,7 +8,6 @@ import {
   ALLTAG_CATEGORIES,
   BERUF_CATEGORIES,
   CATEGORIES,
-  FREE_MAX_SECONDS,
   LEVELS,
   LEVEL_INFO,
   REGIONS,
@@ -67,8 +66,7 @@ function Library() {
     if (search.unterthema && l.subcategory_slug !== search.unterthema) return false;
     if (search.level && l.level !== search.level) return false;
     if (search.region && l.region !== search.region) return false;
-    if (search.zugang === "gratis" && (l.is_premium || l.duration_seconds > FREE_MAX_SECONDS))
-      return false;
+    if (search.zugang === "gratis" && l.is_premium) return false;
     if (search.zugang === "premium" && !l.is_premium) return false;
     if (search.q && !`${l.title} ${l.description}`.toLowerCase().includes(search.q.toLowerCase()))
       return false;
@@ -123,7 +121,7 @@ function Library() {
         <FilterRow
           label="Zugang"
           options={[
-            { value: "gratis", label: "Kostenlos (bis 1:30 Min.)" },
+            { value: "gratis", label: "Gratis" },
             { value: "premium", label: "Premium" },
           ]}
           value={search.zugang}

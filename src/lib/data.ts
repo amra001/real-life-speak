@@ -9,6 +9,8 @@ export type Lesson = {
   region: string;
   category_slug: string;
   subcategory_slug: string | null;
+  topic_slug?: string | null;
+  topic_title?: string | null;
   duration_seconds: number;
   thumbnail_key: string | null;
   video_url: string | null;
@@ -21,6 +23,7 @@ export type Scene = {
   id: string;
   position: number;
   german_text: string;
+  image_key?: string | null;
   translations: Record<string, string>;
 };
 
@@ -28,6 +31,11 @@ export type Vocab = {
   id: string;
   position: number;
   term: string;
+  word_class?: string | null;
+  article?: string | null;
+  plural?: string | null;
+  example?: string | null;
+  example_translations?: Record<string, string> | null;
   translations: Record<string, string>;
 };
 
@@ -38,6 +46,7 @@ export type DialogLine = {
   german_text: string;
   translations: Record<string, string>;
 };
+
 
 export type Question = {
   id: string;
@@ -173,3 +182,17 @@ export function formatPrice(cents: number, currency = "EUR"): string {
   return new Intl.NumberFormat("de-DE", { style: "currency", currency }).format(cents / 100);
 }
 
+
+export const topicLessonsQuery = (topicSlug: string) => ({
+  queryKey: ["topic-lessons", topicSlug],
+  queryFn: async (): Promise<Lesson[]> => {
+    const { data, error } = await supabase
+      .from("lessons")
+      .select("*")
+      .eq("topic_slug", topicSlug)
+      .eq("status", "published")
+      .order("level");
+    if (error) throw error;
+    return (data ?? []) as Lesson[];
+  },
+});
