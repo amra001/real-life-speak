@@ -69,7 +69,7 @@ export const DURATIONS = [
 /** Kostenlose Lektionen sind auf 1 Minute 30 Sekunden begrenzt. */
 export const FREE_MAX_SECONDS = 90;
 /** So viele Szenen sieht ein kostenloser Nutzer als Vorschau einer Premium-Lektion. */
-export const FREE_PREVIEW_SCENES = 1;
+export const FREE_PREVIEW_SCENES = 3;
 
 /** Ungefähre Lernzeit – gerundet auf 5 Minuten, keine exakte Videolänge. */
 export function formatDuration(seconds: number): string {
