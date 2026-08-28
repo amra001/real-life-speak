@@ -17,6 +17,9 @@ export type Lesson = {
   is_premium: boolean;
   status: string;
   popularity: number;
+  grammar_topics?: string[] | null;
+  grammar_notes?: GrammarNote[] | null;
+  place_items?: PlaceItem[] | null;
 };
 
 export type Scene = {
@@ -24,7 +27,21 @@ export type Scene = {
   position: number;
   german_text: string;
   image_key?: string | null;
+  scene_group?: string | null;
   translations: Record<string, string>;
+};
+
+export type PlaceItem = {
+  german_text: string;
+  preposition: string;
+  image_key?: string | null;
+  translations?: Record<string, string>;
+};
+
+export type GrammarNote = {
+  title: string;
+  explanation: string;
+  examples: string[];
 };
 
 export type Vocab = {
@@ -36,12 +53,16 @@ export type Vocab = {
   plural?: string | null;
   example?: string | null;
   example_translations?: Record<string, string> | null;
+  collocations?: string[] | null;
   translations: Record<string, string>;
 };
 
 export type DialogLine = {
   id: string;
   position: number;
+  dialog_index?: number | null;
+  dialog_title?: string | null;
+  speaker_role?: string | null;
   speaker: string;
   german_text: string;
   translations: Record<string, string>;
@@ -54,6 +75,8 @@ export type Question = {
   kind: string;
   prompt: string;
   explanation: string;
+  section?: string | null;
+  data?: Record<string, unknown> | null;
   quiz_answers: { id: string; position: number; text: string; is_correct: boolean }[];
 };
 
@@ -194,5 +217,78 @@ export const topicLessonsQuery = (topicSlug: string) => ({
       .order("level");
     if (error) throw error;
     return (data ?? []) as Lesson[];
+  },
+});
+
+/** Ein Thema fasst die Niveau-Varianten (A1/A2/B1) einer Situation zusammen. */
+export type Topic = {
+  slug: string;
+  title: string;
+  description: string;
+  category_slug: string;
+  subcategory_slug: string | null;
+  region: string;
+  thumbnail_key: string | null;
+  levels: Lesson[];
+  hasFree: boolean;
+};
+
+export function groupByTopic(lessons: Lesson[]): Topic[] {
+  const map = new Map<string, Topic>();
+  for (const l of lessons) {
+    const slug = l.topic_slug ?? l.slug;
+    let t = map.get(slug);
+    if (!t) {
+      t = {
+        slug,
+        title: l.topic_title ?? l.title,
+        description: l.description,
+        category_slug: l.category_slug,
+        subcategory_slug: l.subcategory_slug,
+        region: l.region,
+        thumbnail_key: l.thumbnail_key,
+        levels: [],
+        hasFree: false,
+      };
+      map.set(slug, t);
+    }
+    t.levels.push(l);
+    if (!l.is_premium) t.hasFree = true;
+  }
+  for (const t of map.values()) t.levels.sort((a, b) => a.level.localeCompare(b.level));
+  return [...map.values()];
+}
+
+export type LessonWithCounts = Lesson & {
+  scenes: number;
+  vocab: number;
+  dialogs: number;
+  questions: number;
+};
+
+/** Lektionen eines Themas inklusive Umfangszahlen für die Themenseite. */
+export const topicOverviewQuery = (topicSlug: string) => ({
+  queryKey: ["topic-overview", topicSlug],
+  queryFn: async (): Promise<LessonWithCounts[]> => {
+    const { data, error } = await supabase
+      .from("lessons")
+      .select(
+        "*, lesson_scenes(count), vocabulary(count), dialogs(count), quiz_questions(count)",
+      )
+      .eq("topic_slug", topicSlug)
+      .eq("status", "published");
+    if (error) throw error;
+    const rows = (data ?? []) as unknown as (Lesson & Record<string, { count: number }[]>)[];
+    const num = (v: unknown): number =>
+      Array.isArray(v) && v.length ? Number((v[0] as { count: number }).count ?? 0) : 0;
+    return rows
+      .map((r) => ({
+        ...(r as unknown as Lesson),
+        scenes: num(r["lesson_scenes"]),
+        vocab: num(r["vocabulary"]),
+        dialogs: num(r["dialogs"]),
+        questions: num(r["quiz_questions"]),
+      }))
+      .sort((a, b) => a.level.localeCompare(b.level));
   },
 });

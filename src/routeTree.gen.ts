@@ -23,6 +23,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as JobBewerbungIndexRouteImport } from './routes/job-bewerbung.index'
 import { Route as JobBewerbungSlugRouteImport } from './routes/job-bewerbung.$slug'
 import { Route as LektionSlugRouteImport } from './routes/lektion.$slug'
+import { Route as ThemaSlugRouteImport } from './routes/thema.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -93,6 +94,11 @@ const LektionSlugRoute = LektionSlugRouteImport.update({
   path: '/lektion/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ThemaSlugRoute = ThemaSlugRouteImport.update({
+  id: '/thema/$slug',
+  path: '/thema/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/job-bewerbung/$slug': typeof JobBewerbungSlugRoute
   '/lektion/$slug': typeof LektionSlugRoute
+  '/thema/$slug': typeof ThemaSlugRoute
   '/job-bewerbung/': typeof JobBewerbungIndexRoute
 }
 export interface FileRoutesByTo {
@@ -121,6 +128,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/job-bewerbung/$slug': typeof JobBewerbungSlugRoute
   '/lektion/$slug': typeof LektionSlugRoute
+  '/thema/$slug': typeof ThemaSlugRoute
   '/job-bewerbung': typeof JobBewerbungIndexRoute
 }
 export interface FileRoutesById {
@@ -138,6 +146,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/job-bewerbung/$slug': typeof JobBewerbungSlugRoute
   '/lektion/$slug': typeof LektionSlugRoute
+  '/thema/$slug': typeof ThemaSlugRoute
   '/job-bewerbung/': typeof JobBewerbungIndexRoute
 }
 export interface FileRouteTypes {
@@ -155,6 +164,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/job-bewerbung/$slug'
     | '/lektion/$slug'
+    | '/thema/$slug'
     | '/job-bewerbung/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/job-bewerbung/$slug'
     | '/lektion/$slug'
+    | '/thema/$slug'
     | '/job-bewerbung'
   id:
     | '__root__'
@@ -185,6 +196,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/job-bewerbung/$slug'
     | '/lektion/$slug'
+    | '/thema/$slug'
     | '/job-bewerbung/'
   fileRoutesById: FileRoutesById
 }
@@ -199,6 +211,7 @@ export interface RootRouteChildren {
   PrivatunterrichtRoute: typeof PrivatunterrichtRoute
   UeberUnsRoute: typeof UeberUnsRoute
   LektionSlugRoute: typeof LektionSlugRoute
+  ThemaSlugRoute: typeof ThemaSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -301,6 +314,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LektionSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/thema/$slug': {
+      id: '/thema/$slug'
+      path: '/thema/$slug'
+      fullPath: '/thema/$slug'
+      preLoaderRoute: typeof ThemaSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -342,6 +362,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivatunterrichtRoute: PrivatunterrichtRoute,
   UeberUnsRoute: UeberUnsRoute,
   LektionSlugRoute: LektionSlugRoute,
+  ThemaSlugRoute: ThemaSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
