@@ -126,9 +126,20 @@ function Admin() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <h1 className="font-serif text-3xl font-semibold md:text-4xl">Adminbereich</h1>
-      <p className="mt-2 text-muted-foreground">Lektionen anlegen, veröffentlichen und löschen.</p>
+      <p className="mt-2 text-muted-foreground">
+        Lektionen, Produkte und Anfragen verwalten.
+      </p>
 
+      <Tabs defaultValue="lektionen" className="mt-8">
+        <TabsList>
+          <TabsTrigger value="lektionen">Lektionen</TabsTrigger>
+          <TabsTrigger value="produkte">Produkte &amp; Preise</TabsTrigger>
+          <TabsTrigger value="anfragen">Anfragen</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="lektionen" className="mt-6">
       <div className="mt-8 rounded-2xl border border-border bg-card p-6">
+
         <h2 className="font-serif text-xl font-semibold">Neue Lektion</h2>
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
           <Field label="Titel">
