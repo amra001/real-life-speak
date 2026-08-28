@@ -10,13 +10,27 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as LektionenRouteImport } from './routes/lektionen'
 import { Route as PreiseRouteImport } from './routes/preise'
 import { Route as UeberUnsRouteImport } from './routes/ueber-uns'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as LektionSlugRouteImport } from './routes/lektion.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LektionenRoute = LektionenRouteImport.update({
@@ -34,39 +48,96 @@ const UeberUnsRoute = UeberUnsRouteImport.update({
   path: '/ueber-uns',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const LektionSlugRoute = LektionSlugRouteImport.update({
+  id: '/lektion/$slug',
+  path: '/lektion/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/lektionen': typeof LektionenRoute
   '/preise': typeof PreiseRoute
   '/ueber-uns': typeof UeberUnsRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/lektion/$slug': typeof LektionSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/lektionen': typeof LektionenRoute
   '/preise': typeof PreiseRoute
   '/ueber-uns': typeof UeberUnsRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/lektion/$slug': typeof LektionSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/lektionen': typeof LektionenRoute
   '/preise': typeof PreiseRoute
   '/ueber-uns': typeof UeberUnsRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/lektion/$slug': typeof LektionSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/lektionen' | '/preise' | '/ueber-uns'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/lektionen'
+    | '/preise'
+    | '/ueber-uns'
+    | '/admin'
+    | '/dashboard'
+    | '/lektion/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/lektionen' | '/preise' | '/ueber-uns'
-  id: '__root__' | '/' | '/lektionen' | '/preise' | '/ueber-uns'
+  to:
+    | '/'
+    | '/auth'
+    | '/lektionen'
+    | '/preise'
+    | '/ueber-uns'
+    | '/admin'
+    | '/dashboard'
+    | '/lektion/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/lektionen'
+    | '/preise'
+    | '/ueber-uns'
+    | '/_authenticated/admin'
+    | '/_authenticated/dashboard'
+    | '/lektion/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   LektionenRoute: typeof LektionenRoute
   PreiseRoute: typeof PreiseRoute
   UeberUnsRoute: typeof UeberUnsRoute
+  LektionSlugRoute: typeof LektionSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -76,6 +147,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lektionen': {
@@ -99,14 +184,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UeberUnsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/lektion/$slug': {
+      id: '/lektion/$slug'
+      path: '/lektion/$slug'
+      fullPath: '/lektion/$slug'
+      preLoaderRoute: typeof LektionSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   LektionenRoute: LektionenRoute,
   PreiseRoute: PreiseRoute,
   UeberUnsRoute: UeberUnsRoute,
+  LektionSlugRoute: LektionSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
