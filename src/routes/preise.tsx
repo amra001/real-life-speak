@@ -27,10 +27,10 @@ const PLANS = [
     price: "0 €",
     period: "für immer",
     features: [
-      "Ausgewählte Gratis-Lektionen",
-      "Untertitel & Übersetzung",
-      "Vokabeln und Dialoge",
-      "Ein Quiz pro Lektion",
+      "Videos bis 1 Minute 30 Sekunden",
+      "Ausgewählte Demo-Lektionen",
+      "Einfache Quizfragen",
+      "Untertitel & Übersetzung (Vorschau)",
     ],
     cta: "Kostenlos starten",
     highlight: false,
@@ -40,13 +40,15 @@ const PLANS = [
     price: "9,90 €",
     period: "pro Monat",
     features: [
-      "Alle Lektionen A1–B2",
-      "Berufs-Lektionen (Pflege, Bau, Gastro …)",
-      "Lernfortschritt & Quiz-Statistik",
-      "Favoriten & Arbeitsblätter (PDF)",
-      "Neue Lektionen jede Woche",
+      "Videos mit 3, 5, 10 und 15 Minuten",
+      "Komplette Lernbibliothek A1–B2",
+      "Alle Kategorien und Berufsmodule",
+      "Alle Übersetzungssprachen (TR, AR, UK, BKS, RO)",
+      "Vollständige Quiz & Vokabellisten",
+      "Lernfortschritt und zusätzliche Übungen",
+      "Später: Arbeitsblätter als PDF",
     ],
-    cta: "Premium wählen",
+    cta: "Premium freischalten",
     highlight: true,
   },
   {
@@ -63,6 +65,7 @@ const PLANS = [
     highlight: false,
   },
 ];
+
 
 function Pricing() {
   return (
