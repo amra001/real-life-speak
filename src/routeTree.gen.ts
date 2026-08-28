@@ -12,11 +12,16 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BerufRouteImport } from './routes/beruf'
+import { Route as JobBewerbungRouteImport } from './routes/job-bewerbung'
 import { Route as LektionenRouteImport } from './routes/lektionen'
 import { Route as PreiseRouteImport } from './routes/preise'
+import { Route as PrivatunterrichtRouteImport } from './routes/privatunterricht'
 import { Route as UeberUnsRouteImport } from './routes/ueber-uns'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as JobBewerbungIndexRouteImport } from './routes/job-bewerbung.index'
+import { Route as JobBewerbungSlugRouteImport } from './routes/job-bewerbung.$slug'
 import { Route as LektionSlugRouteImport } from './routes/lektion.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -33,6 +38,16 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BerufRoute = BerufRouteImport.update({
+  id: '/beruf',
+  path: '/beruf',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JobBewerbungRoute = JobBewerbungRouteImport.update({
+  id: '/job-bewerbung',
+  path: '/job-bewerbung',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LektionenRoute = LektionenRouteImport.update({
   id: '/lektionen',
   path: '/lektionen',
@@ -41,6 +56,11 @@ const LektionenRoute = LektionenRouteImport.update({
 const PreiseRoute = PreiseRouteImport.update({
   id: '/preise',
   path: '/preise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivatunterrichtRoute = PrivatunterrichtRouteImport.update({
+  id: '/privatunterricht',
+  path: '/privatunterricht',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UeberUnsRoute = UeberUnsRouteImport.update({
@@ -58,6 +78,16 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const JobBewerbungIndexRoute = JobBewerbungIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => JobBewerbungRoute,
+} as any)
+const JobBewerbungSlugRoute = JobBewerbungSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => JobBewerbungRoute,
+} as any)
 const LektionSlugRoute = LektionSlugRouteImport.update({
   id: '/lektion/$slug',
   path: '/lektion/$slug',
@@ -67,75 +97,106 @@ const LektionSlugRoute = LektionSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/beruf': typeof BerufRoute
+  '/job-bewerbung': typeof JobBewerbungRouteWithChildren
   '/lektionen': typeof LektionenRoute
   '/preise': typeof PreiseRoute
+  '/privatunterricht': typeof PrivatunterrichtRoute
   '/ueber-uns': typeof UeberUnsRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/job-bewerbung/$slug': typeof JobBewerbungSlugRoute
   '/lektion/$slug': typeof LektionSlugRoute
+  '/job-bewerbung/': typeof JobBewerbungIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/beruf': typeof BerufRoute
   '/lektionen': typeof LektionenRoute
   '/preise': typeof PreiseRoute
+  '/privatunterricht': typeof PrivatunterrichtRoute
   '/ueber-uns': typeof UeberUnsRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/job-bewerbung/$slug': typeof JobBewerbungSlugRoute
   '/lektion/$slug': typeof LektionSlugRoute
+  '/job-bewerbung': typeof JobBewerbungIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/beruf': typeof BerufRoute
+  '/job-bewerbung': typeof JobBewerbungRouteWithChildren
   '/lektionen': typeof LektionenRoute
   '/preise': typeof PreiseRoute
+  '/privatunterricht': typeof PrivatunterrichtRoute
   '/ueber-uns': typeof UeberUnsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/job-bewerbung/$slug': typeof JobBewerbungSlugRoute
   '/lektion/$slug': typeof LektionSlugRoute
+  '/job-bewerbung/': typeof JobBewerbungIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/auth'
+    | '/beruf'
+    | '/job-bewerbung'
     | '/lektionen'
     | '/preise'
+    | '/privatunterricht'
     | '/ueber-uns'
     | '/admin'
     | '/dashboard'
+    | '/job-bewerbung/$slug'
     | '/lektion/$slug'
+    | '/job-bewerbung/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
+    | '/beruf'
     | '/lektionen'
     | '/preise'
+    | '/privatunterricht'
     | '/ueber-uns'
     | '/admin'
     | '/dashboard'
+    | '/job-bewerbung/$slug'
     | '/lektion/$slug'
+    | '/job-bewerbung'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/beruf'
+    | '/job-bewerbung'
     | '/lektionen'
     | '/preise'
+    | '/privatunterricht'
     | '/ueber-uns'
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
+    | '/job-bewerbung/$slug'
     | '/lektion/$slug'
+    | '/job-bewerbung/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  BerufRoute: typeof BerufRoute
+  JobBewerbungRoute: typeof JobBewerbungRouteWithChildren
   LektionenRoute: typeof LektionenRoute
   PreiseRoute: typeof PreiseRoute
+  PrivatunterrichtRoute: typeof PrivatunterrichtRoute
   UeberUnsRoute: typeof UeberUnsRoute
   LektionSlugRoute: typeof LektionSlugRoute
 }
@@ -163,6 +224,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/beruf': {
+      id: '/beruf'
+      path: '/beruf'
+      fullPath: '/beruf'
+      preLoaderRoute: typeof BerufRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/job-bewerbung': {
+      id: '/job-bewerbung'
+      path: '/job-bewerbung'
+      fullPath: '/job-bewerbung'
+      preLoaderRoute: typeof JobBewerbungRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lektionen': {
       id: '/lektionen'
       path: '/lektionen'
@@ -175,6 +250,13 @@ declare module '@tanstack/react-router' {
       path: '/preise'
       fullPath: '/preise'
       preLoaderRoute: typeof PreiseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privatunterricht': {
+      id: '/privatunterricht'
+      path: '/privatunterricht'
+      fullPath: '/privatunterricht'
+      preLoaderRoute: typeof PrivatunterrichtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ueber-uns': {
@@ -197,6 +279,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/job-bewerbung/': {
+      id: '/job-bewerbung/'
+      path: '/'
+      fullPath: '/job-bewerbung/'
+      preLoaderRoute: typeof JobBewerbungIndexRouteImport
+      parentRoute: typeof JobBewerbungRoute
+    }
+    '/job-bewerbung/$slug': {
+      id: '/job-bewerbung/$slug'
+      path: '/$slug'
+      fullPath: '/job-bewerbung/$slug'
+      preLoaderRoute: typeof JobBewerbungSlugRouteImport
+      parentRoute: typeof JobBewerbungRoute
     }
     '/lektion/$slug': {
       id: '/lektion/$slug'
@@ -221,12 +317,29 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface JobBewerbungRouteChildren {
+  JobBewerbungSlugRoute: typeof JobBewerbungSlugRoute
+  JobBewerbungIndexRoute: typeof JobBewerbungIndexRoute
+}
+
+const JobBewerbungRouteChildren: JobBewerbungRouteChildren = {
+  JobBewerbungSlugRoute: JobBewerbungSlugRoute,
+  JobBewerbungIndexRoute: JobBewerbungIndexRoute,
+}
+
+const JobBewerbungRouteWithChildren = JobBewerbungRoute._addFileChildren(
+  JobBewerbungRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  BerufRoute: BerufRoute,
+  JobBewerbungRoute: JobBewerbungRouteWithChildren,
   LektionenRoute: LektionenRoute,
   PreiseRoute: PreiseRoute,
+  PrivatunterrichtRoute: PrivatunterrichtRoute,
   UeberUnsRoute: UeberUnsRoute,
   LektionSlugRoute: LektionSlugRoute,
 }
