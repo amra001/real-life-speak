@@ -4,20 +4,33 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { LessonCard } from "@/components/site/LessonCard";
 import { lessonsQuery } from "@/lib/data";
-import { CATEGORIES, LEVELS, REGIONS } from "@/lib/taxonomy";
+import {
+  ALLTAG_CATEGORIES,
+  BERUF_CATEGORIES,
+  CATEGORIES,
+  FREE_MAX_SECONDS,
+  LEVELS,
+  LEVEL_INFO,
+  REGIONS,
+  type Level,
+} from "@/lib/taxonomy";
 
 type Search = {
   kategorie?: string | undefined;
+  unterthema?: string | undefined;
   level?: string | undefined;
   region?: string | undefined;
+  zugang?: string | undefined;
   q?: string | undefined;
 };
 
 export const Route = createFileRoute("/lektionen")({
   validateSearch: (search: Record<string, unknown>): Search => ({
     kategorie: typeof search['kategorie'] === "string" ? search['kategorie'] : undefined,
+    unterthema: typeof search['unterthema'] === "string" ? search['unterthema'] : undefined,
     level: typeof search['level'] === "string" ? search['level'] : undefined,
     region: typeof search['region'] === "string" ? search['region'] : undefined,
+    zugang: typeof search['zugang'] === "string" ? search['zugang'] : undefined,
     q: typeof search['q'] === "string" ? search['q'] : undefined,
   }),
   head: () => ({
@@ -26,11 +39,11 @@ export const Route = createFileRoute("/lektionen")({
       {
         name: "description",
         content:
-          "Alle Video-Lektionen nach Thema, Niveau und Region filtern: Alltag, Gesundheit, Wohnen, Verkehr, Schule und Beruf.",
+          "Alle Video-Lektionen nach Thema, Niveau, Region und Zugang filtern: Alltag, Gesundheit, Wohnen, Verkehr, Schule und alle Berufsbereiche.",
       },
       { property: "og:title", content: "Lektionen-Bibliothek – RealLife German" },
       {
-        name: "og:description",
+        property: "og:description",
         content: "Deutsch-Lektionen aus echten Situationen, filterbar nach Thema und Niveau.",
       },
     ],
@@ -47,10 +60,16 @@ function Library() {
     void navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true });
   };
 
+  const activeCategory = CATEGORIES.find((c) => c.slug === search.kategorie);
+
   const lessons = (data ?? []).filter((l) => {
     if (search.kategorie && l.category_slug !== search.kategorie) return false;
+    if (search.unterthema && l.subcategory_slug !== search.unterthema) return false;
     if (search.level && l.level !== search.level) return false;
     if (search.region && l.region !== search.region) return false;
+    if (search.zugang === "gratis" && (l.is_premium || l.duration_seconds > FREE_MAX_SECONDS))
+      return false;
+    if (search.zugang === "premium" && !l.is_premium) return false;
     if (search.q && !`${l.title} ${l.description}`.toLowerCase().includes(search.q.toLowerCase()))
       return false;
     return true;
@@ -70,11 +89,25 @@ function Library() {
           onChange={(e) => set({ q: e.target.value || undefined })}
         />
         <FilterRow
-          label="Thema"
-          options={CATEGORIES.map((c) => ({ value: c.slug, label: c.name }))}
+          label="Alltag"
+          options={ALLTAG_CATEGORIES.map((c) => ({ value: c.slug, label: c.name }))}
           value={search.kategorie}
-          onChange={(v) => set({ kategorie: v })}
+          onChange={(v) => set({ kategorie: v, unterthema: undefined })}
         />
+        <FilterRow
+          label="Beruf"
+          options={BERUF_CATEGORIES.map((c) => ({ value: c.slug, label: c.name }))}
+          value={search.kategorie}
+          onChange={(v) => set({ kategorie: v, unterthema: undefined })}
+        />
+        {activeCategory && (
+          <FilterRow
+            label={`Unterthema · ${activeCategory.name}`}
+            options={activeCategory.children.map((c) => ({ value: c.slug, label: c.name }))}
+            value={search.unterthema}
+            onChange={(v) => set({ unterthema: v })}
+          />
+        )}
         <FilterRow
           label="Niveau"
           options={LEVELS.map((l) => ({ value: l, label: l }))}
@@ -87,7 +120,25 @@ function Library() {
           value={search.region}
           onChange={(v) => set({ region: v })}
         />
+        <FilterRow
+          label="Zugang"
+          options={[
+            { value: "gratis", label: "Kostenlos (bis 1:30 Min.)" },
+            { value: "premium", label: "Premium" },
+          ]}
+          value={search.zugang}
+          onChange={(v) => set({ zugang: v })}
+        />
       </div>
+
+      {search.level && LEVEL_INFO[search.level as Level] && (
+        <p className="mt-6 rounded-2xl border border-border bg-surface p-4 text-sm text-muted-foreground">
+          <span className="font-medium text-foreground">
+            {LEVEL_INFO[search.level as Level].label}:
+          </span>{" "}
+          {LEVEL_INFO[search.level as Level].description}
+        </p>
+      )}
 
       {isLoading ? (
         <p className="mt-10 text-muted-foreground">Lektionen werden geladen …</p>

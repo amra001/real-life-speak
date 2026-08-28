@@ -1,54 +1,70 @@
 import { Link } from "@tanstack/react-router";
 
+const COLUMNS: { title: string; links: { to: string; label: string }[] }[] = [
+  {
+    title: "Lernen",
+    links: [
+      { to: "/lektionen", label: "Lektionen" },
+      { to: "/beruf", label: "Deutsch im Beruf" },
+      { to: "/preise", label: "Preise" },
+    ],
+  },
+  {
+    title: "Unterstützung",
+    links: [
+      { to: "/job-bewerbung", label: "Job & Bewerbung" },
+      { to: "/privatunterricht", label: "Privatunterricht" },
+      { to: "/ueber-uns", label: "Über mich" },
+    ],
+  },
+  {
+    title: "Konto",
+    links: [
+      { to: "/auth", label: "Login" },
+      { to: "/dashboard", label: "Dashboard" },
+    ],
+  },
+];
+
 export function Footer() {
   return (
-    <footer className="mt-24 border-t border-border bg-surface">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-3">
+    <footer className="border-t border-border bg-surface">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <div className="font-serif text-lg font-semibold">RealLife German</div>
-          <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-            Deutsch lernen mit echten Alltags- und Berufssituationen – sehen, hören, verstehen,
-            üben.
+          <div className="flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent font-serif text-sm font-bold text-accent-foreground">
+              RG
+            </span>
+            <span className="font-serif text-lg font-semibold">RealLife German</span>
+          </div>
+          <p className="mt-3 max-w-xs text-sm text-muted-foreground">
+            Deutsch lernen für Alltag, Beruf und Bewerbung – mit echten Situationen und
+            persönlicher Unterstützung.
           </p>
         </div>
-        <div className="text-sm">
-          <div className="font-medium">Plattform</div>
-          <ul className="mt-3 space-y-2 text-muted-foreground">
-            <li>
-              <Link to="/lektionen" className="hover:text-foreground">
-                Lektionen
-              </Link>
-            </li>
-            <li>
-              <Link to="/preise" className="hover:text-foreground">
-                Preise
-              </Link>
-            </li>
-            <li>
-              <Link to="/ueber-uns" className="hover:text-foreground">
-                Über uns
-              </Link>
-            </li>
-          </ul>
-        </div>
-        <div className="text-sm">
-          <div className="font-medium">Konto</div>
-          <ul className="mt-3 space-y-2 text-muted-foreground">
-            <li>
-              <Link to="/auth" className="hover:text-foreground">
-                Anmelden
-              </Link>
-            </li>
-            <li>
-              <Link to="/dashboard" className="hover:text-foreground">
-                Dashboard
-              </Link>
-            </li>
-          </ul>
-        </div>
+
+        {COLUMNS.map((c) => (
+          <div key={c.title}>
+            <div className="text-xs uppercase tracking-widest text-muted-foreground">{c.title}</div>
+            <ul className="mt-4 space-y-2">
+              {c.links.map((l) => (
+                <li key={l.to}>
+                  <Link
+                    to={l.to}
+                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
-      <div className="border-t border-border py-5 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} RealLife German
+      <div className="border-t border-border">
+        <div className="mx-auto max-w-6xl px-4 py-5 text-xs text-muted-foreground">
+          © {new Date().getFullYear()} RealLife German · Deutschland &amp; Österreich
+        </div>
       </div>
     </footer>
   );

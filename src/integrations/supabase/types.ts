@@ -99,6 +99,54 @@ export type Database = {
           },
         ]
       }
+      inquiries: {
+        Row: {
+          created_at: string
+          current_level: string | null
+          email: string
+          goal: string | null
+          id: string
+          kind: string
+          lesson_type: string | null
+          message: string
+          name: string
+          phone: string | null
+          product_slug: string | null
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          current_level?: string | null
+          email: string
+          goal?: string | null
+          id?: string
+          kind?: string
+          lesson_type?: string | null
+          message?: string
+          name: string
+          phone?: string | null
+          product_slug?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          current_level?: string | null
+          email?: string
+          goal?: string | null
+          id?: string
+          kind?: string
+          lesson_type?: string | null
+          message?: string
+          name?: string
+          phone?: string | null
+          product_slug?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       lesson_scenes: {
         Row: {
           german_text: string
@@ -188,6 +236,51 @@ export type Database = {
           updated_at?: string
           video_url?: string | null
           worksheet_url?: string | null
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          category: string
+          created_at: string
+          cta_label: string
+          currency: string
+          description: string
+          id: string
+          is_active: boolean
+          position: number
+          price_cents: number
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          cta_label?: string
+          currency?: string
+          description?: string
+          id?: string
+          is_active?: boolean
+          position?: number
+          price_cents?: number
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          cta_label?: string
+          currency?: string
+          description?: string
+          id?: string
+          is_active?: boolean
+          position?: number
+          price_cents?: number
+          slug?: string
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }

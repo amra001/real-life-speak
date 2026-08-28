@@ -14,12 +14,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
-import { adminLessonsQuery } from "@/lib/data";
+import {
+  adminInquiriesQuery,
+  adminLessonsQuery,
+  adminProductsQuery,
+  formatPrice,
+} from "@/lib/data";
 import { CATEGORIES, DURATIONS, LEVELS, REGIONS } from "@/lib/taxonomy";
 import { THUMBNAIL_KEYS } from "@/lib/lesson-images";
 import { useAuth, useIsAdmin } from "@/hooks/useAuth";
 import { toast } from "sonner";
+
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
@@ -119,9 +126,20 @@ function Admin() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <h1 className="font-serif text-3xl font-semibold md:text-4xl">Adminbereich</h1>
-      <p className="mt-2 text-muted-foreground">Lektionen anlegen, veröffentlichen und löschen.</p>
+      <p className="mt-2 text-muted-foreground">
+        Lektionen, Produkte und Anfragen verwalten.
+      </p>
 
+      <Tabs defaultValue="lektionen" className="mt-8">
+        <TabsList>
+          <TabsTrigger value="lektionen">Lektionen</TabsTrigger>
+          <TabsTrigger value="produkte">Produkte &amp; Preise</TabsTrigger>
+          <TabsTrigger value="anfragen">Anfragen</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="lektionen" className="mt-6">
       <div className="mt-8 rounded-2xl border border-border bg-card p-6">
+
         <h2 className="font-serif text-xl font-semibold">Neue Lektion</h2>
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
           <Field label="Titel">
@@ -273,9 +291,199 @@ function Admin() {
           </div>
         ))}
       </div>
+        </TabsContent>
+
+        <TabsContent value="produkte" className="mt-6">
+          <ProductsAdmin />
+        </TabsContent>
+
+        <TabsContent value="anfragen" className="mt-6">
+          <InquiriesAdmin />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
+
+function ProductsAdmin() {
+  const queryClient = useQueryClient();
+  const { data: products } = useQuery(adminProductsQuery());
+  const [draft, setDraft] = useState<Record<string, { price: string; title: string }>>({});
+
+  const save = useMutation({
+    mutationFn: async ({
+      id,
+      price_cents,
+      title,
+    }: {
+      id: string;
+      price_cents: number;
+      title: string;
+    }) => {
+      const { error } = await supabase
+        .from("products")
+        .update({ price_cents, title, updated_at: new Date().toISOString() })
+        .eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Produkt aktualisiert.");
+      void queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
+      void queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const toggleActive = useMutation({
+    mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
+      const { error } = await supabase.from("products").update({ is_active }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
+      void queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-muted-foreground">
+        Titel und Preise der Bewerbungs- und Coaching-Angebote anpassen.
+      </p>
+      {(products ?? []).map((p) => {
+        const d = draft[p.id] ?? { price: String(p.price_cents / 100), title: p.title };
+        return (
+          <div key={p.id} className="rounded-xl border border-border bg-card p-4">
+            <div className="grid gap-3 sm:grid-cols-[1fr_140px_auto] sm:items-end">
+              <Field label="Titel">
+                <Input
+                  value={d.title}
+                  onChange={(e) =>
+                    setDraft((prev) => ({ ...prev, [p.id]: { ...d, title: e.target.value } }))
+                  }
+                />
+              </Field>
+              <Field label="Preis (EUR)">
+                <Input
+                  type="number"
+                  min="0"
+                  step="1"
+                  value={d.price}
+                  onChange={(e) =>
+                    setDraft((prev) => ({ ...prev, [p.id]: { ...d, price: e.target.value } }))
+                  }
+                />
+              </Field>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  onClick={() =>
+                    save.mutate({
+                      id: p.id,
+                      title: d.title,
+                      price_cents: Math.round(Number(d.price || 0) * 100),
+                    })
+                  }
+                >
+                  Speichern
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => toggleActive.mutate({ id: p.id, is_active: !p.is_active })}
+                >
+                  {p.is_active ? "Ausblenden" : "Anzeigen"}
+                </Button>
+              </div>
+            </div>
+            <div className="mt-2 text-xs text-muted-foreground">
+              {p.description} · aktuell {formatPrice(p.price_cents, p.currency)} ·{" "}
+              {p.is_active ? "sichtbar" : "ausgeblendet"}
+            </div>
+          </div>
+        );
+      })}
+      {!products?.length && <p className="text-muted-foreground">Keine Produkte vorhanden.</p>}
+    </div>
+  );
+}
+
+function InquiriesAdmin() {
+  const queryClient = useQueryClient();
+  const { data: inquiries } = useQuery(adminInquiriesQuery());
+
+  const setStatus = useMutation({
+    mutationFn: async ({ id, status }: { id: string; status: string }) => {
+      const { error } = await supabase.from("inquiries").update({ status }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => void queryClient.invalidateQueries({ queryKey: ["admin", "inquiries"] }),
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const remove = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("inquiries").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Anfrage gelöscht.");
+      void queryClient.invalidateQueries({ queryKey: ["admin", "inquiries"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  return (
+    <div className="space-y-3">
+      {(inquiries ?? []).map((i) => (
+        <div key={i.id} className="rounded-xl border border-border bg-card p-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="secondary">
+              {i.kind === "bewerbung" ? "Bewerbung" : "Privatunterricht"}
+            </Badge>
+            {i.product_slug && <Badge variant="outline">{i.product_slug}</Badge>}
+            <Badge variant={i.status === "neu" ? "default" : "outline"}>{i.status}</Badge>
+            <span className="text-xs text-muted-foreground">
+              {new Date(i.created_at).toLocaleString("de-DE")}
+            </span>
+          </div>
+          <div className="mt-2 font-medium">
+            {i.name} · {i.email}
+            {i.phone ? ` · ${i.phone}` : ""}
+          </div>
+          <div className="mt-1 text-sm text-muted-foreground">
+            {[i.current_level, i.lesson_type, i.goal].filter(Boolean).join(" · ")}
+          </div>
+          {i.message && <p className="mt-2 text-sm">{i.message}</p>}
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() =>
+                setStatus.mutate({ id: i.id, status: i.status === "erledigt" ? "neu" : "erledigt" })
+              }
+            >
+              {i.status === "erledigt" ? "Wieder öffnen" : "Als erledigt markieren"}
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => {
+                if (confirm("Anfrage wirklich löschen?")) remove.mutate(i.id);
+              }}
+              aria-label="Löschen"
+            >
+              <Trash2 className="h-4 w-4 text-destructive" />
+            </Button>
+          </div>
+        </div>
+      ))}
+      {!inquiries?.length && <p className="text-muted-foreground">Noch keine Anfragen.</p>}
+    </div>
+  );
+}
+
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
