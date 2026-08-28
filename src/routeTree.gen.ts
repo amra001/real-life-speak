@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as LektionenRouteImport } from './routes/lektionen'
 import { Route as PreiseRouteImport } from './routes/preise'
 import { Route as UeberUnsRouteImport } from './routes/ueber-uns'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as LektionSlugRouteImport } from './routes/lektion.$slug'
 
@@ -47,6 +48,11 @@ const UeberUnsRoute = UeberUnsRouteImport.update({
   path: '/ueber-uns',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/lektionen': typeof LektionenRoute
   '/preise': typeof PreiseRoute
   '/ueber-uns': typeof UeberUnsRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/lektion/$slug': typeof LektionSlugRoute
 }
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/lektionen': typeof LektionenRoute
   '/preise': typeof PreiseRoute
   '/ueber-uns': typeof UeberUnsRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/lektion/$slug': typeof LektionSlugRoute
 }
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/lektionen': typeof LektionenRoute
   '/preise': typeof PreiseRoute
   '/ueber-uns': typeof UeberUnsRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/lektion/$slug': typeof LektionSlugRoute
 }
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
     | '/lektionen'
     | '/preise'
     | '/ueber-uns'
+    | '/admin'
     | '/dashboard'
     | '/lektion/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -104,6 +114,7 @@ export interface FileRouteTypes {
     | '/lektionen'
     | '/preise'
     | '/ueber-uns'
+    | '/admin'
     | '/dashboard'
     | '/lektion/$slug'
   id:
@@ -114,6 +125,7 @@ export interface FileRouteTypes {
     | '/lektionen'
     | '/preise'
     | '/ueber-uns'
+    | '/_authenticated/admin'
     | '/_authenticated/dashboard'
     | '/lektion/$slug'
   fileRoutesById: FileRoutesById
@@ -172,6 +184,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UeberUnsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -190,10 +209,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
 }
 
