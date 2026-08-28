@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { bakeryA1Override } from "@/lib/static/bakery-a1";
 
 export type Lesson = {
   id: string;
@@ -68,7 +69,6 @@ export type DialogLine = {
   translations: Record<string, string>;
 };
 
-
 export type Question = {
   id: string;
   position: number;
@@ -79,7 +79,6 @@ export type Question = {
   data?: Record<string, unknown> | null;
   quiz_answers: { id: string; position: number; text: string; is_correct: boolean }[];
 };
-
 
 export const lessonsQuery = () => ({
   queryKey: ["lessons"],
@@ -97,6 +96,19 @@ export const lessonsQuery = () => ({
 export const lessonQuery = (slug: string) => ({
   queryKey: ["lesson", slug],
   queryFn: async () => {
+    // Die Bäckerei ist unser redaktionell geprüfter Qualitätsstandard.
+    // Sie wird bewusst aus versioniertem Content geladen, damit alte Supabase-Seeds
+    // nicht wieder unnatürliche oder falsche Texte auf der Lernseite anzeigen.
+    if (slug === "in-der-baeckerei") {
+      return bakeryA1Override as {
+        lesson: Lesson;
+        scenes: Scene[];
+        vocab: Vocab[];
+        dialog: DialogLine[];
+        questions: Question[];
+      };
+    }
+
     const { data: lesson, error } = await supabase
       .from("lessons")
       .select("*")
@@ -205,7 +217,6 @@ export function formatPrice(cents: number, currency = "EUR"): string {
   return new Intl.NumberFormat("de-DE", { style: "currency", currency }).format(cents / 100);
 }
 
-
 export const topicLessonsQuery = (topicSlug: string) => ({
   queryKey: ["topic-lessons", topicSlug],
   queryFn: async (): Promise<Lesson[]> => {
@@ -220,7 +231,6 @@ export const topicLessonsQuery = (topicSlug: string) => ({
   },
 });
 
-/** Ein Thema fasst die Niveau-Varianten (A1/A2/B1) einer Situation zusammen. */
 export type Topic = {
   slug: string;
   title: string;
@@ -266,15 +276,12 @@ export type LessonWithCounts = Lesson & {
   questions: number;
 };
 
-/** Lektionen eines Themas inklusive Umfangszahlen für die Themenseite. */
 export const topicOverviewQuery = (topicSlug: string) => ({
   queryKey: ["topic-overview", topicSlug],
   queryFn: async (): Promise<LessonWithCounts[]> => {
     const { data, error } = await supabase
       .from("lessons")
-      .select(
-        "*, lesson_scenes(count), vocabulary(count), dialogs(count), quiz_questions(count)",
-      )
+      .select("*, lesson_scenes(count), vocabulary(count), dialogs(count), quiz_questions(count)")
       .eq("topic_slug", topicSlug)
       .eq("status", "published");
     if (error) throw error;
