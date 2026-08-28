@@ -40,27 +40,36 @@ export type Database = {
       }
       dialogs: {
         Row: {
+          dialog_index: number
+          dialog_title: string
           german_text: string
           id: string
           lesson_id: string
           position: number
           speaker: string
+          speaker_role: string
           translations: Json
         }
         Insert: {
+          dialog_index?: number
+          dialog_title?: string
           german_text: string
           id?: string
           lesson_id: string
           position?: number
           speaker?: string
+          speaker_role?: string
           translations?: Json
         }
         Update: {
+          dialog_index?: number
+          dialog_title?: string
           german_text?: string
           id?: string
           lesson_id?: string
           position?: number
           speaker?: string
+          speaker_role?: string
           translations?: Json
         }
         Relationships: [
@@ -154,6 +163,7 @@ export type Database = {
           image_key: string | null
           lesson_id: string
           position: number
+          scene_group: string
           translations: Json
         }
         Insert: {
@@ -162,6 +172,7 @@ export type Database = {
           image_key?: string | null
           lesson_id: string
           position?: number
+          scene_group?: string
           translations?: Json
         }
         Update: {
@@ -170,6 +181,7 @@ export type Database = {
           image_key?: string | null
           lesson_id?: string
           position?: number
+          scene_group?: string
           translations?: Json
         }
         Relationships: [
@@ -188,9 +200,12 @@ export type Database = {
           created_at: string
           description: string
           duration_seconds: number
+          grammar_notes: Json
+          grammar_topics: string[]
           id: string
           is_premium: boolean
           level: string
+          place_items: Json
           popularity: number
           region: string
           slug: string
@@ -209,9 +224,12 @@ export type Database = {
           created_at?: string
           description?: string
           duration_seconds?: number
+          grammar_notes?: Json
+          grammar_topics?: string[]
           id?: string
           is_premium?: boolean
           level?: string
+          place_items?: Json
           popularity?: number
           region?: string
           slug: string
@@ -230,9 +248,12 @@ export type Database = {
           created_at?: string
           description?: string
           duration_seconds?: number
+          grammar_notes?: Json
+          grammar_topics?: string[]
           id?: string
           is_premium?: boolean
           level?: string
+          place_items?: Json
           popularity?: number
           region?: string
           slug?: string
@@ -354,28 +375,34 @@ export type Database = {
       }
       quiz_questions: {
         Row: {
+          data: Json
           explanation: string
           id: string
           kind: string
           lesson_id: string
           position: number
           prompt: string
+          section: string
         }
         Insert: {
+          data?: Json
           explanation?: string
           id?: string
           kind?: string
           lesson_id: string
           position?: number
           prompt: string
+          section?: string
         }
         Update: {
+          data?: Json
           explanation?: string
           id?: string
           kind?: string
           lesson_id?: string
           position?: number
           prompt?: string
+          section?: string
         }
         Relationships: [
           {
@@ -470,6 +497,7 @@ export type Database = {
       vocabulary: {
         Row: {
           article: string
+          collocations: string[]
           example: string
           example_translations: Json
           id: string
@@ -482,6 +510,7 @@ export type Database = {
         }
         Insert: {
           article?: string
+          collocations?: string[]
           example?: string
           example_translations?: Json
           id?: string
@@ -494,6 +523,7 @@ export type Database = {
         }
         Update: {
           article?: string
+          collocations?: string[]
           example?: string
           example_translations?: Json
           id?: string

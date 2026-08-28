@@ -2,8 +2,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { LessonCard } from "@/components/site/LessonCard";
-import { lessonsQuery } from "@/lib/data";
+import { TopicCard } from "@/components/site/TopicCard";
+import { groupByTopic, lessonsQuery } from "@/lib/data";
 import {
   ALLTAG_CATEGORIES,
   BERUF_CATEGORIES,
@@ -73,12 +73,37 @@ function Library() {
     return true;
   });
 
+  const topics = groupByTopic(lessons);
+
+  const allTopics = groupByTopic(data ?? []);
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <h1 className="font-serif text-3xl font-semibold md:text-4xl">Lektionen-Bibliothek</h1>
       <p className="mt-2 text-muted-foreground">
         Wähle Thema, Niveau und Region – und starte mit einer echten Situation.
       </p>
+
+      <div className="mt-8 grid gap-4 sm:grid-cols-3">
+        {(["A1", "A2", "B1"] as const).map((lvl) => {
+          const count = allTopics.filter((t) => t.levels.some((l) => l.level === lvl)).length;
+          return (
+            <button
+              key={lvl}
+              onClick={() => set({ level: search.level === lvl ? undefined : lvl })}
+              className={
+                search.level === lvl
+                  ? "rounded-2xl border border-foreground bg-card p-5 text-left"
+                  : "rounded-2xl border border-border bg-card p-5 text-left hover:bg-muted/40"
+              }
+            >
+              <div className="font-serif text-lg font-semibold">{lvl} Lernpfad</div>
+              <div className="mt-1 text-sm text-muted-foreground">{count} Themen verfügbar</div>
+            </button>
+          );
+        })}
+      </div>
+
 
       <div className="mt-8 space-y-4 rounded-2xl border border-border bg-card p-5">
         <Input
@@ -140,9 +165,9 @@ function Library() {
 
       {isLoading ? (
         <p className="mt-10 text-muted-foreground">Lektionen werden geladen …</p>
-      ) : lessons.length === 0 ? (
+      ) : topics.length === 0 ? (
         <div className="mt-10 rounded-2xl border border-dashed border-border p-10 text-center">
-          <p className="text-muted-foreground">Keine Lektionen für diese Auswahl.</p>
+          <p className="text-muted-foreground">Keine Themen für diese Auswahl.</p>
           <Button
             variant="outline"
             className="mt-4"
@@ -152,12 +177,18 @@ function Library() {
           </Button>
         </div>
       ) : (
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {lessons.map((l) => (
-            <LessonCard key={l.id} lesson={l} />
-          ))}
-        </div>
+        <>
+          <p className="mt-8 text-sm text-muted-foreground">
+            {topics.length} Themen · jedes Thema mit Niveau A1, A2 und B1
+          </p>
+          <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {topics.map((t) => (
+              <TopicCard key={t.slug} topic={t} />
+            ))}
+          </div>
+        </>
       )}
+
     </div>
   );
 }

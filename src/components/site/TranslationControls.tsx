@@ -21,10 +21,17 @@ export function TranslationControls({
   visible: boolean;
   setVisible: (v: boolean) => void;
 }) {
+  const current = TRANSLATION_LANGS.find((l) => l.code === lang);
   return (
     <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border bg-card px-4 py-3">
       <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
-        <Languages className="h-4 w-4" /> Übersetzung
+        <Languages className="h-4 w-4" />
+        <span>
+          Hilfssprache:{" "}
+          <span className="font-semibold text-foreground">
+            {visible && lang !== "none" ? (current?.label ?? "—") : "aus"}
+          </span>
+        </span>
       </div>
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-2">
@@ -33,6 +40,7 @@ export function TranslationControls({
             {visible ? "An" : "Aus"}
           </Label>
         </div>
+
         <Select value={lang} onValueChange={(v) => setLang(v as TranslationLang)}>
           <SelectTrigger className="w-60">
             <SelectValue />

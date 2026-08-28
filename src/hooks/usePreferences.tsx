@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import type { TranslationLang } from "@/lib/taxonomy";
+import { TRANSLATION_LANGS, type TranslationLang } from "@/lib/taxonomy";
 
 const LANG_KEY = "rlg:translation-lang";
 const SHOW_KEY = "rlg:translation-visible";
@@ -83,5 +83,8 @@ export function useTranslationPreference() {
     [lang, visible],
   );
 
-  return { lang, setLang, visible, setVisible, translate };
+  const langLabel = TRANSLATION_LANGS.find((l) => l.code === lang)?.label ?? "";
+  const helperActive = visible && lang !== "none";
+
+  return { lang, setLang, visible, setVisible, translate, langLabel, helperActive };
 }
