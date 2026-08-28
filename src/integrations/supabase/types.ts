@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.17"
+    PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
@@ -151,6 +151,7 @@ export type Database = {
         Row: {
           german_text: string
           id: string
+          image_key: string | null
           lesson_id: string
           position: number
           translations: Json
@@ -158,6 +159,7 @@ export type Database = {
         Insert: {
           german_text: string
           id?: string
+          image_key?: string | null
           lesson_id: string
           position?: number
           translations?: Json
@@ -165,6 +167,7 @@ export type Database = {
         Update: {
           german_text?: string
           id?: string
+          image_key?: string | null
           lesson_id?: string
           position?: number
           translations?: Json
@@ -195,6 +198,8 @@ export type Database = {
           subcategory_slug: string | null
           thumbnail_key: string | null
           title: string
+          topic_slug: string | null
+          topic_title: string | null
           updated_at: string
           video_url: string | null
           worksheet_url: string | null
@@ -214,6 +219,8 @@ export type Database = {
           subcategory_slug?: string | null
           thumbnail_key?: string | null
           title: string
+          topic_slug?: string | null
+          topic_title?: string | null
           updated_at?: string
           video_url?: string | null
           worksheet_url?: string | null
@@ -233,6 +240,8 @@ export type Database = {
           subcategory_slug?: string | null
           thumbnail_key?: string | null
           title?: string
+          topic_slug?: string | null
+          topic_title?: string | null
           updated_at?: string
           video_url?: string | null
           worksheet_url?: string | null
@@ -460,25 +469,40 @@ export type Database = {
       }
       vocabulary: {
         Row: {
+          article: string
+          example: string
+          example_translations: Json
           id: string
           lesson_id: string
+          plural: string
           position: number
           term: string
           translations: Json
+          word_class: string
         }
         Insert: {
+          article?: string
+          example?: string
+          example_translations?: Json
           id?: string
           lesson_id: string
+          plural?: string
           position?: number
           term: string
           translations?: Json
+          word_class?: string
         }
         Update: {
+          article?: string
+          example?: string
+          example_translations?: Json
           id?: string
           lesson_id?: string
+          plural?: string
           position?: number
           term?: string
           translations?: Json
+          word_class?: string
         }
         Relationships: [
           {

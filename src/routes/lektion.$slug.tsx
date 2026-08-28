@@ -8,14 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TranslationControls } from "@/components/site/TranslationControls";
-import { SceneVisual } from "@/components/site/SceneVisual";
-import { lessonQuery, type Question } from "@/lib/data";
+import { lessonQuery, topicLessonsQuery, type Question } from "@/lib/data";
 import { lessonImage } from "@/lib/lesson-images";
-import { SUPERMARKT_SCENES } from "@/lib/supermarkt-demo";
 import {
   categoryName,
   formatDuration,
-  FREE_MAX_SECONDS,
   FREE_PREVIEW_SCENES,
   LEVEL_INFO,
   REGIONS,
@@ -75,17 +72,18 @@ function LessonPage() {
   );
 
   const { lesson, scenes, vocab, dialog, questions } = data;
-  const effectiveScenes = slug === "im-supermarkt" && scenes.length < 12 ? SUPERMARKT_SCENES : scenes;
-  const displayDuration = slug === "im-supermarkt" ? 90 : lesson.duration_seconds;
+  const effectiveScenes = scenes;
+  const displayDuration = lesson.duration_seconds;
   const region = REGIONS.find((r) => r.slug === lesson.region);
   const levelInfo = LEVEL_INFO[lesson.level as Level];
-  const requiresPremium = lesson.is_premium || displayDuration > FREE_MAX_SECONDS;
+  const requiresPremium = lesson.is_premium;
   const fullAccess = isPremium || !requiresPremium;
   const visibleScenes = fullAccess ? effectiveScenes : effectiveScenes.slice(0, FREE_PREVIEW_SCENES);
   const visibleVocab = fullAccess ? vocab : vocab.slice(0, 2);
   const visibleQuestions = fullAccess ? questions : questions.slice(0, 1);
   const safeStep = Math.min(step, Math.max(visibleScenes.length - 1, 0));
   const scene = visibleScenes[safeStep];
+
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
@@ -96,7 +94,7 @@ function LessonPage() {
       <div className="mt-4 flex flex-wrap items-center gap-2">
         <Badge variant="secondary">{lesson.level}</Badge>
         <Badge variant="outline">{categoryName(lesson.subcategory_slug ?? lesson.category_slug)}</Badge>
-        <Badge variant="outline">ca. {formatDuration(displayDuration)}</Badge>
+        <Badge variant="outline">{formatDuration(displayDuration)}</Badge>
         {region && <Badge variant="outline">{region.flag} {region.label}</Badge>}
         {requiresPremium ? <Badge className="bg-accent text-accent-foreground">Premium</Badge> : <Badge variant="outline">Gratis</Badge>}
       </div>
@@ -106,13 +104,20 @@ function LessonPage() {
       <p className="mt-2 text-xs text-muted-foreground">Die Zeitangabe ist eine ungefähre Lernzeit. Du steuerst die Szenen selbst mit Zurück/Weiter.</p>
       {levelInfo && <p className="mt-2 text-sm text-muted-foreground"><span className="font-medium text-foreground">{levelInfo.label}:</span> {levelInfo.description}</p>}
 
+      {lesson.topic_slug && <LevelSwitch topicSlug={lesson.topic_slug} currentSlug={lesson.slug} />}
+
       <div className="mt-6"><TranslationControls lang={lang} setLang={setLang} visible={visible} setVisible={setVisible} /></div>
+
 
       <div className="mt-6 overflow-hidden rounded-3xl border border-border bg-card">
         {lesson.video_url ? (
           <video src={lesson.video_url} controls className="aspect-video w-full bg-foreground" />
         ) : scene ? (
-          <SceneVisual text={scene.german_text} fallbackSrc={lessonImage(lesson.thumbnail_key)} alt={scene.german_text} />
+          <img
+            src={lessonImage(scene.image_key ?? lesson.thumbnail_key)}
+            alt={scene.german_text}
+            className="aspect-video w-full object-cover"
+          />
         ) : (
           <img src={lessonImage(lesson.thumbnail_key)} alt={lesson.title} className="aspect-video w-full object-cover" />
         )}
@@ -147,10 +152,28 @@ function LessonPage() {
 
         <TabsContent value="vokabeln" className="mt-5">
           <div className="grid gap-3 sm:grid-cols-2">
-            {visibleVocab.map((v) => <div key={v.id} className="rounded-xl border border-border bg-card p-4"><div className="font-medium">{v.term}</div><div className="text-sm text-muted-foreground">{translate(v.translations)}</div></div>)}
+            {visibleVocab.map((v) => (
+              <div key={v.id} className="rounded-xl border border-border bg-card p-4">
+                <div className="font-medium">{v.article ? `${v.article} ` : ""}{v.term.replace(/^(der|die|das)\s+/i, "")}</div>
+                <div className="mt-0.5 flex flex-wrap gap-2 text-xs text-muted-foreground">
+                  {v.word_class && <span className="rounded-full bg-muted px-2 py-0.5">{v.word_class}</span>}
+                  {v.plural && <span className="rounded-full bg-muted px-2 py-0.5">Pl.: {v.plural}</span>}
+                </div>
+                <div className="mt-1 text-sm text-muted-foreground">{translate(v.translations)}</div>
+                {v.example && (
+                  <div className="mt-3 border-t border-border pt-3">
+                    <div className="text-sm">{v.example}</div>
+                    {translate(v.example_translations) && (
+                      <div className="text-sm text-muted-foreground">{translate(v.example_translations)}</div>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
             {!visibleVocab.length && <p className="text-muted-foreground">Keine Vokabeln hinterlegt.</p>}
           </div>
         </TabsContent>
+
 
         <TabsContent value="dialog" className="mt-5 space-y-3">
           {fullAccess ? <>
@@ -242,4 +265,33 @@ function Quiz({ questions, lessonId, userId, locked }: { questions: Question[]; 
       <Button variant="outline" className="ml-auto" onClick={() => { setAnswers({}); setTexts({}); setSubmitted(false); }}><RotateCcw className="mr-2 h-4 w-4" /> Nochmal</Button>
     </div> : <Button onClick={submit} disabled={answeredCount < sorted.length} className="w-full sm:w-auto">Auswerten</Button>}
   </div>;
+}
+
+function LevelSwitch({ topicSlug, currentSlug }: { topicSlug: string; currentSlug: string }) {
+  const { data } = useQuery(topicLessonsQuery(topicSlug));
+  const siblings = (data ?? []).slice().sort((a, b) => a.level.localeCompare(b.level));
+  if (siblings.length < 2) return null;
+  return (
+    <div className="mt-5 flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-card px-4 py-3">
+      <span className="mr-1 text-xs uppercase tracking-widest text-muted-foreground">Niveau wählen</span>
+      {siblings.map((s) => {
+        const active = s.slug === currentSlug;
+        return (
+          <Link
+            key={s.id}
+            to="/lektion/$slug"
+            params={{ slug: s.slug }}
+            className={
+              active
+                ? "rounded-full bg-foreground px-3 py-1.5 text-sm text-background"
+                : "rounded-full border border-border px-3 py-1.5 text-sm hover:bg-muted"
+            }
+          >
+            {s.level}
+            {s.is_premium ? " ·  Premium" : " · Gratis"}
+          </Link>
+        );
+      })}
+    </div>
+  );
 }

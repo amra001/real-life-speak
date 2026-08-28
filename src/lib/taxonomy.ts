@@ -69,13 +69,12 @@ export const DURATIONS = [
 /** Kostenlose Lektionen sind auf 1 Minute 30 Sekunden begrenzt. */
 export const FREE_MAX_SECONDS = 90;
 /** So viele Szenen sieht ein kostenloser Nutzer als Vorschau einer Premium-Lektion. */
-export const FREE_PREVIEW_SCENES = 1;
+export const FREE_PREVIEW_SCENES = 3;
 
+/** Ungefähre Lernzeit – gerundet auf 5 Minuten, keine exakte Videolänge. */
 export function formatDuration(seconds: number): string {
-  if (seconds < 60) return `${seconds} Sek.`;
-  const m = Math.floor(seconds / 60);
-  const s = seconds % 60;
-  return s ? `${m}:${String(s).padStart(2, "0")} Min.` : `${m} Min.`;
+  const minutes = Math.max(5, Math.round(seconds / 60 / 5) * 5);
+  return `ca. ${minutes} Min. Lernzeit`;
 }
 
 export type CategoryNode = {
