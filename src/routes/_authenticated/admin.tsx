@@ -14,12 +14,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
-import { adminLessonsQuery } from "@/lib/data";
+import {
+  adminInquiriesQuery,
+  adminLessonsQuery,
+  adminProductsQuery,
+  formatPrice,
+} from "@/lib/data";
 import { CATEGORIES, DURATIONS, LEVELS, REGIONS } from "@/lib/taxonomy";
 import { THUMBNAIL_KEYS } from "@/lib/lesson-images";
 import { useAuth, useIsAdmin } from "@/hooks/useAuth";
 import { toast } from "sonner";
+
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
