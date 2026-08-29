@@ -45,6 +45,7 @@ export type NormQuestion = {
   options: string[];
   imageKey: string | null;
   solutionText: string;
+  helpText: string | null;
 };
 
 type State = {
@@ -64,7 +65,6 @@ function shuffle<T>(arr: T[], seed: string): T[] {
     const j = h % (i + 1);
     [out[i], out[j]] = [out[j] as T, out[i] as T];
   }
-  // Falls der Seed zufällig die Ursprungsreihenfolge liefert, bewusst verschieben.
   if (out.length > 2 && out.every((v, i) => v === arr[i])) out.push(out.shift() as T);
   return out;
 }
@@ -85,6 +85,8 @@ export function normalizeQuestion(q: Question, lang: TranslationLang): NormQuest
     })
     .filter((p) => p.left && p.right);
   const imageKey = typeof data.image_key === "string" ? (data.image_key as string) : null;
+  const helpMap = data.help && typeof data.help === "object" ? (data.help as Record<string, string>) : null;
+  const helpText = lang !== "none" && helpMap ? (helpMap[lang] ?? null) : null;
   const correctCount = answers.filter((a) => a.is_correct).length;
 
   let kind: NormalizedKind = "single_choice";
@@ -108,6 +110,7 @@ export function normalizeQuestion(q: Question, lang: TranslationLang): NormQuest
     options,
     imageKey,
     solutionText: answers.find((a) => a.is_correct)?.text ?? "",
+    helpText,
   };
 }
 
@@ -183,19 +186,37 @@ function ChipBuilder({ words, value, onChange, disabled, seed }: { words: string
     }
     return rest;
   }, [shuffledWords, value]);
+  const isDialogue = words.some((w) => w.length > 45 || w.includes(":"));
+
   return (
     <div className="mt-4 space-y-3">
       <div className="min-h-14 rounded-xl border border-dashed border-border p-3">
-        <div className="flex flex-wrap gap-2">
+        <div className={isDialogue ? "space-y-2" : "flex flex-wrap gap-2"}>
           {value.map((w, i) => (
-            <button key={`${w}-${i}`} type="button" disabled={disabled} onClick={() => onChange(value.filter((_, j) => j !== i))} className="rounded-full bg-foreground px-3 py-1.5 text-sm text-background">{w}</button>
+            <button
+              key={`${w}-${i}`}
+              type="button"
+              disabled={disabled}
+              onClick={() => onChange(value.filter((_, j) => j !== i))}
+              className={isDialogue ? "block w-full rounded-xl bg-foreground px-4 py-3 text-left text-sm text-background" : "rounded-full bg-foreground px-3 py-1.5 text-sm text-background"}
+            >
+              {isDialogue && <span className="mr-2 font-semibold">{i + 1}.</span>}{w}
+            </button>
           ))}
-          {!value.length && <span className="text-sm text-muted-foreground">Klicke die Wörter in der richtigen Reihenfolge an …</span>}
+          {!value.length && <span className="text-sm text-muted-foreground">{isDialogue ? "Klicke die Gesprächsteile unten in der richtigen Reihenfolge an …" : "Klicke die Wörter in der richtigen Reihenfolge an …"}</span>}
         </div>
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className={isDialogue ? "grid gap-2" : "flex flex-wrap gap-2"}>
         {pool.map((w, i) => (
-          <button key={`${w}-p-${i}`} type="button" disabled={disabled} onClick={() => onChange([...value, w])} className="rounded-full border border-border px-3 py-1.5 text-sm hover:bg-muted">{w}</button>
+          <button
+            key={`${w}-p-${i}`}
+            type="button"
+            disabled={disabled}
+            onClick={() => onChange([...value, w])}
+            className={isDialogue ? "block w-full rounded-xl border border-border px-4 py-3 text-left text-sm hover:bg-muted" : "rounded-full border border-border px-3 py-1.5 text-sm hover:bg-muted"}
+          >
+            {w}
+          </button>
         ))}
       </div>
     </div>
@@ -228,8 +249,6 @@ export function Exercises({ questions, lang, title, onFinish }: { questions: Que
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [done, setDone] = useState(false);
 
-  // Wichtig beim Wechsel zwischen Übungsblock, Grammatik, Dialog bauen und Test:
-  // jedes Modul startet mit seinem eigenen Zustand.
   const signature = norm.map((q) => q.id).join("|");
   useEffect(() => {
     setState(makeInitial());
@@ -258,6 +277,13 @@ export function Exercises({ questions, lang, title, onFinish }: { questions: Que
               {q.kind === "multi_choice" && <span className="normal-case tracking-normal">Mehrere Antworten richtig</span>}
             </div>
             <div className="mt-2 font-medium">{q.prompt}</div>
+
+            {q.helpText && (
+              <details className="mt-3 rounded-xl border border-border bg-muted/30 px-4 py-3 text-sm">
+                <summary className="cursor-pointer font-medium">Hilfe in deiner Sprache anzeigen</summary>
+                <div className="mt-2 text-muted-foreground" dir="auto">{q.helpText}</div>
+              </details>
+            )}
 
             {q.imageKey && (
               <div className="mt-4 overflow-hidden rounded-xl border border-border">
