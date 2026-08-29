@@ -157,5 +157,8 @@ export const SCENE_IMAGES: Record<string,string> = {
   /* Außen- und Kontextmotive */
   'baeck-fenster': bakeryWindow,
   'baeck-strasse': bakeryStreet,
+  'baeck-wallet': bakeryWallet,
+  'baeck-bon': bakeryReceipt,
+  'baeck-heimweg': bakeryWalkHome,
 };
 Object.assign(LESSON_IMAGES, SCENE_IMAGES);
