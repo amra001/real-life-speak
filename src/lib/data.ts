@@ -96,11 +96,16 @@ export const lessonsQuery = () => ({
 export const lessonQuery = (slug: string) => ({
   queryKey: ["lesson", slug],
   queryFn: async () => {
-    // Die Bäckerei ist unser redaktionell geprüfter Qualitätsstandard.
-    // Sie wird bewusst aus versioniertem Content geladen, damit alte Supabase-Seeds
-    // nicht wieder unnatürliche oder falsche Texte auf der Lernseite anzeigen.
-    if (slug === "in-der-baeckerei") {
-      return bakeryA1Override as {
+    // The current Lovable database links the A1 bakery card to /lektion/baeckerei-a1.
+    // Support both historical and current slugs so the reviewed content is always shown.
+    if (slug === "in-der-baeckerei" || slug === "baeckerei-a1") {
+      return {
+        ...bakeryA1Override,
+        lesson: {
+          ...bakeryA1Override.lesson,
+          slug,
+        },
+      } as {
         lesson: Lesson;
         scenes: Scene[];
         vocab: Vocab[];
