@@ -1,13 +1,8 @@
 /**
  * Allgemeines, themenunabhängiges Szenentyp-System.
  *
- * Jede Szene einer Lektion bekommt einen Szenentyp (SceneType). Pro Thema wird
- * nur eine Tabelle "Szenentyp -> Bild-Key" hinterlegt (SceneImageMap).
- * Dadurch braucht kein Thema eine eigene Komponente oder Sonderlogik.
- *
- * Zusätzlich kann der Szenentyp aus dem deutschen Satz abgeleitet werden
- * (inferSceneType), damit auch bestehende Datenbank-Lektionen ohne gepflegtes
- * scene_type-Feld automatisch das passende Bild bekommen.
+ * Lernschritte und Bilder sind bewusst getrennt: A1/A2/B1 dürfen viele
+ * Lernschritte haben, teilen sich pro Thema aber nur wenige starke Kernmotive.
  */
 
 export const SCENE_TYPES = [
@@ -45,11 +40,12 @@ export function resolveSceneImage(map: SceneImageMap, type: SceneType): Resolved
   if (exact) return { image_key: exact, needs_image: false };
   for (const alt of NEAREST[type] ?? []) {
     const key = map[alt];
-    if (key) return { image_key: key, needs_image: true };
+    if (key) return { image_key: key, needs_image: false };
   }
-  return { image_key: map.fallback, needs_image: true };
+  return { image_key: map.fallback, needs_image: false };
 }
 
+/** Bäckerei: vorhandener hochwertiger Illustrationssatz. */
 export const BAKERY_SCENE_IMAGES: SceneImageMap = {
   fallback: "baeck-ill-02", context: "baeck-fenster", location: "baeck-strasse", enter: "baeck-strasse",
   greeting: "baeck-ill-01", look: "baeck-ill-02", ask: "baeck-ill-01", explain: "baeck-ill-03",
@@ -59,64 +55,38 @@ export const BAKERY_SCENE_IMAGES: SceneImageMap = {
   receipt: "baeck-bon", goodbye: "baeck-ill-10", leave: "baeck-ill-10", return_home: "baeck-heimweg",
 };
 
-/**
- * Bus: nur sechs starke vorhandene Schlüsselbilder für A1/A2/B1 gemeinsam.
- * Viele Lernschritte nutzen bewusst dasselbe semantisch passende Motiv.
- */
+/** Bus: sechs vorhandene Kernmotive für alle drei Niveaus. */
 export const BUS_SCENE_IMAGES: SceneImageMap = {
   fallback: "bus-haltestelle",
-  context: "bus-haltestelle",
-  location: "bus-haltestelle",
-  wait: "bus-haltestelle",
-  schedule_check: "bus-haltestelle",
-
-  enter: "bus-einsteigen",
-  board: "bus-einsteigen",
-
-  greeting: "bus-fahrer",
-  ask: "bus-fahrer",
-  explain: "bus-fahrer",
-  ask_direction: "bus-fahrer",
-  problem: "bus-fahrer",
-  solution: "bus-fahrer",
-  confirm: "bus-fahrer",
-
-  ticket: "bus-fahrkarte",
-  handover: "bus-fahrkarte",
-  pay: "bus-fahrkarte",
-  pay_cash: "bus-fahrkarte",
-  pay_card: "bus-fahrkarte",
-  receipt: "bus-fahrkarte",
-
-  ride: "bus-sitzplatz",
-  look: "bus-sitzplatz",
-  select: "bus-sitzplatz",
-  choose: "bus-sitzplatz",
-  opinion: "bus-sitzplatz",
-  reaction: "bus-sitzplatz",
-
-  goodbye: "bus-aussteigen",
-  leave: "bus-aussteigen",
-  exit_vehicle: "bus-aussteigen",
-  return_home: "bus-aussteigen",
+  context: "bus-haltestelle", location: "bus-haltestelle", wait: "bus-haltestelle", schedule_check: "bus-haltestelle",
+  enter: "bus-einsteigen", board: "bus-einsteigen",
+  greeting: "bus-fahrer", ask: "bus-fahrer", explain: "bus-fahrer", ask_direction: "bus-fahrer",
+  problem: "bus-fahrer", solution: "bus-fahrer", confirm: "bus-fahrer",
+  ticket: "bus-fahrkarte", handover: "bus-fahrkarte", pay: "bus-fahrkarte", pay_cash: "bus-fahrkarte", pay_card: "bus-fahrkarte", receipt: "bus-fahrkarte",
+  ride: "bus-sitzplatz", look: "bus-sitzplatz", select: "bus-sitzplatz", choose: "bus-sitzplatz", opinion: "bus-sitzplatz", reaction: "bus-sitzplatz",
+  goodbye: "bus-aussteigen", leave: "bus-aussteigen", exit_vehicle: "bus-aussteigen", return_home: "bus-aussteigen",
 };
 
+/** Supermarkt: sechs vorhandene Kernmotive statt einer Bilddatei pro Satz. */
 export const SUPERMARKT_SCENE_IMAGES: SceneImageMap = {
-  fallback: "markt-eingang", context: "markt-eingang", location: "markt-eingang", enter: "markt-eingang",
-  greeting: "markt-mitarbeiter", look: "markt-obst", ask: "markt-mitarbeiter", explain: "markt-mitarbeiter",
-  compare: "markt-brot", choice: "markt-brot", select: "markt-milch", choose: "markt-milch", recommend: "markt-mitarbeiter",
-  problem: "markt-mitarbeiter", solution: "markt-wagen", handover: "markt-kasse", pay: "markt-kasse",
-  pay_cash: "markt-kasse", pay_card: "markt-karte", receipt: "markt-karte", goodbye: "markt-ausgang",
-  leave: "markt-ausgang", return_home: "markt-ausgang",
+  fallback: "markt-eingang",
+  context: "markt-eingang", location: "markt-eingang", enter: "markt-eingang",
+  look: "markt-obst", compare: "markt-obst", choice: "markt-obst", select: "markt-obst", choose: "markt-obst",
+  greeting: "markt-mitarbeiter", ask: "markt-mitarbeiter", explain: "markt-mitarbeiter", recommend: "markt-mitarbeiter", problem: "markt-mitarbeiter", solution: "markt-mitarbeiter",
+  handover: "markt-kasse", pay: "markt-kasse", pay_cash: "markt-kasse", pay_card: "markt-kasse", receipt: "markt-kasse",
+  goodbye: "markt-ausgang", leave: "markt-ausgang", return_home: "markt-ausgang",
 };
 
+/** Apotheke: sechs vorhandene Kernmotive, A1/A2/B1 teilen dieselbe Bildwelt. */
 export const APOTHEKE_SCENE_IMAGES: SceneImageMap = {
-  fallback: "apo-theke", context: "apo-strasse", location: "apo-strasse", enter: "apo-eingang", greeting: "apo-theke",
-  look: "apo-vergleich", wait: "apo-warten", ask: "apo-theke", describe_symptoms: "apo-symptome", explain: "apo-beratung",
-  recommend: "apo-beratung", compare: "apo-vergleich", choice: "apo-vergleich", select: "apo-vergleich", choose: "apo-vergleich",
-  prescription: "apo-rezept", form: "apo-rezept", instruction: "apo-einnahme", confirm: "apo-einnahme", problem: "apo-symptome",
-  solution: "apo-beratung", pay: "apo-kasse", pay_cash: "apo-kasse", pay_card: "apo-kasse", receipt: "apo-kasse",
-  handover: "apo-uebergabe", goodbye: "apo-abschied", leave: "apo-abschied", return_home: "apo-strasse",
+  fallback: "apo-theke",
+  context: "apo-strasse", location: "apo-strasse", enter: "apo-strasse", wait: "apo-strasse",
+  greeting: "apo-theke", ask: "apo-theke",
+  describe_symptoms: "apo-symptome", problem: "apo-symptome",
+  explain: "apo-beratung", recommend: "apo-beratung", compare: "apo-beratung", choice: "apo-beratung", solution: "apo-beratung",
+  prescription: "apo-rezept", form: "apo-rezept", instruction: "apo-rezept", confirm: "apo-rezept",
+  pay: "apo-kasse", pay_cash: "apo-kasse", pay_card: "apo-kasse", receipt: "apo-kasse", handover: "apo-kasse",
+  goodbye: "apo-abschied", leave: "apo-abschied", return_home: "apo-abschied",
 };
 
 export const TOPIC_SCENE_IMAGES: Record<string, SceneImageMap> = {
@@ -128,7 +98,7 @@ export const TOPIC_SCENE_IMAGES: Record<string, SceneImageMap> = {
 
 export function sceneImageForTopic(topicSlug: string | null | undefined, type: SceneType, fallbackKey?: string | null): ResolvedSceneImage {
   const map = (topicSlug && TOPIC_SCENE_IMAGES[topicSlug]) || null;
-  if (!map) return { image_key: fallbackKey ?? "", needs_image: true };
+  if (!map) return { image_key: fallbackKey ?? "", needs_image: false };
   return resolveSceneImage(map, type);
 }
 
@@ -167,29 +137,33 @@ export function inferSceneType(germanText: string, position: number, total: numb
 
 export type BasicScene = { position: number; german_text: string; image_key?: string | null; scene_type?: SceneType | null; needs_image?: boolean };
 
+/**
+ * Zentrale Regel: Hat ein Thema ein kompaktes Mapping, ist dieses Mapping
+ * autoritativ. Alte image_key-Werte aus der Datenbank dürfen die neue Logik
+ * nicht mehr umgehen. So wird ein altes 14-Bilder-Modul automatisch auf die
+ * wenigen Kernmotive reduziert, ohne Texte oder Lernschritte zu verlieren.
+ */
 export function applyTopicSceneImages<T extends BasicScene>(topicSlug: string | null | undefined, thumbnailKey: string | null | undefined, scenes: T[]): T[] {
   const map = (topicSlug && TOPIC_SCENE_IMAGES[topicSlug]) || null;
   const total = scenes.length;
   return scenes.map((s) => {
     const type = s.scene_type ?? inferSceneType(s.german_text, s.position, total);
-    if (!map) return { ...s, scene_type: type, image_key: s.image_key ?? thumbnailKey ?? null, needs_image: true };
-    const hasOwnKey = !!s.image_key && s.image_key !== thumbnailKey && s.image_key !== topicSlug;
-    if (hasOwnKey) return { ...s, scene_type: type, needs_image: s.needs_image ?? false };
+    if (!map) return { ...s, scene_type: type, image_key: s.image_key ?? thumbnailKey ?? null, needs_image: false };
     const resolved = resolveSceneImage(map, type);
-    return { ...s, scene_type: type, image_key: resolved.image_key, needs_image: resolved.needs_image };
+    return { ...s, scene_type: type, image_key: resolved.image_key, needs_image: false };
   });
 }
 
 export function buildScenes<T extends { id: string; position: number; german_text: string; scene_type: SceneType; translations: Record<string, string> }>(topicSlug: string, raw: T[]): (T & { image_key: string; needs_image?: boolean })[] {
   return raw.map((s) => {
-    const { image_key, needs_image } = sceneImageForTopic(topicSlug, s.scene_type);
-    return needs_image ? { ...s, image_key, needs_image: true } : { ...s, image_key };
+    const { image_key } = sceneImageForTopic(topicSlug, s.scene_type);
+    return { ...s, image_key };
   });
 }
 
 export function auditScenes(scenes: { position: number; image_key?: string | null; needs_image?: boolean }[]) {
-  return scenes.filter((s) => !s.image_key || s.needs_image).map((s) => s.position);
+  return scenes.filter((s) => !s.image_key).map((s) => s.position);
 }
 
-/** Lernschritte pro Niveau. Bilder werden bewusst wiederverwendet. */
+/** Lernschritte pro Niveau – NICHT Bildanzahl. Bilder werden bewusst geteilt. */
 export const REFERENCE_LEVEL_SCENES: Record<string, number> = { A1: 20, A2: 25, B1: 30 };
