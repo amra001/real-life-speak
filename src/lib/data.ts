@@ -81,40 +81,39 @@ export type Question = {
 };
 
 const bakerySceneImages = [
-  "baeck-new-01",
-  "baeck-new-02",
-  "baeck-new-03",
-  "baeck-new-04",
-  "baeck-new-05",
-  "baeck-new-06",
-  "baeck-new-07",
-  "baeck-new-08",
-  "baeck-new-09",
-  "baeck-new-10",
-  "baeck-new-11",
-  "baeck-new-12",
-  "baeck-new-13",
-  "baeck-new-14",
-  "baeck-new-15",
-  // Die letzten fünf Schritte nutzen bewusst passende Bilder aus derselben Fotostory.
-  "baeck-new-12",
-  "baeck-new-13",
-  "baeck-new-14",
-  "baeck-new-14",
-  "baeck-new-15",
+  "baeck-ill-02", // 1: kommt in die Bäckerei / Überblick
+  "baeck-ill-02", // 2: schaut die Auslage an
+  "baeck-ill-02", // 3: sieht Brot, Brötchen und Kuchen
+  "baeck-ill-01", // 4: Begrüßung an der Theke
+  "baeck-ill-04", // 5: bestellt Apfelkuchen
+  "baeck-ill-05", // 6: Verkäuferin nimmt Kuchenstück
+  "baeck-ill-06", // 7: bestellt zusätzlich Mischbrot
+  "baeck-ill-06", // 8: geschnitten oder ganz?
+  "baeck-ill-06", // 9: geschnitten, bitte
+  "baeck-ill-07", // 10: Brot wird geschnitten
+  "baeck-ill-08", // 11: Brot wird eingepackt / Tüte an der Kasse
+  "baeck-ill-01", // 12: Sonst noch etwas? – Gespräch geht weiter
+  "baeck-ill-01", // 13: fragt nach etwas Süßem ohne Nüsse
+  "baeck-ill-03", // 14: Verkäuferin zeigt zwei Möglichkeiten
+  "baeck-ill-01", // 15: Nein danke, das ist alles – noch kein Abschied
+  "baeck-ill-08", // 16: Verkäuferin nennt den Preis
+  "baeck-ill-08", // 17: Mara prüft Brieftasche/Kleingeld an der Kasse
+  "baeck-ill-09", // 18: fragt nach Kartenzahlung
+  "baeck-ill-09", // 19: bezahlt mit Karte
+  "baeck-ill-10", // 20: nimmt Tüte und verabschiedet sich
 ] as const;
 
 const bakeryQuestionImages: Record<string, string> = {
-  "bak-p1": "baeck-new-04",
-  "bak-p2": "baeck-new-04",
-  "bak-p3": "baeck-new-04",
-  "bak-p4": "baeck-new-03",
-  "bak-p5": "baeck-new-03",
-  "bak-p6": "baeck-new-03",
-  "bak-p7": "baeck-new-03",
-  "bak-p8": "baeck-new-04",
-  "bak-p9": "baeck-new-04",
-  "bak-p10": "baeck-new-05",
+  "bak-p1": "baeck-ill-01",
+  "bak-p2": "baeck-ill-01",
+  "bak-p3": "baeck-ill-01",
+  "bak-p4": "baeck-ill-02",
+  "bak-p5": "baeck-ill-02",
+  "bak-p6": "baeck-ill-02",
+  "bak-p7": "baeck-ill-02",
+  "bak-p8": "baeck-ill-01",
+  "bak-p9": "baeck-ill-01",
+  "bak-p10": "baeck-ill-02",
 };
 
 const bakeryHelpOverrides: Record<string, Record<string, string>> = {
@@ -135,7 +134,7 @@ const bakeryHelpOverrides: Record<string, Record<string, string>> = {
   "bak-g3": {
     bks: "Pitanje: Koji član ide uz riječ „Brot“? Brot znači hljeb/kruh i srednjeg je roda: das Brot.",
     tr: "Soru: „Brot“ kelimesinin artikeli hangisi? Brot = ekmek ve nötrdür: das Brot.",
-    uk: "Питання: який артикль має „Brot“? Brot = хліб, середній рід: das Brot.",
+    uk: "Питання: який артикль має слово „Brot“? Brot = хліб, середній рід: das Brot.",
     ro: "Întrebare: ce articol are „Brot“? Brot = pâine și este neutru: das Brot.",
     ar: "السؤال: ما أداة كلمة Brot؟ معناها خبز وهي محايدة: das Brot.",
   },
@@ -179,16 +178,16 @@ function bakeryLessonForSlug(slug: string) {
   });
 
   const placeImages = [
-    "baeck-new-04",
-    "baeck-new-04",
-    "baeck-new-04",
-    "baeck-new-03",
-    "baeck-new-03",
-    "baeck-new-03",
-    "baeck-new-04",
-    "baeck-new-03",
-    "baeck-new-05",
-    "baeck-new-04",
+    "baeck-ill-01",
+    "baeck-ill-01",
+    "baeck-ill-01",
+    "baeck-ill-02",
+    "baeck-ill-02",
+    "baeck-ill-02",
+    "baeck-ill-01",
+    "baeck-ill-02",
+    "baeck-ill-02",
+    "baeck-ill-01",
   ];
 
   return {
@@ -198,7 +197,7 @@ function bakeryLessonForSlug(slug: string) {
       slug,
       place_items: (bakeryA1Override.lesson.place_items ?? []).map((item, index) => ({
         ...item,
-        image_key: placeImages[index] ?? "baeck-new-04",
+        image_key: placeImages[index] ?? "baeck-ill-01",
       })),
     },
     scenes,
