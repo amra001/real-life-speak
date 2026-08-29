@@ -166,15 +166,61 @@ function LessonPage() {
   );
 }
 
+type VisualChapter = { imageKey: string | null; scenes: Scene[] };
+
+function buildVisualChapters(scenes: Scene[], fallbackKey: string | null): VisualChapter[] {
+  const ordered = [...scenes].sort((a, b) => a.position - b.position);
+  const chapters: VisualChapter[] = [];
+  const MAX_TEXTS_PER_IMAGE = 4;
+
+  for (const scene of ordered) {
+    const imageKey = scene.image_key ?? fallbackKey;
+    const last = chapters[chapters.length - 1];
+    if (last && last.imageKey === imageKey && last.scenes.length < MAX_TEXTS_PER_IMAGE) {
+      last.scenes.push(scene);
+    } else {
+      chapters.push({ imageKey, scenes: [scene] });
+    }
+  }
+  return chapters;
+}
+
 function SceneStory({ scenes, fallbackKey, translate, langLabel, preview }: { scenes: Scene[]; fallbackKey: string | null; translate: (t: Record<string, string> | null | undefined) => string; langLabel: string; preview: boolean }) {
-  /* Keine Gruppierung: jede Szene ist ein eigener Schritt (Bild 1/25, 2/25, ...). */
-  const ordered = useMemo(() => [...scenes].sort((a, b) => a.position - b.position), [scenes]);
+  const chapters = useMemo(() => buildVisualChapters(scenes, fallbackKey), [scenes, fallbackKey]);
   const [index, setIndex] = useState(0);
-  if (!ordered.length) return <p className="text-muted-foreground">Keine Szenen hinterlegt.</p>;
-  const total = ordered.length;
-  const scene = ordered[Math.min(index, total - 1)];
-  if (!scene) return null;
-  return <div className="overflow-hidden rounded-3xl border border-border bg-card"><img src={lessonImage(scene.image_key ?? fallbackKey)} alt={scene.german_text} className="aspect-video w-full object-cover" /><div className="border-t border-border p-6">{preview && <div className="mb-3 inline-flex rounded-full bg-muted px-3 py-1 text-xs uppercase tracking-widest text-muted-foreground">Kostenlose Vorschau</div>}<div><div className="font-serif text-2xl leading-snug">{scene.german_text}</div><Translated text={translate(scene.translations)} langLabel={langLabel} />{scene.hint && <div className="mt-4 rounded-xl border border-border bg-muted/50 p-3 text-sm text-muted-foreground"><span className="mr-1 text-xs uppercase tracking-widest">Lerntipp</span>{scene.hint}</div>}</div><div className="mt-6 flex items-center gap-3"><Button variant="outline" size="icon" disabled={index === 0} onClick={() => setIndex((i) => Math.max(i - 1, 0))}><ChevronLeft className="h-4 w-4" /></Button><Progress value={((index + 1) / total) * 100} className="flex-1" /><span className="text-xs text-muted-foreground">Bild {index + 1}/{total}</span><Button variant="outline" size="icon" disabled={index >= total - 1} onClick={() => setIndex((i) => i + 1)}><ChevronRight className="h-4 w-4" /></Button></div></div></div>;
+  if (!chapters.length) return <p className="text-muted-foreground">Keine Szenen hinterlegt.</p>;
+  const total = chapters.length;
+  const chapter = chapters[Math.min(index, total - 1)];
+  if (!chapter) return null;
+  const first = chapter.scenes[0];
+
+  return (
+    <div className="overflow-hidden rounded-3xl border border-border bg-card">
+      <img src={lessonImage(chapter.imageKey)} alt={first?.german_text ?? "Lernsituation"} className="aspect-video w-full object-cover" />
+      <div className="border-t border-border p-6">
+        {preview && <div className="mb-3 inline-flex rounded-full bg-muted px-3 py-1 text-xs uppercase tracking-widest text-muted-foreground">Kostenlose Vorschau</div>}
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <div className="text-xs uppercase tracking-widest text-muted-foreground">Situation {index + 1} von {total}</div>
+          <div className="text-xs text-muted-foreground">{chapter.scenes.length} Lernschritt{chapter.scenes.length === 1 ? "" : "e"}</div>
+        </div>
+        <div className="space-y-5">
+          {chapter.scenes.map((scene, sceneIndex) => (
+            <div key={scene.id} className={sceneIndex === 0 ? "" : "border-t border-border pt-5"}>
+              <div className="font-serif text-2xl leading-snug">{scene.german_text}</div>
+              <Translated text={translate(scene.translations)} langLabel={langLabel} />
+              {scene.hint && <div className="mt-3 rounded-xl border border-border bg-muted/50 p-3 text-sm text-muted-foreground"><span className="mr-1 text-xs uppercase tracking-widest">Lerntipp</span>{scene.hint}</div>}
+            </div>
+          ))}
+        </div>
+        <div className="mt-6 flex items-center gap-3">
+          <Button variant="outline" size="icon" disabled={index === 0} onClick={() => setIndex((i) => Math.max(i - 1, 0))}><ChevronLeft className="h-4 w-4" /></Button>
+          <Progress value={((index + 1) / total) * 100} className="flex-1" />
+          <span className="text-xs text-muted-foreground">Situation {index + 1}/{total}</span>
+          <Button variant="outline" size="icon" disabled={index >= total - 1} onClick={() => setIndex((i) => Math.min(i + 1, total - 1))}><ChevronRight className="h-4 w-4" /></Button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function VocabSection({ vocab, translate, langLabel }: { vocab: import("@/lib/data").Vocab[]; translate: (t: Record<string, string> | null | undefined) => string; langLabel: string }) {
