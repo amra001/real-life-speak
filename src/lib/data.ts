@@ -1,5 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { SceneType } from "@/lib/scene-types";
+import { applyTopicSceneImages } from "@/lib/scene-types";
+
 import { bakeryA1Override } from "@/lib/static/bakery-a1";
 import { bakeryA2Override } from "@/lib/static/bakery-a2";
 import { bakeryB1Override } from "@/lib/static/bakery-b1";
