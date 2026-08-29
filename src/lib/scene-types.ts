@@ -45,7 +45,6 @@ export function resolveSceneImage(map: SceneImageMap, type: SceneType): Resolved
   return { image_key: map.fallback, needs_image: false };
 }
 
-/** Bäckerei: vorhandener hochwertiger Illustrationssatz. */
 export const BAKERY_SCENE_IMAGES: SceneImageMap = {
   fallback: "baeck-ill-02", context: "baeck-fenster", location: "baeck-strasse", enter: "baeck-strasse",
   greeting: "baeck-ill-01", look: "baeck-ill-02", ask: "baeck-ill-01", explain: "baeck-ill-03",
@@ -55,19 +54,16 @@ export const BAKERY_SCENE_IMAGES: SceneImageMap = {
   receipt: "baeck-bon", goodbye: "baeck-ill-10", leave: "baeck-ill-10", return_home: "baeck-heimweg",
 };
 
-/** Bus: sechs vorhandene Kernmotive für alle drei Niveaus. */
 export const BUS_SCENE_IMAGES: SceneImageMap = {
   fallback: "bus-haltestelle",
   context: "bus-haltestelle", location: "bus-haltestelle", wait: "bus-haltestelle", schedule_check: "bus-haltestelle",
   enter: "bus-einsteigen", board: "bus-einsteigen",
-  greeting: "bus-fahrer", ask: "bus-fahrer", explain: "bus-fahrer", ask_direction: "bus-fahrer",
-  problem: "bus-fahrer", solution: "bus-fahrer", confirm: "bus-fahrer",
+  greeting: "bus-fahrer", ask: "bus-fahrer", explain: "bus-fahrer", ask_direction: "bus-fahrer", problem: "bus-fahrer", solution: "bus-fahrer", confirm: "bus-fahrer",
   ticket: "bus-fahrkarte", handover: "bus-fahrkarte", pay: "bus-fahrkarte", pay_cash: "bus-fahrkarte", pay_card: "bus-fahrkarte", receipt: "bus-fahrkarte",
   ride: "bus-sitzplatz", look: "bus-sitzplatz", select: "bus-sitzplatz", choose: "bus-sitzplatz", opinion: "bus-sitzplatz", reaction: "bus-sitzplatz",
   goodbye: "bus-aussteigen", leave: "bus-aussteigen", exit_vehicle: "bus-aussteigen", return_home: "bus-aussteigen",
 };
 
-/** Supermarkt: sechs vorhandene Kernmotive statt einer Bilddatei pro Satz. */
 export const SUPERMARKT_SCENE_IMAGES: SceneImageMap = {
   fallback: "markt-eingang",
   context: "markt-eingang", location: "markt-eingang", enter: "markt-eingang",
@@ -77,7 +73,6 @@ export const SUPERMARKT_SCENE_IMAGES: SceneImageMap = {
   goodbye: "markt-ausgang", leave: "markt-ausgang", return_home: "markt-ausgang",
 };
 
-/** Apotheke: sechs vorhandene Kernmotive, A1/A2/B1 teilen dieselbe Bildwelt. */
 export const APOTHEKE_SCENE_IMAGES: SceneImageMap = {
   fallback: "apo-theke",
   context: "apo-strasse", location: "apo-strasse", enter: "apo-strasse", wait: "apo-strasse",
@@ -137,18 +132,12 @@ export function inferSceneType(germanText: string, position: number, total: numb
 
 export type BasicScene = { position: number; german_text: string; image_key?: string | null; scene_type?: SceneType | null; needs_image?: boolean };
 
-/**
- * Zentrale Regel: Hat ein Thema ein kompaktes Mapping, ist dieses Mapping
- * autoritativ. Alte image_key-Werte aus der Datenbank dürfen die neue Logik
- * nicht mehr umgehen. So wird ein altes 14-Bilder-Modul automatisch auf die
- * wenigen Kernmotive reduziert, ohne Texte oder Lernschritte zu verlieren.
- */
 export function applyTopicSceneImages<T extends BasicScene>(topicSlug: string | null | undefined, thumbnailKey: string | null | undefined, scenes: T[]): T[] {
   const map = (topicSlug && TOPIC_SCENE_IMAGES[topicSlug]) || null;
   const total = scenes.length;
   return scenes.map((s) => {
     const type = s.scene_type ?? inferSceneType(s.german_text, s.position, total);
-    if (!map) return { ...s, scene_type: type, image_key: s.image_key ?? thumbnailKey ?? null, needs_image: false };
+    if (!map) return { ...s, scene_type: type, image_key: thumbnailKey ?? s.image_key ?? null, needs_image: false };
     const resolved = resolveSceneImage(map, type);
     return { ...s, scene_type: type, image_key: resolved.image_key, needs_image: false };
   });
