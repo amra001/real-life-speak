@@ -167,20 +167,14 @@ function LessonPage() {
 }
 
 function SceneStory({ scenes, fallbackKey, translate, langLabel, preview }: { scenes: Scene[]; fallbackKey: string | null; translate: (t: Record<string, string> | null | undefined) => string; langLabel: string; preview: boolean }) {
-  const groups = useMemo(() => {
-    const out: { key: string; imageKey: string | null; lines: Scene[] }[] = [];
-    for (const s of scenes) {
-      const key = s.scene_group || s.image_key || `s-${s.position}`;
-      const last = out[out.length - 1];
-      if (last && last.key === key) last.lines.push(s); else out.push({ key, imageKey: s.image_key ?? null, lines: [s] });
-    }
-    return out;
-  }, [scenes]);
+  /* Keine Gruppierung: jede Szene ist ein eigener Schritt (Bild 1/25, 2/25, ...). */
+  const ordered = useMemo(() => [...scenes].sort((a, b) => a.position - b.position), [scenes]);
   const [index, setIndex] = useState(0);
-  if (!groups.length) return <p className="text-muted-foreground">Keine Szenen hinterlegt.</p>;
-  const g = groups[Math.min(index, groups.length - 1)];
-  if (!g) return null;
-  return <div className="overflow-hidden rounded-3xl border border-border bg-card"><img src={lessonImage(g.imageKey ?? fallbackKey)} alt={g.lines[0]?.german_text ?? ""} className="aspect-video w-full object-cover" /><div className="border-t border-border p-6">{preview && <div className="mb-3 inline-flex rounded-full bg-muted px-3 py-1 text-xs uppercase tracking-widest text-muted-foreground">Kostenlose Vorschau</div>}<div className="space-y-4">{g.lines.map((line) => <div key={line.id}><div className="font-serif text-2xl leading-snug">{line.german_text}</div><Translated text={translate(line.translations)} langLabel={langLabel} /></div>)}</div><div className="mt-6 flex items-center gap-3"><Button variant="outline" size="icon" disabled={index === 0} onClick={() => setIndex((i) => Math.max(i - 1, 0))}><ChevronLeft className="h-4 w-4" /></Button><Progress value={((index + 1) / groups.length) * 100} className="flex-1" /><span className="text-xs text-muted-foreground">Bild {index + 1}/{groups.length}</span><Button variant="outline" size="icon" disabled={index >= groups.length - 1} onClick={() => setIndex((i) => i + 1)}><ChevronRight className="h-4 w-4" /></Button></div></div></div>;
+  if (!ordered.length) return <p className="text-muted-foreground">Keine Szenen hinterlegt.</p>;
+  const total = ordered.length;
+  const scene = ordered[Math.min(index, total - 1)];
+  if (!scene) return null;
+  return <div className="overflow-hidden rounded-3xl border border-border bg-card"><img src={lessonImage(scene.image_key ?? fallbackKey)} alt={scene.german_text} className="aspect-video w-full object-cover" /><div className="border-t border-border p-6">{preview && <div className="mb-3 inline-flex rounded-full bg-muted px-3 py-1 text-xs uppercase tracking-widest text-muted-foreground">Kostenlose Vorschau</div>}<div><div className="font-serif text-2xl leading-snug">{scene.german_text}</div><Translated text={translate(scene.translations)} langLabel={langLabel} /></div><div className="mt-6 flex items-center gap-3"><Button variant="outline" size="icon" disabled={index === 0} onClick={() => setIndex((i) => Math.max(i - 1, 0))}><ChevronLeft className="h-4 w-4" /></Button><Progress value={((index + 1) / total) * 100} className="flex-1" /><span className="text-xs text-muted-foreground">Bild {index + 1}/{total}</span><Button variant="outline" size="icon" disabled={index >= total - 1} onClick={() => setIndex((i) => i + 1)}><ChevronRight className="h-4 w-4" /></Button></div></div></div>;
 }
 
 function VocabSection({ vocab, translate, langLabel }: { vocab: import("@/lib/data").Vocab[]; translate: (t: Record<string, string> | null | undefined) => string; langLabel: string }) {
