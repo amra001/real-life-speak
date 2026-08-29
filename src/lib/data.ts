@@ -1,5 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { bakeryA1Override } from "@/lib/static/bakery-a1";
+import { bakeryA2Override } from "@/lib/static/bakery-a2";
+import { bakeryB1Override } from "@/lib/static/bakery-b1";
 
 export type Lesson = {
   id: string;
@@ -81,26 +83,26 @@ export type Question = {
 };
 
 const bakerySceneImages = [
-  "baeck-ill-02", // 1: kommt in die Bäckerei / Überblick
-  "baeck-ill-02", // 2: schaut die Auslage an
-  "baeck-ill-02", // 3: sieht Brot, Brötchen und Kuchen
-  "baeck-ill-01", // 4: Begrüßung an der Theke
-  "baeck-ill-04", // 5: bestellt Apfelkuchen
-  "baeck-ill-05", // 6: Verkäuferin nimmt Kuchenstück
-  "baeck-ill-06", // 7: bestellt zusätzlich Mischbrot
-  "baeck-ill-06", // 8: geschnitten oder ganz?
-  "baeck-ill-06", // 9: geschnitten, bitte
-  "baeck-ill-07", // 10: Brot wird geschnitten
-  "baeck-ill-08", // 11: Brot wird eingepackt / Tüte an der Kasse
-  "baeck-ill-01", // 12: Sonst noch etwas? – Gespräch geht weiter
-  "baeck-ill-01", // 13: fragt nach etwas Süßem ohne Nüsse
-  "baeck-ill-03", // 14: Verkäuferin zeigt zwei Möglichkeiten
-  "baeck-ill-01", // 15: Nein danke, das ist alles – noch kein Abschied
-  "baeck-ill-08", // 16: Verkäuferin nennt den Preis
-  "baeck-ill-08", // 17: Mara prüft Brieftasche/Kleingeld an der Kasse
-  "baeck-ill-09", // 18: fragt nach Kartenzahlung
-  "baeck-ill-09", // 19: bezahlt mit Karte
-  "baeck-ill-10", // 20: nimmt Tüte und verabschiedet sich
+  "baeck-ill-02",
+  "baeck-ill-02",
+  "baeck-ill-02",
+  "baeck-ill-01",
+  "baeck-ill-04",
+  "baeck-ill-05",
+  "baeck-ill-06",
+  "baeck-ill-06",
+  "baeck-ill-06",
+  "baeck-ill-07",
+  "baeck-ill-08",
+  "baeck-ill-01",
+  "baeck-ill-01",
+  "baeck-ill-03",
+  "baeck-ill-01",
+  "baeck-ill-08",
+  "baeck-ill-08",
+  "baeck-ill-09",
+  "baeck-ill-09",
+  "baeck-ill-10",
 ] as const;
 
 const bakeryQuestionImages: Record<string, string> = {
@@ -227,10 +229,26 @@ export const lessonsQuery = () => ({
 export const lessonQuery = (slug: string) => ({
   queryKey: ["lesson", slug],
   queryFn: async () => {
-    // The current Lovable database links the A1 bakery card to /lektion/baeckerei-a1.
-    // Support both historical and current slugs so the reviewed content is always shown.
     if (slug === "in-der-baeckerei" || slug === "baeckerei-a1") {
       return bakeryLessonForSlug(slug);
+    }
+    if (slug === "baeckerei-a2" || slug === "in-der-baeckerei-a2") {
+      return bakeryA2Override as unknown as {
+        lesson: Lesson;
+        scenes: Scene[];
+        vocab: Vocab[];
+        dialog: DialogLine[];
+        questions: Question[];
+      };
+    }
+    if (slug === "baeckerei-b1" || slug === "in-der-baeckerei-b1") {
+      return bakeryB1Override as unknown as {
+        lesson: Lesson;
+        scenes: Scene[];
+        vocab: Vocab[];
+        dialog: DialogLine[];
+        questions: Question[];
+      };
     }
 
     const { data: lesson, error } = await supabase
