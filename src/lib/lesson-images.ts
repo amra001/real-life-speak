@@ -94,7 +94,33 @@ import s_markt_kasse from '@/assets/scene-markt-kasse.jpg';
 import s_markt_karte from '@/assets/scene-markt-karte.jpg';
 import s_markt_ausgang from '@/assets/scene-markt-ausgang.jpg';
 
+import apo_strasse from '@/assets/apo-strasse.jpg';
+import apo_eingang from '@/assets/apo-eingang.jpg';
+import apo_theke from '@/assets/apo-theke.jpg';
+import apo_warten from '@/assets/apo-warten.jpg';
+import apo_symptome from '@/assets/apo-symptome.jpg';
+import apo_beratung from '@/assets/apo-beratung.jpg';
+import apo_vergleich from '@/assets/apo-vergleich.jpg';
+import apo_rezept from '@/assets/apo-rezept.jpg';
+import apo_einnahme from '@/assets/apo-einnahme.jpg';
+import apo_kasse from '@/assets/apo-kasse.jpg';
+import apo_uebergabe from '@/assets/apo-uebergabe.jpg';
+import apo_abschied from '@/assets/apo-abschied.jpg';
+
 export const SCENE_IMAGES: Record<string,string> = {
+  'apo-strasse': apo_strasse,
+  'apo-eingang': apo_eingang,
+  'apo-theke': apo_theke,
+  'apo-warten': apo_warten,
+  'apo-symptome': apo_symptome,
+  'apo-beratung': apo_beratung,
+  'apo-vergleich': apo_vergleich,
+  'apo-rezept': apo_rezept,
+  'apo-einnahme': apo_einnahme,
+  'apo-kasse': apo_kasse,
+  'apo-uebergabe': apo_uebergabe,
+  'apo-abschied': apo_abschied,
+
   'bus-haltestelle': s_bus_haltestelle,
   'bus-ankunft': s_bus_ankunft,
   'bus-einsteigen': s_bus_einsteigen,
