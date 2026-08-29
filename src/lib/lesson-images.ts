@@ -18,20 +18,21 @@ import pflege from "@/assets/lesson-pflege.jpg";
 import kasse from "@/assets/lesson-kasse.jpg";
 import lager from "@/assets/lesson-lager.jpg";
 
-import bakery01 from "@/assets/bakery-illustrated-01.webp";
-import bakery02 from "@/assets/bakery-illustrated-02.webp";
-import bakery03 from "@/assets/bakery-illustrated-03.webp";
-import bakery04 from "@/assets/bakery-illustrated-04.webp";
-import bakery05 from "@/assets/bakery-illustrated-05.webp";
-import bakery06 from "@/assets/bakery-illustrated-06.webp";
-import bakery07 from "@/assets/bakery-illustrated-07.webp";
-import bakery08 from "@/assets/bakery-illustrated-08.webp";
-import bakery09 from "@/assets/bakery-illustrated-09.webp";
-import bakery10 from "@/assets/bakery-illustrated-10.webp";
+/* Einheitlicher Bäckerei-Illustrationssatz: 01–10 */
+import bakery01 from "@/assets/bakery-illustrated-01.webp"; // Begrüßung / Gespräch an der Theke
+import bakery02 from "@/assets/bakery-illustrated-02.webp"; // Mara schaut die Auslage an
+import bakery03 from "@/assets/bakery-illustrated-03.webp"; // Verkäuferin zeigt zwei Kuchenoptionen
+import bakery04 from "@/assets/bakery-illustrated-04.webp"; // Mara wählt / zeigt auf Gebäck
+import bakery05 from "@/assets/bakery-illustrated-05.webp"; // Übergabe eines Kuchenstücks
+import bakery06 from "@/assets/bakery-illustrated-06.webp"; // Brot + Schneidemaschine, vor dem Schneiden
+import bakery07 from "@/assets/bakery-illustrated-07.webp"; // Brot wird tatsächlich geschnitten
+import bakery08 from "@/assets/bakery-illustrated-08.webp"; // Kasse / Tüte / Preis
+import bakery09 from "@/assets/bakery-illustrated-09.webp"; // Kartenzahlung
+import bakery10 from "@/assets/bakery-illustrated-10.webp"; // Tüte nehmen / Verabschiedung
 
 export const LESSON_IMAGES: Record<string, string> = {
   supermarkt,
-  baeckerei: bakery01,
+  baeckerei: bakery02,
   hausarzt,
   baustelle,
   bewerbung,
@@ -67,6 +68,7 @@ export function lessonImage(key: string | null | undefined): string {
 
 export { milch as sceneImage };
 
+/* --- Weitere Fotostorys --- */
 import s_bus_haltestelle from '@/assets/scene-bus-haltestelle.jpg';
 import s_bus_ankunft from '@/assets/scene-bus-ankunft.jpg';
 import s_bus_einsteigen from '@/assets/scene-bus-einsteigen.jpg';
@@ -108,29 +110,43 @@ export const SCENE_IMAGES: Record<string,string> = {
   'markt-karte': s_markt_karte,
   'markt-ausgang': s_markt_ausgang,
 
-  'baeck-eintreten': bakery01,
+  /* Semantische Bäckerei-Schlüssel */
+  'baeck-eintreten': bakery02,
   'baeck-auslage': bakery02,
-  'baeck-bestellen': bakery03,
-  'baeck-gebaeck': bakery04,
-  'baeck-allergie': bakery05,
+  'baeck-bestellen': bakery01,
   'baeck-schneiden': bakery07,
+  'baeck-gebaeck': bakery04,
+  'baeck-allergie': bakery03,
   'baeck-bezahlen': bakery09,
   'baeck-erhalten': bakery10,
 
-  'baeck-new-01': bakery01,
+  /* Die bestehenden sequenziellen Keys werden nach Szeneninhalt gemappt. */
+  'baeck-new-01': bakery02,
   'baeck-new-02': bakery02,
-  'baeck-new-03': bakery03,
-  'baeck-new-04': bakery04,
-  'baeck-new-05': bakery05,
-  'baeck-new-06': bakery06,
-  'baeck-new-07': bakery07,
-  'baeck-new-08': bakery08,
-  'baeck-new-09': bakery09,
-  'baeck-new-10': bakery10,
-  'baeck-new-11': bakery04,
-  'baeck-new-12': bakery05,
-  'baeck-new-13': bakery06,
+  'baeck-new-03': bakery02,
+  'baeck-new-04': bakery01,
+  'baeck-new-05': bakery04,
+  'baeck-new-06': bakery05,
+  'baeck-new-07': bakery06,
+  'baeck-new-08': bakery06,
+  'baeck-new-09': bakery06,
+  'baeck-new-10': bakery07,
+  'baeck-new-11': bakery08,
+  'baeck-new-12': bakery08,
+  'baeck-new-13': bakery03,
   'baeck-new-14': bakery09,
   'baeck-new-15': bakery10,
+
+  /* Direkte Keys für spätere exakte Zuordnung. */
+  'baeck-ill-01': bakery01,
+  'baeck-ill-02': bakery02,
+  'baeck-ill-03': bakery03,
+  'baeck-ill-04': bakery04,
+  'baeck-ill-05': bakery05,
+  'baeck-ill-06': bakery06,
+  'baeck-ill-07': bakery07,
+  'baeck-ill-08': bakery08,
+  'baeck-ill-09': bakery09,
+  'baeck-ill-10': bakery10,
 };
 Object.assign(LESSON_IMAGES, SCENE_IMAGES);
