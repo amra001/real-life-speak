@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { SceneType } from "@/lib/scene-types";
 import { bakeryA1Override } from "@/lib/static/bakery-a1";
 import { bakeryA2Override } from "@/lib/static/bakery-a2";
 import { bakeryB1Override } from "@/lib/static/bakery-b1";
@@ -31,6 +32,10 @@ export type Scene = {
   german_text: string;
   image_key?: string | null;
   scene_group?: string | null;
+  /** Allgemeiner Szenentyp (siehe src/lib/scene-types.ts) */
+  scene_type?: SceneType | null;
+  /** true = Bild ist nur semantisch nächstpassend, eigenes Motiv fehlt noch */
+  needs_image?: boolean;
   translations: Record<string, string>;
 };
 

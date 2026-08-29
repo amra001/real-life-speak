@@ -29,6 +29,8 @@ import bakery07 from "@/assets/bakery-illustrated-07.webp"; // Brot wird tatsäc
 import bakery08 from "@/assets/bakery-illustrated-08.webp"; // Kasse / Tüte / Preis
 import bakery09 from "@/assets/bakery-illustrated-09.webp"; // Kartenzahlung
 import bakery10 from "@/assets/bakery-illustrated-10.webp"; // Tüte nehmen / Verabschiedung
+import bakeryWindow from "@/assets/bakery-illustrated-window.jpg"; // Blick aus der Wohnung auf die Bäckerei
+import bakeryStreet from "@/assets/bakery-illustrated-street.jpg"; // Außen / Straße vor der Bäckerei
 
 export const LESSON_IMAGES: Record<string, string> = {
   supermarkt,
@@ -148,5 +150,9 @@ export const SCENE_IMAGES: Record<string,string> = {
   'baeck-ill-08': bakery08,
   'baeck-ill-09': bakery09,
   'baeck-ill-10': bakery10,
+
+  /* Außen- und Kontextmotive */
+  'baeck-fenster': bakeryWindow,
+  'baeck-strasse': bakeryStreet,
 };
 Object.assign(LESSON_IMAGES, SCENE_IMAGES);
