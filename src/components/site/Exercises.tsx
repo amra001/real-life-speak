@@ -56,6 +56,45 @@ type State = {
   match?: Record<string, string>;
 };
 
+const HELP_LANGUAGE_LABELS: Partial<Record<TranslationLang, string>> = {
+  bks: "Bosnisch / Kroatisch / Serbisch",
+  tr: "Türkisch",
+  uk: "Ukrainisch",
+  ro: "Rumänisch",
+  ar: "Arabisch",
+};
+
+const BAKERY_HELP_OVERRIDES: Record<string, Partial<Record<TranslationLang, string>>> = {
+  "bak-g2": {
+    bks: "Pitanje: Koji član ide uz riječ „Brezel“? „Brezel“ je ženskog roda: die Brezel.",
+    tr: "Soru: „Brezel“ kelimesinin artikeli nedir? „Brezel“ dişildir: die Brezel.",
+    uk: "Питання: Який артикль має слово „Brezel“? Це слово жіночого роду: die Brezel.",
+    ro: "Întrebare: Ce articol are cuvântul „Brezel“? Este feminin: die Brezel.",
+    ar: "السؤال: ما أداة تعريف كلمة Brezel؟ الكلمة مؤنثة: die Brezel.",
+  },
+  "bak-g4": {
+    bks: "Pitanje: „Uzimam ___ kolač.“ „Kuchen“ je muškog roda. U akuzativu: der Kuchen → den Kuchen.",
+    tr: "Soru: „___ keki alıyorum.“ „Kuchen“ erildir. Akkusativ: der Kuchen → den Kuchen.",
+    uk: "Питання: «Я беру ___ пиріг». „Kuchen“ чоловічого роду. У знахідному відмінку: der Kuchen → den Kuchen.",
+    ro: "Întrebare: „Iau ___ prăjitură.“ „Kuchen“ este masculin. La acuzativ: der Kuchen → den Kuchen.",
+    ar: "السؤال: «آخذ ___ كعكة». كلمة Kuchen مذكّرة. في حالة المفعول: der Kuchen → den Kuchen.",
+  },
+  "bak-g5": {
+    bks: "Pitanje: „Htio/Htjela bih ___ perecu.“ „Brezel“ je ženskog roda: die Brezel → eine Brezel.",
+    tr: "Soru: „Bir pretzel istiyorum.“ „Brezel“ dişildir: die Brezel → eine Brezel.",
+    uk: "Питання: «Я хотів/хотіла б ___ крендель». „Brezel“ жіночого роду: die Brezel → eine Brezel.",
+    ro: "Întrebare: „Aș dori ___ covrig.“ „Brezel“ este feminin: die Brezel → eine Brezel.",
+    ar: "السؤال: «أود ___ بريتزل». كلمة Brezel مؤنثة: die Brezel → eine Brezel.",
+  },
+  "bak-g6": {
+    bks: "Pitanje: „Uzet ću ___ miješani hljeb.“ „Mischbrot“ je srednjeg roda: das Mischbrot → ein Mischbrot.",
+    tr: "Soru: „___ karışık ekmek alacağım.“ „Mischbrot“ nötrdür: das Mischbrot → ein Mischbrot.",
+    uk: "Питання: «Я візьму ___ змішаний хліб». „Mischbrot“ середнього роду: das Mischbrot → ein Mischbrot.",
+    ro: "Întrebare: „Iau ___ pâine mixtă.“ „Mischbrot“ este neutru: das Mischbrot → ein Mischbrot.",
+    ar: "السؤال: «سآخذ ___ خبزًا مشكّلًا». كلمة Mischbrot محايدة: das Mischbrot → ein Mischbrot.",
+  },
+};
+
 function shuffle<T>(arr: T[], seed: string): T[] {
   const out = [...arr];
   let h = 2166136261;
@@ -86,7 +125,8 @@ export function normalizeQuestion(q: Question, lang: TranslationLang): NormQuest
     .filter((p) => p.left && p.right);
   const imageKey = typeof data.image_key === "string" ? (data.image_key as string) : null;
   const helpMap = data.help && typeof data.help === "object" ? (data.help as Record<string, string>) : null;
-  const helpText = lang !== "none" && helpMap ? (helpMap[lang] ?? null) : null;
+  const overrideHelp = lang !== "none" ? BAKERY_HELP_OVERRIDES[q.id]?.[lang] : null;
+  const helpText = lang !== "none" ? (overrideHelp ?? (helpMap ? (helpMap[lang] ?? null) : null)) : null;
   const correctCount = answers.filter((a) => a.is_correct).length;
 
   let kind: NormalizedKind = "single_choice";
@@ -239,8 +279,8 @@ export function Exercises({ questions, lang, title, onFinish }: { questions: Que
   const makeInitial = () => {
     const s: Record<string, State> = {};
     for (const q of norm) {
-      if (q.kind === "order" || q.kind === "dialog_order") s[q.id] = { order: shuffle(q.items, `${q.id}-order`) };
-      else if (q.kind === "sentence_order") s[q.id] = { order: [] };
+      if (q.kind === "order") s[q.id] = { order: shuffle(q.items, `${q.id}-order`) };
+      else if (q.kind === "dialog_order" || q.kind === "sentence_order") s[q.id] = { order: [] };
       else s[q.id] = {};
     }
     return s;
@@ -269,6 +309,7 @@ export function Exercises({ questions, lang, title, onFinish }: { questions: Que
         const s = state[q.id] ?? {};
         const isChecked = !!checked[q.id];
         const solved = isSolved(q, s);
+        const helpLabel = HELP_LANGUAGE_LABELS[lang] ? `Hilfe auf ${HELP_LANGUAGE_LABELS[lang]} anzeigen` : "Hilfe in deiner Sprache anzeigen";
         return (
           <div key={q.id} className="rounded-2xl border border-border bg-card p-5">
             <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
@@ -280,7 +321,7 @@ export function Exercises({ questions, lang, title, onFinish }: { questions: Que
 
             {q.helpText && (
               <details className="mt-3 rounded-xl border border-border bg-muted/30 px-4 py-3 text-sm">
-                <summary className="cursor-pointer font-medium">Hilfe in deiner Sprache anzeigen</summary>
+                <summary className="cursor-pointer font-medium">{helpLabel}</summary>
                 <div className="mt-2 text-muted-foreground" dir="auto">{q.helpText}</div>
               </details>
             )}
@@ -311,11 +352,12 @@ export function Exercises({ questions, lang, title, onFinish }: { questions: Que
             {q.kind === "gap" && <Input className="mt-4" placeholder="Antwort eingeben" value={s.text ?? ""} disabled={isChecked} onChange={(e) => set(q.id, { text: e.target.value })} />}
             {q.kind === "gap_select" && <div className="mt-4 flex flex-wrap gap-2">{q.options.map((o) => <button key={o} type="button" disabled={isChecked} onClick={() => set(q.id, { text: o })} className={`rounded-full border px-4 py-2 text-sm ${s.text === o ? "border-foreground bg-foreground text-background" : "border-border hover:bg-muted"}`}>{o}</button>)}</div>}
             {q.kind === "sentence_order" && <ChipBuilder words={q.items} value={s.order ?? []} disabled={isChecked} seed={q.id} onChange={(v) => set(q.id, { order: v })} />}
-            {(q.kind === "order" || q.kind === "dialog_order") && <OrderList values={s.order ?? []} disabled={isChecked} onChange={(v) => set(q.id, { order: v })} />}
+            {q.kind === "dialog_order" && <ChipBuilder words={q.items} value={s.order ?? []} disabled={isChecked} seed={`${q.id}-dialog`} onChange={(v) => set(q.id, { order: v })} />}
+            {q.kind === "order" && <OrderList values={s.order ?? []} disabled={isChecked} onChange={(v) => set(q.id, { order: v })} />}
             {q.kind === "match" && <MatchGrid pairs={q.pairs} seed={q.id} value={s.match ?? {}} disabled={isChecked} onChange={(v) => set(q.id, { match: v })} />}
 
             <div className="mt-4 flex flex-wrap items-center gap-3">
-              {!isChecked ? <Button type="button" variant="outline" size="sm" disabled={!isAnswered(q, s)} onClick={() => setChecked((p) => ({ ...p, [q.id]: true }))}>Prüfen</Button> : <><span className={`inline-flex items-center gap-1 text-sm font-medium ${solved ? "text-success" : "text-destructive"}`}>{solved ? <Check className="h-4 w-4" /> : <X className="h-4 w-4" />}{solved ? "Richtig" : "Noch nicht ganz."}</span><Button type="button" variant="ghost" size="sm" onClick={() => { setChecked((p) => ({ ...p, [q.id]: false })); const qn = norm.find((x) => x.id === q.id); if (!qn) return; set(q.id, qn.kind === "order" || qn.kind === "dialog_order" ? { order: shuffle(qn.items, `${qn.id}-retry-${Date.now()}`) } : qn.kind === "sentence_order" ? { order: [] } : {}); }}><RotateCcw className="mr-1 h-3.5 w-3.5" />Nochmal</Button></>}
+              {!isChecked ? <Button type="button" variant="outline" size="sm" disabled={!isAnswered(q, s)} onClick={() => setChecked((p) => ({ ...p, [q.id]: true }))}>Prüfen</Button> : <><span className={`inline-flex items-center gap-1 text-sm font-medium ${solved ? "text-success" : "text-destructive"}`}>{solved ? <Check className="h-4 w-4" /> : <X className="h-4 w-4" />}{solved ? "Richtig" : "Noch nicht ganz."}</span><Button type="button" variant="ghost" size="sm" onClick={() => { setChecked((p) => ({ ...p, [q.id]: false })); const qn = norm.find((x) => x.id === q.id); if (!qn) return; set(q.id, qn.kind === "order" ? { order: shuffle(qn.items, `${qn.id}-retry-${Date.now()}`) } : qn.kind === "dialog_order" || qn.kind === "sentence_order" ? { order: [] } : {}); }}><RotateCcw className="mr-1 h-3.5 w-3.5" />Nochmal</Button></>}
             </div>
 
             {isChecked && <div className="mt-3 space-y-1 text-sm text-muted-foreground">{!solved && (q.kind === "gap" || q.kind === "gap_select") && <p>Richtige Antwort: {q.solutionText}</p>}{!solved && ["order", "dialog_order", "sentence_order"].includes(q.kind) && <p>Richtige Reihenfolge: {q.items.join(" · ")}</p>}{!solved && q.kind === "match" && <p>{q.pairs.map((p) => `${p.left} ↔ ${p.right}`).join(" · ")}</p>}{q.explanation && <p>{q.explanation}</p>}</div>}
