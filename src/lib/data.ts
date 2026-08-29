@@ -173,9 +173,9 @@ function bakeryLessonForSlug(slug: string) {
     const originalData = (question.data ?? {}) as Record<string, unknown>;
     const data: Record<string, unknown> = { ...originalData };
     const imageKey = bakeryQuestionImages[question.id];
-    if (imageKey) data.image_key = imageKey;
+    if (imageKey) data['image_key'] = imageKey;
     const help = bakeryHelpOverrides[question.id];
-    if (help) data.help = help;
+    if (help) data['help'] = help;
     return { ...question, data };
   });
 
