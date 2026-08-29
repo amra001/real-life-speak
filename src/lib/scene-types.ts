@@ -101,3 +101,23 @@ export function sceneImageForTopic(topicSlug: string | null | undefined, type: S
   if (!map) return { image_key: fallbackKey ?? "", needs_image: true };
   return resolveSceneImage(map, type);
 }
+
+/**
+ * Wiederverwendbarer Aufbau für neue Themen: aus (position, german_text,
+ * scene_type, translations) werden Szenen mit korrektem Bild-Key und
+ * needs_image-Flag erzeugt. Kein Thema braucht dafür eigene Logik.
+ */
+export function buildScenes<T extends { id: string; position: number; german_text: string; scene_type: SceneType; translations: Record<string, string> }>(
+  topicSlug: string,
+  raw: T[],
+): (T & { image_key: string; needs_image?: boolean })[] {
+  return raw.map((s) => {
+    const { image_key, needs_image } = sceneImageForTopic(topicSlug, s.scene_type);
+    return needs_image ? { ...s, image_key, needs_image: true } : { ...s, image_key };
+  });
+}
+
+/** QA-Helfer: liefert alle Szenen ohne Bild-Key oder mit needs_image. */
+export function auditScenes(scenes: { position: number; image_key?: string | null; needs_image?: boolean }[]) {
+  return scenes.filter((s) => !s.image_key || s.needs_image).map((s) => s.position);
+}
