@@ -1,5 +1,4 @@
 import supermarkt from "@/assets/lesson-supermarkt.jpg";
-import baeckerei from "@/assets/lesson-baeckerei.jpg";
 import hausarzt from "@/assets/lesson-hausarzt.jpg";
 import baustelle from "@/assets/lesson-baustelle.jpg";
 import bewerbung from "@/assets/lesson-bewerbung.jpg";
@@ -19,9 +18,15 @@ import pflege from "@/assets/lesson-pflege.jpg";
 import kasse from "@/assets/lesson-kasse.jpg";
 import lager from "@/assets/lesson-lager.jpg";
 
+// Einheitlicher Illustrationsstil für die Bäckerei-Masterlektion.
+import bakeryIllustratedArrival from "@/assets/bakery-illustrated-arrival.webp";
+import bakeryIllustratedCake from "@/assets/bakery-illustrated-cake.webp";
+import bakeryIllustratedBread from "@/assets/bakery-illustrated-bread.webp";
+import bakeryIllustratedPay from "@/assets/bakery-illustrated-pay.webp";
+
 export const LESSON_IMAGES: Record<string, string> = {
   supermarkt,
-  baeckerei,
+  baeckerei: bakeryIllustratedArrival,
   hausarzt,
   baustelle,
   bewerbung,
@@ -77,31 +82,6 @@ import s_markt_obst from '@/assets/scene-markt-obst.jpg';
 import s_markt_kasse from '@/assets/scene-markt-kasse.jpg';
 import s_markt_karte from '@/assets/scene-markt-karte.jpg';
 import s_markt_ausgang from '@/assets/scene-markt-ausgang.jpg';
-import s_baeck_eintreten from '@/assets/scene-baeck-eintreten.jpg';
-import s_baeck_auslage from '@/assets/scene-baeck-auslage.jpg';
-import s_baeck_bestellen from '@/assets/scene-baeck-bestellen.jpg';
-import s_baeck_schneiden from '@/assets/scene-baeck-schneiden.jpg';
-import s_baeck_gebaeck from '@/assets/scene-baeck-gebaeck.jpg';
-import s_baeck_allergie from '@/assets/scene-baeck-allergie.jpg';
-import s_baeck_bezahlen from '@/assets/scene-baeck-bezahlen.jpg';
-import s_baeck_erhalten from '@/assets/scene-baeck-erhalten.jpg';
-
-/* --- Neue, geprüfte Bäckerei-Fotostory: 15 unterschiedliche Fotos --- */
-import s_bakery_01 from '@/assets/scene-bakery-01.webp';
-import s_bakery_02 from '@/assets/scene-bakery-02.webp';
-import s_bakery_03 from '@/assets/scene-bakery-03.webp';
-import s_bakery_04 from '@/assets/scene-bakery-04.webp';
-import s_bakery_05 from '@/assets/scene-bakery-05.webp';
-import s_bakery_06 from '@/assets/scene-bakery-06.webp';
-import s_bakery_07 from '@/assets/scene-bakery-07.webp';
-import s_bakery_08 from '@/assets/scene-bakery-08.webp';
-import s_bakery_09 from '@/assets/scene-bakery-09.webp';
-import s_bakery_10 from '@/assets/scene-bakery-10.webp';
-import s_bakery_11 from '@/assets/scene-bakery-11.webp';
-import s_bakery_12 from '@/assets/scene-bakery-12.webp';
-import s_bakery_13 from '@/assets/scene-bakery-13.webp';
-import s_bakery_14 from '@/assets/scene-bakery-14.webp';
-import s_bakery_15 from '@/assets/scene-bakery-15.webp';
 
 export const SCENE_IMAGES: Record<string,string> = {
   'bus-haltestelle': s_bus_haltestelle,
@@ -123,28 +103,32 @@ export const SCENE_IMAGES: Record<string,string> = {
   'markt-kasse': s_markt_kasse,
   'markt-karte': s_markt_karte,
   'markt-ausgang': s_markt_ausgang,
-  'baeck-eintreten': s_baeck_eintreten,
-  'baeck-auslage': s_baeck_auslage,
-  'baeck-bestellen': s_baeck_bestellen,
-  'baeck-schneiden': s_baeck_schneiden,
-  'baeck-gebaeck': s_baeck_gebaeck,
-  'baeck-allergie': s_baeck_allergie,
-  'baeck-bezahlen': s_baeck_bezahlen,
-  'baeck-erhalten': s_baeck_erhalten,
-  'baeck-new-01': s_bakery_01,
-  'baeck-new-02': s_bakery_02,
-  'baeck-new-03': s_bakery_03,
-  'baeck-new-04': s_bakery_04,
-  'baeck-new-05': s_bakery_05,
-  'baeck-new-06': s_bakery_06,
-  'baeck-new-07': s_bakery_07,
-  'baeck-new-08': s_bakery_08,
-  'baeck-new-09': s_bakery_09,
-  'baeck-new-10': s_bakery_10,
-  'baeck-new-11': s_bakery_11,
-  'baeck-new-12': s_bakery_12,
-  'baeck-new-13': s_bakery_13,
-  'baeck-new-14': s_bakery_14,
-  'baeck-new-15': s_bakery_15,
+
+  // Bäckerei: alte realistische und unscharfe Motive werden bewusst nicht mehr genutzt.
+  'baeck-eintreten': bakeryIllustratedArrival,
+  'baeck-auslage': bakeryIllustratedCake,
+  'baeck-bestellen': bakeryIllustratedArrival,
+  'baeck-schneiden': bakeryIllustratedBread,
+  'baeck-gebaeck': bakeryIllustratedCake,
+  'baeck-allergie': bakeryIllustratedCake,
+  'baeck-bezahlen': bakeryIllustratedPay,
+  'baeck-erhalten': bakeryIllustratedArrival,
+
+  // Auch alle bisher angelegten baeck-new-Keys zeigen jetzt auf den einheitlichen Illustrationsstil.
+  'baeck-new-01': bakeryIllustratedArrival,
+  'baeck-new-02': bakeryIllustratedArrival,
+  'baeck-new-03': bakeryIllustratedArrival,
+  'baeck-new-04': bakeryIllustratedCake,
+  'baeck-new-05': bakeryIllustratedCake,
+  'baeck-new-06': bakeryIllustratedCake,
+  'baeck-new-07': bakeryIllustratedCake,
+  'baeck-new-08': bakeryIllustratedBread,
+  'baeck-new-09': bakeryIllustratedBread,
+  'baeck-new-10': bakeryIllustratedBread,
+  'baeck-new-11': bakeryIllustratedBread,
+  'baeck-new-12': bakeryIllustratedPay,
+  'baeck-new-13': bakeryIllustratedPay,
+  'baeck-new-14': bakeryIllustratedPay,
+  'baeck-new-15': bakeryIllustratedArrival,
 };
 Object.assign(LESSON_IMAGES, SCENE_IMAGES);
