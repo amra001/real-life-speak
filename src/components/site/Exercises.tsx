@@ -112,10 +112,10 @@ export function normalizeQuestion(q: Question, lang: TranslationLang): NormQuest
   const data = (q.data ?? {}) as Record<string, unknown>;
   const answers = [...(q.quiz_answers ?? [])].sort((a, b) => a.position - b.position);
   const rawKind = (q.kind || "single_choice").toLowerCase();
-  const items = Array.isArray(data.items) ? (data.items as string[]) : [];
-  const words = Array.isArray(data.words) ? (data.words as string[]) : [];
-  const options = Array.isArray(data.options) ? (data.options as string[]) : [];
-  const rawPairs = Array.isArray(data.pairs) ? (data.pairs as unknown[]) : [];
+  const items = Array.isArray(data['items']) ? (data['items'] as string[]) : [];
+  const words = Array.isArray(data['words']) ? (data['words'] as string[]) : [];
+  const options = Array.isArray(data['options']) ? (data['options'] as string[]) : [];
+  const rawPairs = Array.isArray(data['pairs']) ? (data['pairs'] as unknown[]) : [];
   const pairs = rawPairs
     .map((p) => {
       const o = p as { left?: string; right?: string; translations?: Record<string, string> };
@@ -123,8 +123,8 @@ export function normalizeQuestion(q: Question, lang: TranslationLang): NormQuest
       return { left: o.left ?? "", right };
     })
     .filter((p) => p.left && p.right);
-  const imageKey = typeof data.image_key === "string" ? (data.image_key as string) : null;
-  const helpMap = data.help && typeof data.help === "object" ? (data.help as Record<string, string>) : null;
+  const imageKey = typeof data['image_key'] === "string" ? (data['image_key'] as string) : null;
+  const helpMap = data['help'] && typeof data['help'] === "object" ? (data['help'] as Record<string, string>) : null;
   const overrideHelp = lang !== "none" ? BAKERY_HELP_OVERRIDES[q.id]?.[lang] : null;
   const helpText = lang !== "none" ? (overrideHelp ?? (helpMap ? (helpMap[lang] ?? null) : null)) : null;
   const correctCount = answers.filter((a) => a.is_correct).length;
