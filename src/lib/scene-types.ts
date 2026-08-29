@@ -84,11 +84,11 @@ export const BAKERY_SCENE_IMAGES: SceneImageMap = {
   problem: "baeck-ill-06",
   solution: "baeck-ill-07",
   pay_cash: "baeck-ill-08",
-  wallet: "baeck-ill-08",
+  wallet: "baeck-wallet",
   pay_card: "baeck-ill-09",
-  receipt: "baeck-ill-09",
+  receipt: "baeck-bon",
   goodbye: "baeck-ill-10",
-  return_home: "baeck-strasse",
+  return_home: "baeck-heimweg",
 };
 
 /** Registry: Themen-Slug -> Bildtabelle. Neue Themen hier eintragen. */
