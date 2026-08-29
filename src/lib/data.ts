@@ -36,6 +36,9 @@ export type Scene = {
   scene_type?: SceneType | null;
   /** true = Bild ist nur semantisch nächstpassend, eigenes Motiv fehlt noch */
   needs_image?: boolean;
+  /** Kurzer Lernhinweis zur Szene (optional, themenunabhängig) */
+  hint?: string | null;
+
   translations: Record<string, string>;
 };
 
