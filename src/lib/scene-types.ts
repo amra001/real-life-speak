@@ -60,9 +60,8 @@ export const BAKERY_SCENE_IMAGES: SceneImageMap = {
 };
 
 /**
- * Bus: bewusst nur acht starke Schlüsselbilder für A1/A2/B1 gemeinsam.
- * Viele Lernschritte dürfen dasselbe semantisch passende Bild nutzen; die
- * sprachliche Progression passiert im Text, nicht durch immer neue Bilder.
+ * Bus: nur sechs starke vorhandene Schlüsselbilder für A1/A2/B1 gemeinsam.
+ * Viele Lernschritte nutzen bewusst dasselbe semantisch passende Motiv.
  */
 export const BUS_SCENE_IMAGES: SceneImageMap = {
   fallback: "bus-haltestelle",
@@ -77,26 +76,24 @@ export const BUS_SCENE_IMAGES: SceneImageMap = {
   greeting: "bus-fahrer",
   ask: "bus-fahrer",
   explain: "bus-fahrer",
-
-  ask_direction: "bus-fahrgast",
-  problem: "bus-fahrgast",
-  solution: "bus-fahrgast",
-  confirm: "bus-fahrgast",
-  opinion: "bus-fahrgast",
-  reaction: "bus-fahrgast",
+  ask_direction: "bus-fahrer",
+  problem: "bus-fahrer",
+  solution: "bus-fahrer",
+  confirm: "bus-fahrer",
 
   ticket: "bus-fahrkarte",
   handover: "bus-fahrkarte",
-
-  pay: "bus-bezahlen",
-  pay_cash: "bus-bezahlen",
-  pay_card: "bus-bezahlen",
-  receipt: "bus-bezahlen",
+  pay: "bus-fahrkarte",
+  pay_cash: "bus-fahrkarte",
+  pay_card: "bus-fahrkarte",
+  receipt: "bus-fahrkarte",
 
   ride: "bus-sitzplatz",
   look: "bus-sitzplatz",
   select: "bus-sitzplatz",
   choose: "bus-sitzplatz",
+  opinion: "bus-sitzplatz",
+  reaction: "bus-sitzplatz",
 
   goodbye: "bus-aussteigen",
   leave: "bus-aussteigen",
