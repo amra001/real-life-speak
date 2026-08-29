@@ -86,6 +86,23 @@ import s_baeck_allergie from '@/assets/scene-baeck-allergie.jpg';
 import s_baeck_bezahlen from '@/assets/scene-baeck-bezahlen.jpg';
 import s_baeck_erhalten from '@/assets/scene-baeck-erhalten.jpg';
 
+/* --- Neue, geprüfte Bäckerei-Fotostory: 15 unterschiedliche Fotos --- */
+import s_bakery_01 from '@/assets/scene-bakery-01.webp';
+import s_bakery_02 from '@/assets/scene-bakery-02.webp';
+import s_bakery_03 from '@/assets/scene-bakery-03.webp';
+import s_bakery_04 from '@/assets/scene-bakery-04.webp';
+import s_bakery_05 from '@/assets/scene-bakery-05.webp';
+import s_bakery_06 from '@/assets/scene-bakery-06.webp';
+import s_bakery_07 from '@/assets/scene-bakery-07.webp';
+import s_bakery_08 from '@/assets/scene-bakery-08.webp';
+import s_bakery_09 from '@/assets/scene-bakery-09.webp';
+import s_bakery_10 from '@/assets/scene-bakery-10.webp';
+import s_bakery_11 from '@/assets/scene-bakery-11.webp';
+import s_bakery_12 from '@/assets/scene-bakery-12.webp';
+import s_bakery_13 from '@/assets/scene-bakery-13.webp';
+import s_bakery_14 from '@/assets/scene-bakery-14.webp';
+import s_bakery_15 from '@/assets/scene-bakery-15.webp';
+
 export const SCENE_IMAGES: Record<string,string> = {
   'bus-haltestelle': s_bus_haltestelle,
   'bus-ankunft': s_bus_ankunft,
@@ -114,5 +131,20 @@ export const SCENE_IMAGES: Record<string,string> = {
   'baeck-allergie': s_baeck_allergie,
   'baeck-bezahlen': s_baeck_bezahlen,
   'baeck-erhalten': s_baeck_erhalten,
+  'baeck-new-01': s_bakery_01,
+  'baeck-new-02': s_bakery_02,
+  'baeck-new-03': s_bakery_03,
+  'baeck-new-04': s_bakery_04,
+  'baeck-new-05': s_bakery_05,
+  'baeck-new-06': s_bakery_06,
+  'baeck-new-07': s_bakery_07,
+  'baeck-new-08': s_bakery_08,
+  'baeck-new-09': s_bakery_09,
+  'baeck-new-10': s_bakery_10,
+  'baeck-new-11': s_bakery_11,
+  'baeck-new-12': s_bakery_12,
+  'baeck-new-13': s_bakery_13,
+  'baeck-new-14': s_bakery_14,
+  'baeck-new-15': s_bakery_15,
 };
 Object.assign(LESSON_IMAGES, SCENE_IMAGES);
