@@ -31,6 +31,9 @@ import bakery09 from "@/assets/bakery-illustrated-09.webp"; // Kartenzahlung
 import bakery10 from "@/assets/bakery-illustrated-10.webp"; // Tüte nehmen / Verabschiedung
 import bakeryWindow from "@/assets/bakery-illustrated-window.jpg"; // Blick aus der Wohnung auf die Bäckerei
 import bakeryStreet from "@/assets/bakery-illustrated-street.jpg"; // Außen / Straße vor der Bäckerei
+import bakeryWallet from "@/assets/bakery-illustrated-wallet.jpg"; // Mara öffnet die Geldbörse, zu wenig Bargeld
+import bakeryReceipt from "@/assets/bakery-illustrated-receipt.jpg"; // Übergabe des Kassenbons nach Kartenzahlung
+import bakeryWalkHome from "@/assets/bakery-illustrated-walk-home.jpg"; // Rückweg über die Straße mit Bäckereitüte
 
 export const LESSON_IMAGES: Record<string, string> = {
   supermarkt,
@@ -154,5 +157,8 @@ export const SCENE_IMAGES: Record<string,string> = {
   /* Außen- und Kontextmotive */
   'baeck-fenster': bakeryWindow,
   'baeck-strasse': bakeryStreet,
+  'baeck-wallet': bakeryWallet,
+  'baeck-bon': bakeryReceipt,
+  'baeck-heimweg': bakeryWalkHome,
 };
 Object.assign(LESSON_IMAGES, SCENE_IMAGES);
