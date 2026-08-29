@@ -279,13 +279,18 @@ export const lessonQuery = (slug: string) => ({
         .order("position"),
     ]);
 
+    const rawScenes = (scenes.data ?? []) as unknown as Scene[];
+    const l = lesson as unknown as Lesson;
+
     return {
-      lesson: lesson as Lesson,
-      scenes: (scenes.data ?? []) as unknown as Scene[],
+      lesson: l,
+      /* Generisch für ALLE Themen: Szenentyp ableiten, Bild pro Szene auflösen. */
+      scenes: applyTopicSceneImages(l.topic_slug ?? null, l.thumbnail_key, rawScenes) as Scene[],
       vocab: (vocab.data ?? []) as unknown as Vocab[],
       dialog: (dialog.data ?? []) as unknown as DialogLine[],
       questions: (questions.data ?? []) as unknown as Question[],
     };
+
   },
 });
 
