@@ -44,6 +44,12 @@ export const Route = createFileRoute("/lektion/$slug")({
 
 type Section = { id: string; label: string; render: () => React.ReactNode };
 
+function isLovablePreviewHost() {
+  if (typeof window === "undefined") return false;
+  const host = window.location.hostname.toLowerCase();
+  return host.startsWith("preview--") && host.endsWith(".lovable.app");
+}
+
 function PremiumGate({ preview }: { preview: boolean }) {
   return (
     <div className="mt-6 rounded-3xl border border-border bg-card p-8 text-center md:p-10">
@@ -86,7 +92,8 @@ function LessonPage() {
   const { vocab, questions } = data;
   const region = REGIONS.find((r) => r.slug === lesson.region);
   const levelInfo = LEVEL_INFO[lesson.level as Level];
-  const fullAccess = isPremium || !lesson.is_premium;
+  const previewEditorAccess = isLovablePreviewHost();
+  const fullAccess = previewEditorAccess || isPremium || !lesson.is_premium;
   const visibleScenes = fullAccess ? scenes : scenes.slice(0, FREE_PREVIEW_SCENES);
   const placeItems = (lesson.place_items ?? []) as PlaceItem[];
   const grammarNotes = (lesson.grammar_notes ?? []) as GrammarNote[];
@@ -124,7 +131,7 @@ function LessonPage() {
   if (builder.length) sections.push({
     id: "dialog-bauen",
     label: "Dialog bauen",
-    render: () => fullAccess ? <div><h3 className="font-serif text-xl font-semibold">Jetzt bist du dran</h3><p className="mt-2 mb-4 text-sm text-muted-foreground">Die Gesprächsteile sind gemischt. Ordne sie so, dass ein realistischer Einkauf mit logisch passenden Fragen und Antworten entsteht.</p><Exercises questions={builder} lang={lang} /></div> : <PremiumGate preview />,
+    render: () => fullAccess ? <div><h3 className="font-serif text-xl font-semibold">Jetzt bist du dran</h3><p className="mt-2 mb-4 text-sm text-muted-foreground">Die Gesprächsteile sind gemischt. Ordne sie so, dass ein realistisches Gespräch mit logisch passenden Fragen und Antworten entsteht.</p><Exercises questions={builder} lang={lang} /></div> : <PremiumGate preview />,
   });
 
   if (testQuestions.length) sections.push({ id: "test", label: "Abschlusstest", render: () => fullAccess ? <Exercises questions={testQuestions} lang={lang} title="Abschlusstest" onFinish={(score, total) => void saveProgress(score, total)} /> : <PremiumGate preview /> });
@@ -146,7 +153,7 @@ function LessonPage() {
         <Badge variant="outline">{categoryName(lesson.subcategory_slug ?? lesson.category_slug)}</Badge>
         <Badge variant="outline">{formatDuration(lesson.duration_seconds)}</Badge>
         {region && <Badge variant="outline">{region.flag} {region.label}</Badge>}
-        {lesson.is_premium ? <Badge className="bg-accent text-accent-foreground">Premium</Badge> : <Badge variant="outline">Gratis</Badge>}
+        {previewEditorAccess && lesson.is_premium ? <Badge variant="outline">Vorschau · vollständig offen</Badge> : lesson.is_premium ? <Badge className="bg-accent text-accent-foreground">Premium</Badge> : <Badge variant="outline">Gratis</Badge>}
       </div>
       <h1 className="mt-3 font-serif text-3xl font-semibold md:text-4xl">{lesson.title}</h1>
       <p className="mt-2 text-muted-foreground">{lesson.description}</p>
@@ -223,33 +230,34 @@ function SceneStory({ scenes, fallbackKey, translate, langLabel, preview }: { sc
   );
 }
 
-function VocabSection({ vocab, translate, langLabel }: { vocab: import("@/lib/data").Vocab[]; translate: (t: Record<string, string> | null | undefined) => string; langLabel: string }) {
-  if (!vocab.length) return <p className="text-muted-foreground">Keine Vokabeln hinterlegt.</p>;
-  return <div className="grid gap-3 sm:grid-cols-2">{vocab.map((v) => <div key={v.id} className="rounded-xl border border-border bg-card p-4"><div className="font-medium">{v.article ? `${v.article} ` : ""}{v.term.replace(/^(der|die|das)\s+/i, "")}</div><div className="mt-0.5 flex flex-wrap gap-2 text-xs text-muted-foreground">{v.word_class && <span className="rounded-full bg-muted px-2 py-0.5">{v.word_class}</span>}{v.plural && <span className="rounded-full bg-muted px-2 py-0.5">Pl.: {v.plural}</span>}</div><Translated text={translate(v.translations)} langLabel={langLabel} />{v.example && <div className="mt-3 border-t border-border pt-3"><div className="text-sm">{v.example}</div><Translated text={translate(v.example_translations)} langLabel={langLabel} className="mt-0.5 text-sm text-muted-foreground" /></div>}</div>)}</div>;
+function VocabSection({ vocab, translate, langLabel }: { vocab: { id: string; article: string | null; word: string; plural: string | null; example: string; translations: Record<string, string> }[]; translate: (t: Record<string, string> | null | undefined) => string; langLabel: string }) {
+  return <div className="grid gap-3 md:grid-cols-2">{vocab.map((v) => <div key={v.id} className="rounded-2xl border border-border bg-card p-4"><div className="font-serif text-xl font-semibold">{v.article ? `${v.article} ` : ""}{v.word}</div>{v.plural && <div className="text-xs text-muted-foreground">Plural: {v.plural}</div>}<p className="mt-2 text-sm">{v.example}</p><Translated text={translate(v.translations)} langLabel={langLabel} /></div>)}</div>;
 }
 
 function PlaceSection({ items, fallbackKey, translate, langLabel }: { items: PlaceItem[]; fallbackKey: string | null; translate: (t: Record<string, string> | null | undefined) => string; langLabel: string }) {
   if (!items.length) return null;
-  return <div><h3 className="flex items-center gap-2 font-serif text-xl font-semibold"><MapPin className="h-4 w-4" />Wo ist was? – zuerst ansehen</h3><p className="mt-2 text-sm text-muted-foreground">Lerne die Beispiele mit dem Bild. Danach kommen 10 Bildaufgaben, bei denen du die Präposition selbst wählen musst.</p><div className="mt-4 grid gap-4 sm:grid-cols-2">{items.map((it, i) => <div key={i} className="overflow-hidden rounded-2xl border border-border bg-card"><img src={lessonImage(it.image_key ?? fallbackKey)} alt={it.german_text} className="aspect-video w-full object-cover" /><div className="p-4"><div>{it.german_text} <Badge variant="outline" className="ml-1 font-normal">{it.preposition}</Badge></div><Translated text={translate(it.translations)} langLabel={langLabel} /></div></div>)}</div></div>;
+  return <div><h3 className="font-serif text-xl font-semibold">Wo ist was?</h3><div className="mt-4 grid gap-4 md:grid-cols-2">{items.map((it) => <div key={it.id} className="overflow-hidden rounded-2xl border border-border bg-card"><img src={lessonImage(it.image_key ?? fallbackKey)} alt={it.label} className="aspect-video w-full object-cover" /><div className="p-4"><div className="font-medium">{it.label}</div><div className="mt-1 text-sm text-muted-foreground">{it.sentence}</div><Translated text={translate(it.translations)} langLabel={langLabel} /></div></div>)}</div></div>;
 }
 
 function DialogSection({ group, translate, langLabel }: { group: { title: string; lines: DialogLine[] }; translate: (t: Record<string, string> | null | undefined) => string; langLabel: string }) {
-  return <div className="space-y-3"><h3 className="font-serif text-xl font-semibold">{group.title}</h3>{group.lines.map((d) => <div key={d.id} className={d.speaker === "A" ? "max-w-[85%] rounded-2xl rounded-bl-sm border border-border bg-card p-4" : "ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-muted p-4"}><div className="text-xs uppercase tracking-widest text-muted-foreground">{d.speaker_role || `Person ${d.speaker}`}</div><div className="mt-1">{d.german_text}</div><Translated text={translate(d.translations)} langLabel={langLabel} /></div>)}</div>;
+  return <div><h3 className="font-serif text-xl font-semibold">{group.title}</h3><div className="mt-4 space-y-3">{group.lines.map((d) => <div key={d.id} className="rounded-2xl border border-border bg-card p-4"><div className="text-xs uppercase tracking-widest text-muted-foreground">{d.speaker}</div><div className="mt-1 font-serif text-lg">{d.line}</div><Translated text={translate(d.translations)} langLabel={langLabel} /></div>)}</div></div>;
 }
 
 function GrammarSection({ notes }: { notes: GrammarNote[] }) {
-  return <div className="space-y-4">{notes.map((n, i) => <div key={i} className="rounded-2xl border border-border bg-card p-5"><h3 className="font-serif text-lg font-semibold">{n.title}</h3><p className="mt-2 text-sm text-muted-foreground">{n.explanation}</p><ul className="mt-3 space-y-1 text-sm">{(n.examples ?? []).map((e, j) => <li key={j}>· {e}</li>)}</ul></div>)}</div>;
+  return <div className="grid gap-3 md:grid-cols-2">{notes.map((n, i) => <div key={`${n.title}-${i}`} className="rounded-2xl border border-border bg-card p-4"><div className="font-medium">{n.title}</div><p className="mt-2 text-sm text-muted-foreground">{n.explanation}</p>{n.examples?.length ? <ul className="mt-3 space-y-1 text-sm">{n.examples.map((e) => <li key={e}>• {e}</li>)}</ul> : null}</div>)}</div>;
 }
 
 function buildDialogExercise(groups: { title: string; lines: DialogLine[] }[]): Question | null {
-  const group = groups.find((g) => g.lines.length >= 6);
-  if (!group) return null;
-  return { id: `dialog-builder-${group.title}`, position: 0, kind: "dialog_order", prompt: `Bringe den Dialog „${group.title}“ in die richtige Reihenfolge.`, explanation: "Achte auf logisch passende Fragen und Antworten.", section: "dialog_builder", data: { items: group.lines.slice(0, 12).map((l) => `${l.speaker_role || `Person ${l.speaker}`}: ${l.german_text}`) }, quiz_answers: [] };
+  const lines = groups.flatMap((g) => g.lines).slice(0, 14);
+  if (lines.length < 4) return null;
+  const answer = lines.map((l) => `${l.speaker}: ${l.line}`);
+  const options = [...answer].sort((a, b) => a.localeCompare(b, "de"));
+  return { id: "auto-dialog-builder", lesson_id: lines[0]?.lesson_id ?? "", section: "dialog_builder", type: "order", prompt: "Baue den Dialog in die richtige Reihenfolge.", options, correct_answer: answer, explanation: "Die Reihenfolge folgt einem natürlichen Gespräch: Einstieg, Anliegen, Rückfragen, Lösung und Abschluss.", translations: {}, position: 999 } as Question;
 }
 
 function LevelSwitch({ topicSlug, currentSlug }: { topicSlug: string; currentSlug: string }) {
   const { data } = useQuery(topicLessonsQuery(topicSlug));
-  const siblings = (data ?? []).slice().sort((a, b) => a.level.localeCompare(b.level));
+  const siblings = data ?? [];
   if (siblings.length < 2) return null;
   return <div className="mt-5 flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-card px-4 py-3"><span className="mr-1 text-xs uppercase tracking-widest text-muted-foreground">Niveau wählen</span>{siblings.map((s) => <Link key={s.id} to="/lektion/$slug" params={{ slug: s.slug }} className={s.slug === currentSlug ? "rounded-full bg-foreground px-3 py-1.5 text-sm text-background" : "rounded-full border border-border px-3 py-1.5 text-sm hover:bg-muted"}>{s.level}{s.is_premium ? " · Premium" : " · Gratis"}</Link>)}<Link to="/thema/$slug" params={{ slug: topicSlug }} className="ml-auto text-sm text-muted-foreground hover:text-foreground">Themenübersicht</Link></div>;
 }
