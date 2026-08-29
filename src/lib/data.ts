@@ -80,6 +80,138 @@ export type Question = {
   quiz_answers: { id: string; position: number; text: string; is_correct: boolean }[];
 };
 
+const bakerySceneImages = [
+  "baeck-new-01",
+  "baeck-new-02",
+  "baeck-new-03",
+  "baeck-new-04",
+  "baeck-new-05",
+  "baeck-new-06",
+  "baeck-new-07",
+  "baeck-new-08",
+  "baeck-new-09",
+  "baeck-new-10",
+  "baeck-new-11",
+  "baeck-new-12",
+  "baeck-new-13",
+  "baeck-new-14",
+  "baeck-new-15",
+  // Die letzten fünf Schritte nutzen bewusst passende Bilder aus derselben Fotostory.
+  "baeck-new-12",
+  "baeck-new-13",
+  "baeck-new-14",
+  "baeck-new-14",
+  "baeck-new-15",
+] as const;
+
+const bakeryQuestionImages: Record<string, string> = {
+  "bak-p1": "baeck-new-04",
+  "bak-p2": "baeck-new-04",
+  "bak-p3": "baeck-new-04",
+  "bak-p4": "baeck-new-03",
+  "bak-p5": "baeck-new-03",
+  "bak-p6": "baeck-new-03",
+  "bak-p7": "baeck-new-03",
+  "bak-p8": "baeck-new-04",
+  "bak-p9": "baeck-new-04",
+  "bak-p10": "baeck-new-05",
+};
+
+const bakeryHelpOverrides: Record<string, Record<string, string>> = {
+  "bak-g1": {
+    bks: "Pitanje: Koji član ide uz riječ „Kuchen“? „Kuchen“ znači kolač i muškog je roda: der Kuchen.",
+    tr: "Soru: „Kuchen“ kelimesinin artikeli hangisi? Kuchen = pasta/kek ve eril isimdir: der Kuchen.",
+    uk: "Питання: який артикль має слово „Kuchen“? Kuchen = пиріг, чоловічий рід: der Kuchen.",
+    ro: "Întrebare: ce articol are „Kuchen“? Kuchen = prăjitură și este masculin: der Kuchen.",
+    ar: "السؤال: ما أداة كلمة Kuchen؟ معناها كعك وهي مذكر: der Kuchen.",
+  },
+  "bak-g2": {
+    bks: "Pitanje: Koji član ide uz riječ „Brezel“? Brezel znači pereca i ženskog je roda: die Brezel.",
+    tr: "Soru: „Brezel“ kelimesinin artikeli hangisi? Brezel = pretzel ve dişil isimdir: die Brezel.",
+    uk: "Питання: який артикль має „Brezel“? Це крендель, жіночий рід: die Brezel.",
+    ro: "Întrebare: ce articol are „Brezel“? Înseamnă covrig și este feminin: die Brezel.",
+    ar: "السؤال: ما أداة كلمة Brezel؟ معناها بريتزل وهي مؤنث: die Brezel.",
+  },
+  "bak-g3": {
+    bks: "Pitanje: Koji član ide uz riječ „Brot“? Brot znači hljeb/kruh i srednjeg je roda: das Brot.",
+    tr: "Soru: „Brot“ kelimesinin artikeli hangisi? Brot = ekmek ve nötrdür: das Brot.",
+    uk: "Питання: який артикль має „Brot“? Brot = хліб, середній рід: das Brot.",
+    ro: "Întrebare: ce articol are „Brot“? Brot = pâine și este neutru: das Brot.",
+    ar: "السؤال: ما أداة كلمة Brot؟ معناها خبز وهي محايدة: das Brot.",
+  },
+  "bak-g4": {
+    bks: "Pitanje: „Ich nehme ___ Kuchen.“ Kuchen je muškog roda. U akuzativu: der Kuchen → den Kuchen.",
+    tr: "Soru: „Ich nehme ___ Kuchen.“ Kuchen eril isimdir. Akkusativ: der Kuchen → den Kuchen.",
+    uk: "Питання: „Ich nehme ___ Kuchen.“ У знахідному відмінку: der Kuchen → den Kuchen.",
+    ro: "Întrebare: „Ich nehme ___ Kuchen.“ La acuzativ: der Kuchen → den Kuchen.",
+    ar: "السؤال: Ich nehme ___ Kuchen. في حالة المفعول: der Kuchen → den Kuchen.",
+  },
+  "bak-g5": {
+    bks: "Pitanje: „Ich hätte gern ___ Brezel.“ Brezel znači pereca i ženskog je roda: die Brezel → eine Brezel.",
+    tr: "Soru: „Ich hätte gern ___ Brezel.“ Brezel dişildir: die Brezel → eine Brezel.",
+    uk: "Питання: „Ich hätte gern ___ Brezel.“ Brezel жіночого роду: die Brezel → eine Brezel.",
+    ro: "Întrebare: „Ich hätte gern ___ Brezel.“ Brezel este feminin: die Brezel → eine Brezel.",
+    ar: "السؤال: Ich hätte gern ___ Brezel. كلمة Brezel مؤنثة: die Brezel → eine Brezel.",
+  },
+  "bak-g6": {
+    bks: "Pitanje: „Ich nehme ___ Mischbrot.“ Mischbrot znači miješani hljeb i srednjeg je roda: das Mischbrot → ein Mischbrot.",
+    tr: "Soru: „Ich nehme ___ Mischbrot.“ Mischbrot nötrdür: das Mischbrot → ein Mischbrot.",
+    uk: "Питання: „Ich nehme ___ Mischbrot.“ Mischbrot середнього роду: das Mischbrot → ein Mischbrot.",
+    ro: "Întrebare: „Ich nehme ___ Mischbrot.“ Mischbrot este neutru: das Mischbrot → ein Mischbrot.",
+    ar: "السؤال: Ich nehme ___ Mischbrot. كلمة Mischbrot محايدة: das Mischbrot → ein Mischbrot.",
+  },
+};
+
+function bakeryLessonForSlug(slug: string) {
+  const scenes = bakeryA1Override.scenes.map((scene, index) => ({
+    ...scene,
+    image_key: bakerySceneImages[index] ?? bakerySceneImages[bakerySceneImages.length - 1],
+  }));
+
+  const questions = bakeryA1Override.questions.map((question) => {
+    const originalData = (question.data ?? {}) as Record<string, unknown>;
+    const data: Record<string, unknown> = { ...originalData };
+    const imageKey = bakeryQuestionImages[question.id];
+    if (imageKey) data.image_key = imageKey;
+    const help = bakeryHelpOverrides[question.id];
+    if (help) data.help = help;
+    return { ...question, data };
+  });
+
+  const placeImages = [
+    "baeck-new-04",
+    "baeck-new-04",
+    "baeck-new-04",
+    "baeck-new-03",
+    "baeck-new-03",
+    "baeck-new-03",
+    "baeck-new-04",
+    "baeck-new-03",
+    "baeck-new-05",
+    "baeck-new-04",
+  ];
+
+  return {
+    ...bakeryA1Override,
+    lesson: {
+      ...bakeryA1Override.lesson,
+      slug,
+      place_items: (bakeryA1Override.lesson.place_items ?? []).map((item, index) => ({
+        ...item,
+        image_key: placeImages[index] ?? "baeck-new-04",
+      })),
+    },
+    scenes,
+    questions,
+  } as unknown as {
+    lesson: Lesson;
+    scenes: Scene[];
+    vocab: Vocab[];
+    dialog: DialogLine[];
+    questions: Question[];
+  };
+}
+
 export const lessonsQuery = () => ({
   queryKey: ["lessons"],
   queryFn: async (): Promise<Lesson[]> => {
@@ -99,19 +231,7 @@ export const lessonQuery = (slug: string) => ({
     // The current Lovable database links the A1 bakery card to /lektion/baeckerei-a1.
     // Support both historical and current slugs so the reviewed content is always shown.
     if (slug === "in-der-baeckerei" || slug === "baeckerei-a1") {
-      return {
-        ...bakeryA1Override,
-        lesson: {
-          ...bakeryA1Override.lesson,
-          slug,
-        },
-      } as {
-        lesson: Lesson;
-        scenes: Scene[];
-        vocab: Vocab[];
-        dialog: DialogLine[];
-        questions: Question[];
-      };
+      return bakeryLessonForSlug(slug);
     }
 
     const { data: lesson, error } = await supabase
