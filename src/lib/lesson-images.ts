@@ -17,14 +17,21 @@ import kueche from "@/assets/lesson-kueche.jpg";
 import pflege from "@/assets/lesson-pflege.jpg";
 import kasse from "@/assets/lesson-kasse.jpg";
 import lager from "@/assets/lesson-lager.jpg";
-import bakeryIllustratedArrival from "@/assets/bakery-illustrated-arrival.webp";
-import bakeryIllustratedCake from "@/assets/bakery-illustrated-cake.webp";
-import bakeryIllustratedBread from "@/assets/bakery-illustrated-bread.webp";
-import bakeryIllustratedPay from "@/assets/bakery-illustrated-pay.webp";
+
+import bakery01 from "@/assets/bakery-illustrated-01.webp";
+import bakery02 from "@/assets/bakery-illustrated-02.webp";
+import bakery03 from "@/assets/bakery-illustrated-03.webp";
+import bakery04 from "@/assets/bakery-illustrated-04.webp";
+import bakery05 from "@/assets/bakery-illustrated-05.webp";
+import bakery06 from "@/assets/bakery-illustrated-06.webp";
+import bakery07 from "@/assets/bakery-illustrated-07.webp";
+import bakery08 from "@/assets/bakery-illustrated-08.webp";
+import bakery09 from "@/assets/bakery-illustrated-09.webp";
+import bakery10 from "@/assets/bakery-illustrated-10.webp";
 
 export const LESSON_IMAGES: Record<string, string> = {
   supermarkt,
-  baeckerei: bakeryIllustratedArrival,
+  baeckerei: bakery01,
   hausarzt,
   baustelle,
   bewerbung,
@@ -100,28 +107,30 @@ export const SCENE_IMAGES: Record<string,string> = {
   'markt-kasse': s_markt_kasse,
   'markt-karte': s_markt_karte,
   'markt-ausgang': s_markt_ausgang,
-  'baeck-eintreten': bakeryIllustratedArrival,
-  'baeck-auslage': bakeryIllustratedCake,
-  'baeck-bestellen': bakeryIllustratedArrival,
-  'baeck-schneiden': bakeryIllustratedBread,
-  'baeck-gebaeck': bakeryIllustratedCake,
-  'baeck-allergie': bakeryIllustratedCake,
-  'baeck-bezahlen': bakeryIllustratedPay,
-  'baeck-erhalten': bakeryIllustratedArrival,
-  'baeck-new-01': bakeryIllustratedArrival,
-  'baeck-new-02': bakeryIllustratedArrival,
-  'baeck-new-03': bakeryIllustratedArrival,
-  'baeck-new-04': bakeryIllustratedCake,
-  'baeck-new-05': bakeryIllustratedCake,
-  'baeck-new-06': bakeryIllustratedCake,
-  'baeck-new-07': bakeryIllustratedCake,
-  'baeck-new-08': bakeryIllustratedBread,
-  'baeck-new-09': bakeryIllustratedBread,
-  'baeck-new-10': bakeryIllustratedBread,
-  'baeck-new-11': bakeryIllustratedBread,
-  'baeck-new-12': bakeryIllustratedPay,
-  'baeck-new-13': bakeryIllustratedPay,
-  'baeck-new-14': bakeryIllustratedPay,
-  'baeck-new-15': bakeryIllustratedArrival,
+
+  'baeck-eintreten': bakery01,
+  'baeck-auslage': bakery02,
+  'baeck-bestellen': bakery03,
+  'baeck-gebaeck': bakery04,
+  'baeck-allergie': bakery05,
+  'baeck-schneiden': bakery07,
+  'baeck-bezahlen': bakery09,
+  'baeck-erhalten': bakery10,
+
+  'baeck-new-01': bakery01,
+  'baeck-new-02': bakery02,
+  'baeck-new-03': bakery03,
+  'baeck-new-04': bakery04,
+  'baeck-new-05': bakery05,
+  'baeck-new-06': bakery06,
+  'baeck-new-07': bakery07,
+  'baeck-new-08': bakery08,
+  'baeck-new-09': bakery09,
+  'baeck-new-10': bakery10,
+  'baeck-new-11': bakery04,
+  'baeck-new-12': bakery05,
+  'baeck-new-13': bakery06,
+  'baeck-new-14': bakery09,
+  'baeck-new-15': bakery10,
 };
 Object.assign(LESSON_IMAGES, SCENE_IMAGES);
