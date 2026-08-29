@@ -17,8 +17,6 @@ import kueche from "@/assets/lesson-kueche.jpg";
 import pflege from "@/assets/lesson-pflege.jpg";
 import kasse from "@/assets/lesson-kasse.jpg";
 import lager from "@/assets/lesson-lager.jpg";
-
-// Einheitlicher Illustrationsstil für die Bäckerei-Masterlektion.
 import bakeryIllustratedArrival from "@/assets/bakery-illustrated-arrival.webp";
 import bakeryIllustratedCake from "@/assets/bakery-illustrated-cake.webp";
 import bakeryIllustratedBread from "@/assets/bakery-illustrated-bread.webp";
@@ -62,7 +60,6 @@ export function lessonImage(key: string | null | undefined): string {
 
 export { milch as sceneImage };
 
-/* --- Foto-Storys: mehrere Bilder pro Lektion (visuelle Szenengruppen) --- */
 import s_bus_haltestelle from '@/assets/scene-bus-haltestelle.jpg';
 import s_bus_ankunft from '@/assets/scene-bus-ankunft.jpg';
 import s_bus_einsteigen from '@/assets/scene-bus-einsteigen.jpg';
@@ -103,8 +100,6 @@ export const SCENE_IMAGES: Record<string,string> = {
   'markt-kasse': s_markt_kasse,
   'markt-karte': s_markt_karte,
   'markt-ausgang': s_markt_ausgang,
-
-  // Bäckerei: alte realistische und unscharfe Motive werden bewusst nicht mehr genutzt.
   'baeck-eintreten': bakeryIllustratedArrival,
   'baeck-auslage': bakeryIllustratedCake,
   'baeck-bestellen': bakeryIllustratedArrival,
@@ -113,8 +108,6 @@ export const SCENE_IMAGES: Record<string,string> = {
   'baeck-allergie': bakeryIllustratedCake,
   'baeck-bezahlen': bakeryIllustratedPay,
   'baeck-erhalten': bakeryIllustratedArrival,
-
-  // Auch alle bisher angelegten baeck-new-Keys zeigen jetzt auf den einheitlichen Illustrationsstil.
   'baeck-new-01': bakeryIllustratedArrival,
   'baeck-new-02': bakeryIllustratedArrival,
   'baeck-new-03': bakeryIllustratedArrival,
