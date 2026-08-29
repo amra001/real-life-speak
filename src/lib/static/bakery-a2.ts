@@ -122,3 +122,5 @@ export const bakeryA2Override = {
     { id: "a2-t8", position: 107, kind: "single_choice", section: "test", prompt: "Was ist eine Brotsorte?", explanation: "Eine bestimmte Art von Brot.", data: H("vrsta hljeba", "ekmek çeşidi", "вид хліба", "tip de pâine", "نوع الخبز"), quiz_answers: [A("a", "Eine bestimmte Art von Brot.", true, 1), A("b", "Ein Zahlungsgerät.", false, 2), A("c", "Eine Person.", false, 3)] }
   ]
 };
+
+bakeryA2Override.scenes = bakeryA2Override.scenes.map((scene) => ({ ...scene, scene_group: scene.id }));
