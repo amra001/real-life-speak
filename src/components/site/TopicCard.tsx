@@ -48,6 +48,7 @@ export function TopicCard({ topic }: { topic: Topic }) {
         <p className="mt-3 text-xs text-muted-foreground">
           {topic.levels.length} Lernmodule · {topic.levels.map((l) => l.level).join(" · ")}
         </p>
+        <p className="mt-1 text-xs font-medium text-foreground/70">15 Situationen · 9 Lernbereiche</p>
       </div>
     </Link>
   );
