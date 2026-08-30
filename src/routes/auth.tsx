@@ -9,6 +9,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    next: typeof search.next === "string" && search.next.startsWith("/") ? search.next : "/dashboard",
+  }),
   head: () => ({
     meta: [
       { title: "Anmelden – RealLife German" },
@@ -25,6 +28,7 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
   const { user } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,8 +36,8 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (user) navigate({ to: "/dashboard", replace: true });
-  }, [user, navigate]);
+    if (user) navigate({ to: next, replace: true });
+  }, [user, navigate, next]);
 
   async function signIn(e: React.FormEvent) {
     e.preventDefault();
@@ -41,7 +45,7 @@ function AuthPage() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setBusy(false);
     if (error) toast.error(error.message);
-    else navigate({ to: "/dashboard", replace: true });
+    else navigate({ to: next, replace: true });
   }
 
   async function signUp(e: React.FormEvent) {
@@ -51,7 +55,7 @@ function AuthPage() {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/dashboard`,
+        emailRedirectTo: `${window.location.origin}${next}`,
         data: { display_name: name },
       },
     });
@@ -63,7 +67,7 @@ function AuthPage() {
   async function google() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: window.location.origin },
+      options: { redirectTo: `${window.location.origin}${next}` },
     });
     if (error) toast.error("Google-Anmeldung fehlgeschlagen.");
   }
