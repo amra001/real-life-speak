@@ -1,12 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Award, Clock, Star, Trophy } from "lucide-react";
+import { Award, Clock, CreditCard, Loader2, Star, Trophy } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { LessonCard } from "@/components/site/LessonCard";
 import { supabase } from "@/integrations/supabase/client";
 import { lessonsQuery, type Lesson } from "@/lib/data";
 import { useAuth, useIsAdmin } from "@/hooks/useAuth";
+import { usePremium } from "@/hooks/usePremium";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -25,8 +28,10 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 
 function Dashboard() {
   const { user } = useAuth();
+  const { isPremium, isLoading: premiumLoading } = usePremium();
   const isAdmin = useIsAdmin(user?.id);
   const { data: lessons } = useQuery(lessonsQuery());
+  const [portalBusy, setPortalBusy] = useState(false);
 
   const { data: progress } = useQuery({
     queryKey: ["progress", user?.id],
@@ -48,6 +53,17 @@ function Dashboard() {
     },
   });
 
+  async function manageSubscription() {
+    setPortalBusy(true);
+    const { data, error } = await supabase.functions.invoke("create-portal", { body: {} });
+    setPortalBusy(false);
+    if (error || !data?.url) {
+      toast.error("Die Abo-Verwaltung konnte gerade nicht geöffnet werden.");
+      return;
+    }
+    window.location.assign(String(data.url));
+  }
+
   const done = (progress ?? []).filter((p) => p.completed).length;
   const total = lessons?.length ?? 0;
   const scoreSum = (progress ?? []).reduce((a, p) => a + p.quiz_score, 0);
@@ -62,14 +78,31 @@ function Dashboard() {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="font-serif text-3xl font-semibold md:text-4xl">Dein Lernfortschritt</h1>
+          <div className="flex flex-wrap items-center gap-2">
+            <h1 className="font-serif text-3xl font-semibold md:text-4xl">Dein Lernfortschritt</h1>
+            {!premiumLoading && (
+              <span className={isPremium ? "rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground" : "rounded-full border border-border px-3 py-1 text-xs text-muted-foreground"}>
+                {isPremium ? "Premium" : "Gratis"}
+              </span>
+            )}
+          </div>
           <p className="mt-2 text-muted-foreground">{user?.email}</p>
         </div>
-        {isAdmin && (
-          <Button asChild variant="outline">
-            <Link to="/admin">Adminbereich</Link>
-          </Button>
-        )}
+        <div className="flex flex-wrap gap-2">
+          {isPremium ? (
+            <Button variant="outline" onClick={manageSubscription} disabled={portalBusy}>
+              {portalBusy ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CreditCard className="mr-2 h-4 w-4" />}
+              Abo verwalten
+            </Button>
+          ) : (
+            <Button asChild><Link to="/preise">Premium ansehen</Link></Button>
+          )}
+          {isAdmin && (
+            <Button asChild variant="outline">
+              <Link to="/admin">Adminbereich</Link>
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
