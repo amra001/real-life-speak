@@ -9,12 +9,12 @@ export const Route = createFileRoute("/preise")({
       {
         name: "description",
         content:
-          "Kostenlos starten oder mit Premium alle Video-Lektionen, Quiz, Arbeitsblätter und Fortschritts-Tracking freischalten.",
+          "Kostenlos starten oder mit Premium die komplette A1–B1-Lernbibliothek mit Situationen, Wortschatz, Dialogen, Grammatik, Übungen und Abschlusstests freischalten.",
       },
       { property: "og:title", content: "Preise – RealLife German" },
       {
         property: "og:description",
-        content: "Gratis-Zugang und Premium-Abo für alle Lektionen aus Alltag und Beruf.",
+        content: "Gratis-Zugang und Premium-Abo für praxisnahes Deutsch aus Alltag und Beruf.",
       },
     ],
   }),
@@ -27,10 +27,10 @@ const PLANS = [
     price: "0 €",
     period: "für immer",
     features: [
-      "Videos bis 1 Minute 30 Sekunden",
-      "Ausgewählte Demo-Lektionen",
-      "Einfache Quizfragen",
-      "Untertitel & Übersetzung (Vorschau)",
+      "Ausgewählte kostenlose Lektionen",
+      "Praxisnahe Situationen aus dem echten Alltag",
+      "Wortschatz, Dialoge und erste Übungen",
+      "A1, A2 und B1 kennenlernen",
     ],
     cta: "Kostenlos starten",
     highlight: false,
@@ -40,13 +40,16 @@ const PLANS = [
     price: "9,90 €",
     period: "pro Monat",
     features: [
-      "Videos mit 3, 5, 10 und 15 Minuten",
-      "Komplette Lernbibliothek A1–B2",
-      "Alle Kategorien und Berufsmodule",
-      "Alle Übersetzungssprachen (TR, AR, UK, BKS, RO)",
-      "Vollständige Quiz & Vokabellisten",
-      "Lernfortschritt und zusätzliche Übungen",
-      "Später: Arbeitsblätter als PDF",
+      "Komplette Lernbibliothek A1–B1",
+      "Alltag, Gesundheit, Wohnen, Verkehr, Familie und Beruf",
+      "15 konkrete Situationen pro Lernmodul",
+      "9 Lernbereiche in jeder Lektion",
+      "Mindestens 20 thematische Wörter",
+      "2 komplette Dialoge pro Lektion",
+      "Sprache & Grammatik passend zum Niveau",
+      "Interaktive Übungen und Dialogtraining",
+      "Abschlusstest mit 50 Fragen",
+      "Persönlicher Lernfortschritt",
     ],
     cta: "Premium freischalten",
     highlight: true,
@@ -66,7 +69,6 @@ const PLANS = [
   },
 ];
 
-
 function Pricing() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-16">
@@ -74,7 +76,7 @@ function Pricing() {
         <h1 className="font-serif text-3xl font-semibold md:text-4xl">Einfache Preise</h1>
         <p className="mt-3 text-muted-foreground">
           Starte kostenlos. Wenn du weiterlernen willst, schaltest du mit Premium die komplette
-          Bibliothek frei – monatlich kündbar.
+          A1–B1-Bibliothek frei – monatlich kündbar.
         </p>
       </div>
 
