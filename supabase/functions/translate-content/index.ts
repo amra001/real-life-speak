@@ -9,7 +9,7 @@ type SourceType = "scene" | "vocab" | "dialog";
 type TranslationLang = "tr" | "ar" | "uk" | "bks" | "ro";
 
 const sources: Record<SourceType, { table: string; textColumn: string }> = {
-  scene: { table: "scenes", textColumn: "german_text" },
+  scene: { table: "lesson_scenes", textColumn: "german_text" },
   vocab: { table: "vocabulary", textColumn: "term" },
   dialog: { table: "dialogs", textColumn: "german_text" },
 };
