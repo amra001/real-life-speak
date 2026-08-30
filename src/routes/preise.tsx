@@ -1,6 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { Check } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { Check, Loader2, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/preise")({
   head: () => ({
@@ -70,6 +74,28 @@ const PLANS = [
 ];
 
 function Pricing() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [checkoutBusy, setCheckoutBusy] = useState(false);
+
+  async function startPremiumCheckout() {
+    if (!user) {
+      await navigate({ to: "/auth", search: { next: "/preise" } });
+      return;
+    }
+
+    setCheckoutBusy(true);
+    const { data, error } = await supabase.functions.invoke("create-checkout", { body: {} });
+    setCheckoutBusy(false);
+
+    if (error || !data?.url) {
+      toast.error("Premium-Checkout ist noch nicht verfügbar. Bitte versuche es später erneut.");
+      return;
+    }
+
+    window.location.assign(String(data.url));
+  }
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-16">
       <div className="max-w-2xl">
@@ -78,6 +104,10 @@ function Pricing() {
           Starte kostenlos. Wenn du weiterlernen willst, schaltest du mit Premium die komplette
           A1–B1-Bibliothek frei – monatlich kündbar.
         </p>
+        <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm text-muted-foreground">
+          <ShieldCheck className="h-4 w-4 text-accent" />
+          Sichere Zahlung über Stripe · monatlich kündbar
+        </div>
       </div>
 
       <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -106,12 +136,28 @@ function Pricing() {
                 </li>
               ))}
             </ul>
-            <Button asChild className="mt-8 w-full" variant={p.highlight ? "default" : "outline"}>
-              <Link to="/auth">{p.cta}</Link>
-            </Button>
+
+            {p.name === "Premium" ? (
+              <Button className="mt-8 w-full" onClick={startPremiumCheckout} disabled={checkoutBusy}>
+                {checkoutBusy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {checkoutBusy ? "Checkout wird geöffnet …" : p.cta}
+              </Button>
+            ) : p.name === "Institution" ? (
+              <Button asChild className="mt-8 w-full" variant="outline">
+                <Link to="/privatunterricht">{p.cta}</Link>
+              </Button>
+            ) : (
+              <Button asChild className="mt-8 w-full" variant="outline">
+                <Link to="/auth" search={{ next: "/dashboard" }}>{p.cta}</Link>
+              </Button>
+            )}
           </div>
         ))}
       </div>
+
+      <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-muted-foreground">
+        Premium wird deinem RealLife-German-Konto zugeordnet. Nach erfolgreicher Zahlung wird der Zugang automatisch freigeschaltet.
+      </p>
     </div>
   );
 }
