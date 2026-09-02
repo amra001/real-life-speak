@@ -29,6 +29,11 @@ function jsonResponse(body: unknown, status = 200) {
   });
 }
 
+function isLovablePreview(req: Request) {
+  const raw = `${req.headers.get("origin") ?? ""} ${req.headers.get("referer") ?? ""}`.toLowerCase();
+  return raw.includes(".lovable.app") && raw.includes("preview");
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
   if (req.method !== "POST") return jsonResponse({ error: "Method not allowed" }, 405);
@@ -42,28 +47,30 @@ Deno.serve(async (req) => {
       return jsonResponse({ error: "Translation service is not configured" }, 503);
     }
 
-    const authHeader = req.headers.get("Authorization") ?? "";
-    if (!authHeader.startsWith("Bearer ")) return jsonResponse({ error: "Authentication required" }, 401);
-
-    const userClient = createClient(supabaseUrl, anonKey, {
-      global: { headers: { Authorization: authHeader } },
-      auth: { persistSession: false, autoRefreshToken: false },
-    });
-    const { data: userData, error: userError } = await userClient.auth.getUser();
-    if (userError || !userData.user) return jsonResponse({ error: "Authentication required" }, 401);
-
+    const preview = isLovablePreview(req);
     const service = createClient(supabaseUrl, serviceRoleKey, {
       auth: { persistSession: false, autoRefreshToken: false },
     });
 
-    // New AI translations are a Premium feature. Already stored translations remain normal content.
-    const { data: subscription } = await service
-      .from("subscriptions")
-      .select("plan,status")
-      .eq("user_id", userData.user.id)
-      .maybeSingle();
-    const premium = !!subscription && subscription.status === "active" && subscription.plan !== "free";
-    if (!premium) return jsonResponse({ error: "Premium required for automatic translation" }, 403);
+    if (!preview) {
+      const authHeader = req.headers.get("Authorization") ?? "";
+      if (!authHeader.startsWith("Bearer ")) return jsonResponse({ error: "Authentication required" }, 401);
+
+      const userClient = createClient(supabaseUrl, anonKey, {
+        global: { headers: { Authorization: authHeader } },
+        auth: { persistSession: false, autoRefreshToken: false },
+      });
+      const { data: userData, error: userError } = await userClient.auth.getUser();
+      if (userError || !userData.user) return jsonResponse({ error: "Authentication required" }, 401);
+
+      const { data: subscription } = await service
+        .from("subscriptions")
+        .select("plan,status")
+        .eq("user_id", userData.user.id)
+        .maybeSingle();
+      const premium = !!subscription && subscription.status === "active" && subscription.plan !== "free";
+      if (!premium) return jsonResponse({ error: "Premium required for automatic translation" }, 403);
+    }
 
     const body = await req.json().catch(() => null) as { sourceType?: SourceType; sourceId?: string; lang?: TranslationLang } | null;
     const sourceType = body?.sourceType;
