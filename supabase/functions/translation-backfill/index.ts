@@ -1,6 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 
-const TOKEN = "rLG-2026-09-02-7wQ4Hk9Lm2Xp8Vr6Nc5T";
 const LANGS = ["tr", "ar", "uk", "bks", "ro"] as const;
 type Lang = typeof LANGS[number];
 type SourceType = "scene" | "vocab" | "dialog";
@@ -48,20 +47,27 @@ async function translateBatch(apiKey: string, texts: string[]) {
   const data = await res.json();
   let raw = String(data?.choices?.[0]?.message?.content ?? "").trim();
   raw = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/i, "");
-  const parsed = JSON.parse(raw) as Array<Record<string, unknown>>;
-  return parsed;
+  return JSON.parse(raw) as Array<Record<string, unknown>>;
 }
 
 Deno.serve(async (req) => {
   if (req.method !== "POST") return json({ error: "POST only" }, 405);
-  if (req.headers.get("x-backfill-token") !== TOKEN) return json({ error: "forbidden" }, 403);
 
   const url = Deno.env.get("SUPABASE_URL");
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   const aiKey = Deno.env.get("LOVABLE_API_KEY");
   if (!url || !serviceKey || !aiKey) return json({ error: "missing env" }, 503);
   const db = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
-  const body = await req.json().catch(() => ({})) as { sourceType?: SourceType; category?: string; limit?: number };
+
+  const body = await req.json().catch(() => ({})) as { jobId?: string; sourceType?: SourceType; category?: string; limit?: number };
+  if (!body.jobId) return json({ error: "jobId required" }, 403);
+  const { data: job, error: jobError } = await db
+    .from("translation_backfill_jobs")
+    .select("id,active,expires_at")
+    .eq("id", body.jobId)
+    .maybeSingle();
+  if (jobError || !job || !job.active || new Date(job.expires_at).getTime() < Date.now()) return json({ error: "invalid or expired job" }, 403);
+
   const sourceType = body.sourceType ?? "scene";
   const category = body.category;
   const limit = Math.min(Math.max(Number(body.limit ?? 20), 1), 30);
@@ -73,7 +79,7 @@ Deno.serve(async (req) => {
 
   let q = db.from(spec.table).select(`id,${spec.text},translations,lesson_id,lessons!inner(category_slug,status,level)`).eq("lessons.status", "published").in("lessons.level", ["A1","A2","B1"]);
   if (category) q = q.eq("lessons.category_slug", category);
-  const { data, error } = await q.limit(200);
+  const { data, error } = await q.limit(300);
   if (error) return json({ error: error.message }, 500);
 
   const rows = (data ?? []).filter((r: any) => missingAny(r.translations)).slice(0, limit);
