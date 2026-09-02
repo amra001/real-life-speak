@@ -1,4 +1,7 @@
 project_id = "uwxtccmfmppdfffzbczn"
 
+[functions.translate-content]
+verify_jwt = false
+
 [functions.translation-backfill]
 verify_jwt = false
