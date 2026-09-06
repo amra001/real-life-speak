@@ -35,6 +35,33 @@ import bakeryWallet from "@/assets/bakery-illustrated-wallet.jpg"; // Mara öffn
 import bakeryReceipt from "@/assets/bakery-illustrated-receipt.jpg"; // Übergabe des Kassenbons nach Kartenzahlung
 import bakeryWalkHome from "@/assets/bakery-illustrated-walk-home.jpg"; // Rückweg über die Straße mit Bäckereitüte
 
+function placeDiagram(preposition: string): string {
+  const positions: Record<string, { x: number; y: number; extra?: string }> = {
+    auf: { x: 320, y: 72 },
+    in: { x: 320, y: 185 },
+    an: { x: 478, y: 185 },
+    neben: { x: 520, y: 230 },
+    hinter: { x: 320, y: 215 },
+    vor: { x: 320, y: 300 },
+    zwischen: { x: 320, y: 230, extra: "between" },
+    "gegenüber": { x: 510, y: 230, extra: "opposite" },
+  };
+  const p = positions[preposition] ?? positions.neben;
+  const between = p.extra === "between";
+  const opposite = p.extra === "opposite";
+  const ref1X = between ? 190 : opposite ? 190 : 255;
+  const ref2 = between ? '<rect x="410" y="145" width="120" height="170" rx="18" fill="#ddd7cc" stroke="#292722" stroke-width="4"/>' : opposite ? '<rect x="430" y="145" width="120" height="170" rx="18" fill="#ddd7cc" stroke="#292722" stroke-width="4"/>' : '';
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+    <rect width="640" height="360" fill="#f6f1e7"/>
+    <rect x="${ref1X}" y="145" width="130" height="170" rx="18" fill="#ddd7cc" stroke="#292722" stroke-width="4"/>
+    ${ref2}
+    <circle cx="${p.x}" cy="${p.y}" r="38" fill="#c75b18" stroke="#292722" stroke-width="4"/>
+    <text x="320" y="45" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#292722">${preposition.toUpperCase()}</text>
+    <text x="320" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#6c675f">Orange = Position des Gegenstands</text>
+  </svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
 export const LESSON_IMAGES: Record<string, string> = {
   supermarkt,
   baeckerei: bakery02,
@@ -62,6 +89,14 @@ export const LESSON_IMAGES: Record<string, string> = {
   "erster-arbeitstag": buero,
   "wohnung-besichtigen": wohnung,
   elternabend: schule,
+  "place-auf": placeDiagram("auf"),
+  "place-in": placeDiagram("in"),
+  "place-an": placeDiagram("an"),
+  "place-neben": placeDiagram("neben"),
+  "place-hinter": placeDiagram("hinter"),
+  "place-vor": placeDiagram("vor"),
+  "place-zwischen": placeDiagram("zwischen"),
+  "place-gegenueber": placeDiagram("gegenüber"),
 };
 
 export const THUMBNAIL_KEYS = Object.keys(LESSON_IMAGES);
