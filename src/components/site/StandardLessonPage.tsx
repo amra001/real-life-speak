@@ -20,6 +20,7 @@ import { toast } from "sonner";
 const SITUATIONS = 15;
 const PRACTICE_MIN = 20;
 const TEST_COUNT = 50;
+const CURATED_SCENE_TOPICS = new Set(["baeckerei", "bus", "supermarkt", "apotheke"]);
 
 type AnyScene = {
   id: string;
@@ -175,7 +176,7 @@ function autoQuestions(scenes: AnyScene[], section: "practice" | "test", count: 
       prompt: i % 2 === 0 ? "Welche Aussage passt zur Situation?" : "Welche Aussage gehört logisch in den Ablauf?",
       explanation: "Die richtige Antwort entspricht der gelernten Situation.",
       section,
-      data: current.image_key ? { image_key: current.image_key } : null,
+      data: null,
       quiz_answers: answers,
     };
   });
@@ -231,9 +232,10 @@ export function StandardLessonPage({ slug }: { slug: string }) {
   const tr = (value?: Record<string, string>) => translate(value ?? {});
   const levelInfo = LEVEL_INFO[lesson.level as keyof typeof LEVEL_INFO];
   const region = REGIONS.find((r) => r.slug === lesson.region);
+  const showSceneImages = CURATED_SCENE_TOPICS.has(lesson.topic_slug ?? "");
 
   const sections: Section[] = [
-    { id: "situation", label: "Situation", render: () => <SituationSection scenes={scenes} fallbackKey={lesson.thumbnail_key} translate={tr} langLabel={langLabel} lang={lang} translationEnabled={visible} /> },
+    { id: "situation", label: "Situation", render: () => <SituationSection scenes={scenes} fallbackKey={lesson.thumbnail_key} translate={tr} langLabel={langLabel} lang={lang} translationEnabled={visible} showImages={showSceneImages} /> },
     { id: "vocab", label: "Wörter lernen", render: () => fullAccess ? <VocabSection vocab={vocab} scenes={scenes} translate={tr} langLabel={langLabel} lang={lang} translationEnabled={visible}/> : <PremiumGate/> },
     { id: "places", label: "Wo ist was?", render: () => fullAccess ? <PlacesSection items={placeItems} questions={placeQuestions} fallbackKey={lesson.thumbnail_key} lang={lang} translate={tr} langLabel={langLabel}/> : <PremiumGate/> },
     { id: "dialog1", label: "Dialog 1", render: () => fullAccess ? <DialogSection group={d1} translate={tr} langLabel={langLabel} lang={lang} translationEnabled={visible}/> : <PremiumGate/> },
@@ -270,11 +272,11 @@ export function StandardLessonPage({ slug }: { slug: string }) {
   </div>;
 }
 
-function SituationSection({ scenes, fallbackKey, translate, langLabel, lang, translationEnabled }: { scenes: AnyScene[]; fallbackKey: string | null; translate: (v?: Record<string, string>) => string; langLabel: string; lang: TranslationLang; translationEnabled: boolean }) {
+function SituationSection({ scenes, fallbackKey, translate, langLabel, lang, translationEnabled, showImages }: { scenes: AnyScene[]; fallbackKey: string | null; translate: (v?: Record<string, string>) => string; langLabel: string; lang: TranslationLang; translationEnabled: boolean; showImages: boolean }) {
   const [index, setIndex] = useState(0);
   if (!scenes.length) return <p className="text-muted-foreground">Noch keine Situationen hinterlegt.</p>;
   const s = scenes[Math.min(index, scenes.length - 1)] as AnyScene;
-  return <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-sm"><img src={lessonImage(s.image_key ?? fallbackKey)} alt={s.german_text} className="aspect-video w-full object-cover"/><div className="p-6"><div className="text-xs uppercase tracking-widest text-muted-foreground">Situation {index + 1} von 15</div><div className="mt-3 font-serif text-2xl leading-snug">{s.german_text}</div><Translated text={translate(s.translations)} langLabel={langLabel} sourceType="scene" sourceId={s.id} lang={lang} enabled={translationEnabled}/>{s.hint && <div className="mt-4 rounded-xl bg-muted p-3 text-sm text-muted-foreground"><strong className="mr-2">Lerntipp:</strong>{s.hint}</div>}<div className="mt-6 flex items-center gap-3"><Button variant="outline" size="icon" disabled={index === 0} onClick={() => setIndex(Math.max(0, index - 1))}><ChevronLeft className="h-4 w-4"/></Button><Progress value={((index + 1) / 15) * 100} className="flex-1"/><span className="text-sm text-muted-foreground">{index + 1}/15</span><Button variant="outline" size="icon" disabled={index === 14} onClick={() => setIndex(Math.min(14, index + 1))}><ChevronRight className="h-4 w-4"/></Button></div></div></div>;
+  return <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-sm">{showImages && <img src={lessonImage(s.image_key ?? fallbackKey)} alt={s.german_text} className="aspect-video w-full object-cover"/>}<div className="p-6"><div className="text-xs uppercase tracking-widest text-muted-foreground">Situation {index + 1} von 15</div><div className="mt-3 font-serif text-2xl leading-snug">{s.german_text}</div><Translated text={translate(s.translations)} langLabel={langLabel} sourceType="scene" sourceId={s.id} lang={lang} enabled={translationEnabled}/>{s.hint && <div className="mt-4 rounded-xl bg-muted p-3 text-sm text-muted-foreground"><strong className="mr-2">Lerntipp:</strong>{s.hint}</div>}<div className="mt-6 flex items-center gap-3"><Button variant="outline" size="icon" disabled={index === 0} onClick={() => setIndex(Math.max(0, index - 1))}><ChevronLeft className="h-4 w-4"/></Button><Progress value={((index + 1) / 15) * 100} className="flex-1"/><span className="text-sm text-muted-foreground">{index + 1}/15</span><Button variant="outline" size="icon" disabled={index === 14} onClick={() => setIndex(Math.min(14, index + 1))}><ChevronRight className="h-4 w-4"/></Button></div></div></div>;
 }
 
 function VocabSection({ vocab, scenes, translate, langLabel, lang, translationEnabled }: { vocab: any[]; scenes: AnyScene[]; translate: (v?: Record<string, string>) => string; langLabel: string; lang: TranslationLang; translationEnabled: boolean }) {
