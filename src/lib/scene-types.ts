@@ -137,7 +137,7 @@ export function applyTopicSceneImages<T extends BasicScene>(topicSlug: string | 
   const total = scenes.length;
   return scenes.map((s) => {
     const type = s.scene_type ?? inferSceneType(s.german_text, s.position, total);
-    if (!map) return { ...s, scene_type: type, image_key: thumbnailKey ?? s.image_key ?? null, needs_image: false };
+    if (!map) return { ...s, scene_type: type, image_key: s.image_key ?? thumbnailKey ?? null, needs_image: false };
     const resolved = resolveSceneImage(map, type);
     return { ...s, scene_type: type, image_key: resolved.image_key, needs_image: false };
   });
