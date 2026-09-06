@@ -1,0 +1,32 @@
+name: Deploy translation functions
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/functions/translate-content/**'
+      - 'supabase/functions/translation-backfill/**'
+      - '.github/workflows/deploy-translation-functions.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Deploy translate-content
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: supabase functions deploy translate-content --project-ref uwxtccmfmppdfffzbczn --no-verify-jwt
+
+      - name: Deploy translation-backfill
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: supabase functions deploy translation-backfill --project-ref uwxtccmfmppdfffzbczn --no-verify-jwt
