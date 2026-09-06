@@ -326,7 +326,7 @@ export function Exercises({ questions, lang, title, onFinish }: { questions: Que
               </details>
             )}
 
-            {q.imageKey && (
+            {q.kind === "image_choice" && q.imageKey && (
               <div className="mt-4 overflow-hidden rounded-xl border border-border">
                 <img src={lessonImage(q.imageKey)} alt={q.prompt} className="aspect-video w-full object-cover" loading="lazy" />
                 <div className="border-t border-border bg-muted/40 px-3 py-2 text-xs text-muted-foreground">Schau zuerst auf das Bild und beantworte dann die Frage.</div>
