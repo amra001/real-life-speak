@@ -16,6 +16,7 @@ import { Route as BerufRouteImport } from './routes/beruf'
 import { Route as JobBewerbungRouteImport } from './routes/job-bewerbung'
 import { Route as LektionenRouteImport } from './routes/lektionen'
 import { Route as PreiseRouteImport } from './routes/preise'
+import { Route as PremiumErfolgRouteImport } from './routes/premium-erfolg'
 import { Route as PrivatunterrichtRouteImport } from './routes/privatunterricht'
 import { Route as UeberUnsRouteImport } from './routes/ueber-uns'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
@@ -57,6 +58,11 @@ const LektionenRoute = LektionenRouteImport.update({
 const PreiseRoute = PreiseRouteImport.update({
   id: '/preise',
   path: '/preise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PremiumErfolgRoute = PremiumErfolgRouteImport.update({
+  id: '/premium-erfolg',
+  path: '/premium-erfolg',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivatunterrichtRoute = PrivatunterrichtRouteImport.update({
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/job-bewerbung': typeof JobBewerbungRouteWithChildren
   '/lektionen': typeof LektionenRoute
   '/preise': typeof PreiseRoute
+  '/premium-erfolg': typeof PremiumErfolgRoute
   '/privatunterricht': typeof PrivatunterrichtRoute
   '/ueber-uns': typeof UeberUnsRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -122,6 +129,7 @@ export interface FileRoutesByTo {
   '/beruf': typeof BerufRoute
   '/lektionen': typeof LektionenRoute
   '/preise': typeof PreiseRoute
+  '/premium-erfolg': typeof PremiumErfolgRoute
   '/privatunterricht': typeof PrivatunterrichtRoute
   '/ueber-uns': typeof UeberUnsRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -140,6 +148,7 @@ export interface FileRoutesById {
   '/job-bewerbung': typeof JobBewerbungRouteWithChildren
   '/lektionen': typeof LektionenRoute
   '/preise': typeof PreiseRoute
+  '/premium-erfolg': typeof PremiumErfolgRoute
   '/privatunterricht': typeof PrivatunterrichtRoute
   '/ueber-uns': typeof UeberUnsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -158,6 +167,7 @@ export interface FileRouteTypes {
     | '/job-bewerbung'
     | '/lektionen'
     | '/preise'
+    | '/premium-erfolg'
     | '/privatunterricht'
     | '/ueber-uns'
     | '/admin'
@@ -173,6 +183,7 @@ export interface FileRouteTypes {
     | '/beruf'
     | '/lektionen'
     | '/preise'
+    | '/premium-erfolg'
     | '/privatunterricht'
     | '/ueber-uns'
     | '/admin'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '/job-bewerbung'
     | '/lektionen'
     | '/preise'
+    | '/premium-erfolg'
     | '/privatunterricht'
     | '/ueber-uns'
     | '/_authenticated/admin'
@@ -208,6 +220,7 @@ export interface RootRouteChildren {
   JobBewerbungRoute: typeof JobBewerbungRouteWithChildren
   LektionenRoute: typeof LektionenRoute
   PreiseRoute: typeof PreiseRoute
+  PremiumErfolgRoute: typeof PremiumErfolgRoute
   PrivatunterrichtRoute: typeof PrivatunterrichtRoute
   UeberUnsRoute: typeof UeberUnsRoute
   LektionSlugRoute: typeof LektionSlugRoute
@@ -263,6 +276,13 @@ declare module '@tanstack/react-router' {
       path: '/preise'
       fullPath: '/preise'
       preLoaderRoute: typeof PreiseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/premium-erfolg': {
+      id: '/premium-erfolg'
+      path: '/premium-erfolg'
+      fullPath: '/premium-erfolg'
+      preLoaderRoute: typeof PremiumErfolgRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privatunterricht': {
@@ -359,6 +379,7 @@ const rootRouteChildren: RootRouteChildren = {
   JobBewerbungRoute: JobBewerbungRouteWithChildren,
   LektionenRoute: LektionenRoute,
   PreiseRoute: PreiseRoute,
+  PremiumErfolgRoute: PremiumErfolgRoute,
   PrivatunterrichtRoute: PrivatunterrichtRoute,
   UeberUnsRoute: UeberUnsRoute,
   LektionSlugRoute: LektionSlugRoute,

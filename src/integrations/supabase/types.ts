@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      _translation_jobs_test: {
+        Row: {
+          lang: string | null
+          req_id: number | null
+          source_text: string | null
+        }
+        Insert: {
+          lang?: string | null
+          req_id?: number | null
+          source_text?: string | null
+        }
+        Update: {
+          lang?: string | null
+          req_id?: number | null
+          source_text?: string | null
+        }
+        Relationships: []
+      }
       categories: {
         Row: {
           id: string
@@ -416,22 +434,64 @@ export type Database = {
       }
       subscriptions: {
         Row: {
+          cancel_at_period_end: boolean
+          current_period_end: string | null
           plan: string
           started_at: string
           status: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          updated_at: string
           user_id: string
         }
         Insert: {
+          cancel_at_period_end?: boolean
+          current_period_end?: string | null
           plan?: string
           started_at?: string
           status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
           user_id: string
         }
         Update: {
+          cancel_at_period_end?: boolean
+          current_period_end?: string | null
           plan?: string
           started_at?: string
           status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      translation_backfill_jobs: {
+        Row: {
+          created_at: string | null
+          id: number
+          lang: string
+          req_id: number
+          source_text: string
+          source_type: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          lang: string
+          req_id: number
+          source_text: string
+          source_type: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          lang?: string
+          req_id?: number
+          source_text?: string
+          source_type?: string
         }
         Relationships: []
       }
@@ -549,12 +609,52 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      apply_global_dialog_translation_map: {
+        Args: { p_map: Json }
+        Returns: number
+      }
+      apply_global_place_translation_map: {
+        Args: { p_map: Json }
+        Returns: number
+      }
+      apply_global_scene_translation_map: {
+        Args: { p_map: Json }
+        Returns: number
+      }
+      apply_global_vocab_translation_map: {
+        Args: { p_map: Json }
+        Returns: number
+      }
+      apply_lesson_translation_map: {
+        Args: { p_map: Json; p_source: string; p_topic: string }
+        Returns: number
+      }
+      apply_translation_backfill: {
+        Args: { p_source_type: string }
+        Returns: number
+      }
+      enqueue_translation_backfill: {
+        Args: { p_limit?: number; p_source_type: string }
+        Returns: number
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      rebuild_premium_questions: {
+        Args: { p_lesson: string }
+        Returns: undefined
+      }
+      rebuild_quality_questions: {
+        Args: { p_category: string }
+        Returns: number
+      }
+      sync_quality_questions_for_lesson: {
+        Args: { p_lesson: string }
+        Returns: undefined
       }
     }
     Enums: {
@@ -574,12 +674,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -603,11 +703,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -628,11 +728,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -653,11 +753,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -670,11 +770,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
