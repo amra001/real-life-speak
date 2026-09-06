@@ -34,6 +34,24 @@ function writeCache(sourceText: string, lang: TranslationLang, value: string) {
   }
 }
 
+async function loadSourceText(sourceType?: SourceType, sourceId?: string) {
+  if (!sourceType || !sourceId) return "";
+  try {
+    if (sourceType === "scene") {
+      const { data } = await supabase.from("lesson_scenes").select("german_text").eq("id", sourceId).maybeSingle();
+      return String(data?.german_text ?? "").trim();
+    }
+    if (sourceType === "dialog") {
+      const { data } = await supabase.from("dialogs").select("german_text").eq("id", sourceId).maybeSingle();
+      return String(data?.german_text ?? "").trim();
+    }
+    const { data } = await supabase.from("vocabulary").select("term").eq("id", sourceId).maybeSingle();
+    return String(data?.term ?? "").trim();
+  } catch {
+    return "";
+  }
+}
+
 async function publicFallback(sourceText: string, lang: TranslationLang) {
   const target = targetCode[lang];
   if (!target || !sourceText.trim()) return "";
@@ -59,7 +77,8 @@ async function publicFallback(sourceText: string, lang: TranslationLang) {
 /**
  * Übersetzung mit klar sichtbarer Hilfssprache.
  * Priorität: gespeicherte Übersetzung -> interner Übersetzungsdienst -> öffentlicher Fallback.
- * So bleiben Kundenansichten auch dann vollständig, wenn einzelne Alt-Datensätze noch nicht vorbefüllt sind.
+ * Fehlende Übersetzungen werden niemals aus einem alten Hilfssprachentext abgeleitet,
+ * sondern immer aus dem aktuellen deutschen Quelldatensatz.
  */
 export function Translated({
   text,
@@ -94,12 +113,15 @@ export function Translated({
   }, [lang, sourceText, text]);
 
   useEffect(() => {
-    if (text || !enabled || !lang || lang === "none" || !sourceText.trim()) return;
+    if (text || !enabled || !lang || lang === "none") return;
     let active = true;
     setLoading(true);
 
     const run = async () => {
-      const cached = readCache(sourceText, lang);
+      const german = sourceText.trim() || (await loadSourceText(sourceType, sourceId));
+      if (!german) return "";
+
+      const cached = readCache(german, lang);
       if (cached) return cached;
 
       if (sourceType && sourceId) {
@@ -108,14 +130,19 @@ export function Translated({
             body: { sourceType, sourceId, lang },
           });
           const internal = !error ? String(data?.translation ?? "").trim() : "";
-          if (internal) return internal;
+          if (internal) {
+            writeCache(german, lang, internal);
+            return internal;
+          }
         } catch {
           // Continue with the public fallback below.
         }
       }
 
       try {
-        return await publicFallback(sourceText, lang);
+        const fallback = await publicFallback(german, lang);
+        if (fallback) writeCache(german, lang, fallback);
+        return fallback;
       } catch {
         return "";
       }
@@ -125,7 +152,6 @@ export function Translated({
       .then((value) => {
         if (!active || !value) return;
         setResolved(value);
-        writeCache(sourceText, lang, value);
       })
       .finally(() => {
         if (active) setLoading(false);
