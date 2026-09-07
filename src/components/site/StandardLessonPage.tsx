@@ -20,7 +20,7 @@ import { toast } from "sonner";
 const SITUATIONS = 15;
 const PRACTICE_MIN = 20;
 const TEST_COUNT = 50;
-const CURATED_SCENE_TOPICS = new Set(["baeckerei", "bus", "supermarkt", "apotheke"]);
+const CURATED_SCENE_TOPICS = new Set(["baeckerei", "bus", "supermarkt", "apotheke", "kindergarten"]);
 
 type AnyScene = {
   id: string;
@@ -43,7 +43,6 @@ type AnyDialog = {
 };
 
 type DialogGroup = { title: string; lines: AnyDialog[] };
-
 type Section = { id: string; label: string; render: () => React.ReactNode };
 
 function previewHost() {
@@ -56,63 +55,31 @@ function normalizeScenes(raw: AnyScene[], fallbackKey: string | null): AnyScene[
   const ordered = [...raw].sort((a, b) => a.position - b.position);
   if (!ordered.length) return [];
   if (ordered.length === SITUATIONS) return ordered;
-
   if (ordered.length > SITUATIONS) {
     return Array.from({ length: SITUATIONS }, (_, i) => {
       const start = Math.floor((i * ordered.length) / SITUATIONS);
       return ordered[start] as AnyScene;
     });
   }
-
   const focus = [
-    "Achte auf den Ort und die Personen.",
-    "Achte auf die wichtigsten Wörter.",
-    "Sprich den Satz einmal laut nach.",
-    "Welche Information ist hier wichtig?",
-    "Wie würdest du in dieser Situation reagieren?",
-    "Achte auf die höfliche Formulierung.",
-    "Merke dir die Schlüsselwörter.",
-    "Was passiert als Nächstes?",
-    "Formuliere denselben Inhalt mit eigenen Worten.",
-    "Welche Frage könnte man hier stellen?",
-    "Welche Antwort wäre passend?",
-    "Achte auf Artikel und Präpositionen.",
-    "Welche Alternative könnte es geben?",
-    "Was ist das Ziel der Person?",
-    "Fasse die Situation in einem Satz zusammen.",
+    "Achte auf den Ort und die Personen.", "Achte auf die wichtigsten Wörter.", "Sprich den Satz einmal laut nach.",
+    "Welche Information ist hier wichtig?", "Wie würdest du in dieser Situation reagieren?", "Achte auf die höfliche Formulierung.",
+    "Merke dir die Schlüsselwörter.", "Was passiert als Nächstes?", "Formuliere denselben Inhalt mit eigenen Worten.",
+    "Welche Frage könnte man hier stellen?", "Welche Antwort wäre passend?", "Achte auf Artikel und Präpositionen.",
+    "Welche Alternative könnte es geben?", "Was ist das Ziel der Person?", "Fasse die Situation in einem Satz zusammen.",
   ];
-
   return Array.from({ length: SITUATIONS }, (_, i) => {
     const src = ordered[i % ordered.length] as AnyScene;
-    return {
-      ...src,
-      id: `${src.id}-std-${i + 1}`,
-      position: i + 1,
-      image_key: src.image_key ?? fallbackKey,
-      hint: i < ordered.length ? src.hint : focus[i],
-    };
+    return { ...src, id: `${src.id}-std-${i + 1}`, position: i + 1, image_key: src.image_key ?? fallbackKey, hint: i < ordered.length ? src.hint : focus[i] };
   });
 }
 
 function makeFallbackDialog(title: string, scenes: AnyScene[], offset: number): DialogGroup {
   const pool = scenes.slice(offset, offset + 8).length >= 4 ? scenes.slice(offset, offset + 8) : scenes.slice(0, 8);
-  return {
-    title,
-    lines: pool.map((s, i) => ({
-      id: `${title}-${i}`,
-      position: i + 1,
-      dialog_index: title.includes("2") ? 2 : 1,
-      dialog_title: title,
-      speaker: i % 2 === 0 ? "Person A" : "Person B",
-      german_text: s.german_text,
-      translations: s.translations ?? {},
-    })),
-  };
+  return { title, lines: pool.map((s, i) => ({ id: `${title}-${i}`, position: i + 1, dialog_index: title.includes("2") ? 2 : 1, dialog_title: title, speaker: i % 2 === 0 ? "Person A" : "Person B", german_text: s.german_text, translations: s.translations ?? {} })) };
 }
 
-function lineText(d: AnyDialog) {
-  return (d.german_text ?? d.line ?? "").trim();
-}
+function lineText(d: AnyDialog) { return (d.german_text ?? d.line ?? "").trim(); }
 
 function groupDialogs(raw: AnyDialog[]): DialogGroup[] {
   const map = new Map<number, DialogGroup>();
@@ -151,50 +118,18 @@ function autoQuestions(scenes: AnyScene[], section: "practice" | "test", count: 
     const current = scenes[i % scenes.length] as AnyScene;
     if (i % 6 === 5) {
       const items = [0, 1, 2].map((n) => scenes[(i + n) % scenes.length]?.german_text ?? "");
-      return {
-        id: `auto-${section}-order-${i}`,
-        position: 5000 + i,
-        kind: "order",
-        prompt: "Bringe die Schritte in eine sinnvolle Reihenfolge.",
-        explanation: "Orientiere dich am Ablauf der Situation.",
-        section,
-        data: { items },
-        quiz_answers: [],
-      };
+      return { id: `auto-${section}-order-${i}`, position: 5000 + i, kind: "order", prompt: "Bringe die Schritte in eine sinnvolle Reihenfolge.", explanation: "Orientiere dich am Ablauf der Situation.", section, data: { items }, quiz_answers: [] };
     }
     const others = [1, 3, 5].map((n) => scenes[(i + n) % scenes.length] as AnyScene).filter(Boolean);
-    const answers = [current, ...others].slice(0, 4).map((s, idx) => ({
-      id: `auto-${section}-${i}-${idx}`,
-      position: idx + 1,
-      text: s.german_text,
-      is_correct: idx === 0,
-    }));
-    return {
-      id: `auto-${section}-choice-${i}`,
-      position: 5000 + i,
-      kind: "single_choice",
-      prompt: i % 2 === 0 ? "Welche Aussage passt zur Situation?" : "Welche Aussage gehört logisch in den Ablauf?",
-      explanation: "Die richtige Antwort entspricht der gelernten Situation.",
-      section,
-      data: null,
-      quiz_answers: answers,
-    };
+    const answers = [current, ...others].slice(0, 4).map((s, idx) => ({ id: `auto-${section}-${i}-${idx}`, position: idx + 1, text: s.german_text, is_correct: idx === 0 }));
+    return { id: `auto-${section}-choice-${i}`, position: 5000 + i, kind: "single_choice", prompt: i % 2 === 0 ? "Welche Aussage passt zur Situation?" : "Welche Aussage gehört logisch in den Ablauf?", explanation: "Die richtige Antwort entspricht der gelernten Situation.", section, data: null, quiz_answers: answers };
   });
 }
 
 function dialogBuilder(dialogs: DialogGroup[], scenes: AnyScene[]) {
   const lines = dialogs.flatMap((g) => g.lines).map((d) => `${d.speaker ?? "Person"}: ${lineText(d)}`).filter(Boolean).slice(0, 10);
   const items = lines.length >= 4 ? lines : scenes.slice(0, 8).map((s, i) => `${i % 2 === 0 ? "Person A" : "Person B"}: ${s.german_text}`);
-  return [{
-    id: "auto-dialog-builder",
-    position: 9000,
-    kind: "dialog_order",
-    prompt: "Baue den Dialog in die richtige Reihenfolge.",
-    explanation: "Achte auf Begrüßung, Anliegen, Rückfragen, Lösung und Abschluss.",
-    section: "dialog_builder",
-    data: { items },
-    quiz_answers: [],
-  }];
+  return [{ id: "auto-dialog-builder", position: 9000, kind: "dialog_order", prompt: "Baue den Dialog in die richtige Reihenfolge.", explanation: "Achte auf Begrüßung, Anliegen, Rückfragen, Lösung und Abschluss.", section: "dialog_builder", data: { items }, quiz_answers: [] }];
 }
 
 function PremiumGate() {
@@ -207,7 +142,6 @@ export function StandardLessonPage({ slug }: { slug: string }) {
   const { isPremium } = usePremium();
   const { lang, setLang, visible, setVisible, translate, langLabel } = useTranslationPreference();
   const [tab, setTab] = useState(0);
-
   if (isLoading) return <div className="mx-auto max-w-5xl px-4 py-20">Lektion wird geladen …</div>;
   if (!data?.lesson) return <div className="mx-auto max-w-5xl px-4 py-20">Lektion nicht gefunden.</div>;
 
@@ -261,12 +195,7 @@ export function StandardLessonPage({ slug }: { slug: string }) {
     {levelInfo && <p className="mt-2 text-sm text-muted-foreground"><strong className="text-foreground">{levelInfo.label}:</strong> {levelInfo.description}</p>}
     {lesson.topic_slug && <LevelSwitch topicSlug={lesson.topic_slug} currentSlug={lesson.slug}/>} 
     <div className="mt-6"><TranslationControls lang={lang} setLang={setLang} visible={visible} setVisible={setVisible}/></div>
-
-    <div className="mt-6 rounded-3xl border border-border bg-card p-5 shadow-sm">
-      <div className="flex flex-wrap gap-2">{sections.map((s, i) => <button key={s.id} type="button" onClick={() => setTab(i)} className={i === current ? "rounded-full bg-foreground px-4 py-2 text-sm text-background" : "rounded-full border border-border px-4 py-2 text-sm hover:bg-muted"}><span className="mr-1 opacity-70">{i + 1}</span>{s.label}</button>)}</div>
-      <div className="mt-4 flex items-center gap-3"><Progress value={((current + 1) / 9) * 100} className="flex-1"/><span className="text-sm text-muted-foreground">Schritt {current + 1}/9</span></div>
-    </div>
-
+    <div className="mt-6 rounded-3xl border border-border bg-card p-5 shadow-sm"><div className="flex flex-wrap gap-2">{sections.map((s, i) => <button key={s.id} type="button" onClick={() => setTab(i)} className={i === current ? "rounded-full bg-foreground px-4 py-2 text-sm text-background" : "rounded-full border border-border px-4 py-2 text-sm hover:bg-muted"}><span className="mr-1 opacity-70">{i + 1}</span>{s.label}</button>)}</div><div className="mt-4 flex items-center gap-3"><Progress value={((current + 1) / 9) * 100} className="flex-1"/><span className="text-sm text-muted-foreground">Schritt {current + 1}/9</span></div></div>
     <div className="mt-7">{sections[current]?.render()}</div>
     <div className="mt-8 flex justify-between"><Button variant="outline" disabled={current === 0} onClick={() => setTab(current - 1)}><ChevronLeft className="mr-1 h-4 w-4"/>Zurück</Button><Button disabled={current === 8} onClick={() => setTab(current + 1)}>Weiter<ChevronRight className="ml-1 h-4 w-4"/></Button></div>
   </div>;
@@ -280,10 +209,7 @@ function SituationSection({ scenes, fallbackKey, translate, langLabel, lang, tra
 }
 
 function VocabSection({ vocab, scenes, translate, langLabel, lang, translationEnabled }: { vocab: any[]; scenes: AnyScene[]; translate: (v?: Record<string, string>) => string; langLabel: string; lang: TranslationLang; translationEnabled: boolean }) {
-  if (!vocab.length) {
-    const words = [...new Set(scenes.flatMap((s) => s.german_text.replace(/[„“.,!?():]/g, " ").split(/\s+/)).filter((w) => w.length > 5).map((w) => w.toLowerCase()))].slice(0, 20);
-    return <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">{words.map((w) => <div key={w} className="rounded-2xl border border-border bg-card p-4 font-medium capitalize">{w}</div>)}</div>;
-  }
+  if (!vocab.length) { const words = [...new Set(scenes.flatMap((s) => s.german_text.replace(/[„“.,!?():]/g, " ").split(/\s+/)).filter((w) => w.length > 5).map((w) => w.toLowerCase()))].slice(0, 20); return <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">{words.map((w) => <div key={w} className="rounded-2xl border border-border bg-card p-4 font-medium capitalize">{w}</div>)}</div>; }
   return <div className="grid gap-3 md:grid-cols-2">{vocab.map((v, i) => { const term = v.term ?? v.word ?? ""; return <div key={v.id ?? i} className="rounded-2xl border border-border bg-card p-4"><div className="font-serif text-xl font-semibold">{v.article ? `${v.article} ` : ""}{term}</div>{v.plural && <div className="text-xs text-muted-foreground">Plural: {v.plural}</div>}{v.example && <p className="mt-2 text-sm">{v.example}</p>}<Translated text={translate(v.translations)} langLabel={langLabel} sourceType="vocab" sourceId={v.id} lang={lang} enabled={translationEnabled}/></div>; })}</div>;
 }
 
@@ -302,8 +228,6 @@ function GrammarSection({ level, notes, questions, lang }: { level: string; note
 }
 
 function LevelSwitch({ topicSlug, currentSlug }: { topicSlug: string; currentSlug: string }) {
-  const { data } = useQuery(topicLessonsQuery(topicSlug));
-  const siblings = data ?? [];
-  if (siblings.length < 2) return null;
+  const { data } = useQuery(topicLessonsQuery(topicSlug)); const siblings = data ?? []; if (siblings.length < 2) return null;
   return <div className="mt-5 flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-card px-4 py-3"><span className="mr-1 text-xs uppercase tracking-widest text-muted-foreground">Niveau wählen</span>{siblings.map((s: any) => <Link key={s.id} to="/lektion/$slug" params={{ slug: s.slug }} className={s.slug === currentSlug ? "rounded-full bg-foreground px-3 py-1.5 text-sm text-background" : "rounded-full border border-border px-3 py-1.5 text-sm hover:bg-muted"}>{s.level}{s.is_premium ? " · Premium" : " · Gratis"}</Link>)}</div>;
 }
