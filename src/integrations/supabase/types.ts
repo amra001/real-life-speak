@@ -470,7 +470,9 @@ export type Database = {
       }
       translation_backfill_jobs: {
         Row: {
+          active: boolean
           created_at: string | null
+          expires_at: string | null
           id: number
           lang: string
           req_id: number
@@ -478,7 +480,9 @@ export type Database = {
           source_type: string
         }
         Insert: {
+          active?: boolean
           created_at?: string | null
+          expires_at?: string | null
           id?: number
           lang: string
           req_id: number
@@ -486,7 +490,9 @@ export type Database = {
           source_type: string
         }
         Update: {
+          active?: boolean
           created_at?: string | null
+          expires_at?: string | null
           id?: number
           lang?: string
           req_id?: number
@@ -609,6 +615,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      _apply_translation_batch: {
+        Args: { p_category: string; p_kind: string; p_marker: string }
+        Returns: number
+      }
+      _queue_translation_batch: {
+        Args: {
+          p_batch?: number
+          p_category: string
+          p_kind: string
+          p_marker: string
+        }
+        Returns: number
+      }
       apply_global_dialog_translation_map: {
         Args: { p_map: Json }
         Returns: number
@@ -629,14 +648,6 @@ export type Database = {
         Args: { p_map: Json; p_source: string; p_topic: string }
         Returns: number
       }
-      apply_translation_backfill: {
-        Args: { p_source_type: string }
-        Returns: number
-      }
-      enqueue_translation_backfill: {
-        Args: { p_limit?: number; p_source_type: string }
-        Returns: number
-      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -650,6 +661,11 @@ export type Database = {
       }
       rebuild_quality_questions: {
         Args: { p_category: string }
+        Returns: number
+      }
+      rebuild_safe_questions: { Args: { p_level: string }; Returns: Json }
+      replace_vocab_examples_batch: {
+        Args: { p_level: string; p_limit?: number }
         Returns: number
       }
       sync_quality_questions_for_lesson: {
