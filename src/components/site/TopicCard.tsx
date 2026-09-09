@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Lock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { lessonImage } from "@/lib/lesson-images";
+import { generatedSchoolFamilyImage } from "@/lib/generated-school-family-images";
 import { categoryName } from "@/lib/taxonomy";
 import type { Topic } from "@/lib/data";
 
@@ -12,6 +13,8 @@ function topicImage(key: string | null | undefined): string {
 
 /** Eine Karte pro Thema – die Niveaus A1/A2/B1 liegen auf der Themenseite. */
 export function TopicCard({ topic }: { topic: Topic }) {
+  const generatedImage = generatedSchoolFamilyImage(topic.slug);
+
   return (
     <Link
       to="/thema/$slug"
@@ -20,7 +23,7 @@ export function TopicCard({ topic }: { topic: Topic }) {
     >
       <div className="relative aspect-video overflow-hidden bg-muted">
         <img
-          src={topicImage(topic.thumbnail_key)}
+          src={generatedImage ?? topicImage(topic.thumbnail_key)}
           alt={topic.title}
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
