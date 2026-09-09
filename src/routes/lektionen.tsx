@@ -27,12 +27,12 @@ import {
 } from "@/lib/taxonomy";
 
 type SearchState = {
-  kategorie?: string;
-  unterthema?: string;
-  level?: string;
-  region?: string;
-  zugang?: string;
-  q?: string;
+  kategorie?: string | undefined;
+  unterthema?: string | undefined;
+  level?: string | undefined;
+  region?: string | undefined;
+  zugang?: string | undefined;
+  q?: string | undefined;
 };
 
 type AreaMode = "alltag" | "beruf" | undefined;

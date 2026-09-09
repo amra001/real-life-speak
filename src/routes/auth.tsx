@@ -9,9 +9,10 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    next: typeof search.next === "string" && search.next.startsWith("/") ? search.next : "/dashboard",
-  }),
+  validateSearch: (search: Record<string, unknown>): { next?: string | undefined } => {
+    const n = search["next"];
+    return typeof n === "string" && n.startsWith("/") ? { next: n } : {};
+  },
   head: () => ({
     meta: [
       { title: "Anmelden – RealLife German" },
