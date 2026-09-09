@@ -7,6 +7,11 @@ import { lessonImage } from "@/lib/lesson-images";
 import { topicOverviewQuery } from "@/lib/data";
 import { categoryName, formatDuration, LEVEL_INFO, REGIONS, type Level } from "@/lib/taxonomy";
 
+function topicImage(key: string | null | undefined): string {
+  if (key?.startsWith("data:image/")) return key;
+  return lessonImage(key);
+}
+
 export const Route = createFileRoute("/thema/$slug")({
   head: ({ params }) => {
     const name = params.slug.replace(/-/g, " ");
@@ -80,7 +85,7 @@ function TopicPage() {
           </p>
         </div>
         <img
-          src={lessonImage(first.thumbnail_key)}
+          src={topicImage(first.thumbnail_key)}
           alt={first.topic_title ?? first.title}
           className="aspect-video w-full rounded-2xl border border-border object-cover"
         />
