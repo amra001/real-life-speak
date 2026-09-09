@@ -28,7 +28,7 @@ type AnyScene = {
   german_text: string;
   image_key?: string | null;
   translations?: Record<string, string>;
-  hint?: string | null;
+  hint?: string | null | undefined;
 };
 
 type AnyDialog = {
