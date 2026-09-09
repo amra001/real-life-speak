@@ -4,6 +4,7 @@ import { ChevronLeft, Lock, PlayCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { lessonImage } from "@/lib/lesson-images";
+import { generatedSchoolFamilyImage } from "@/lib/generated-school-family-images";
 import { topicOverviewQuery } from "@/lib/data";
 import { categoryName, formatDuration, LEVEL_INFO, REGIONS, type Level } from "@/lib/taxonomy";
 
@@ -53,6 +54,7 @@ function TopicPage() {
     );
 
   const region = REGIONS.find((r) => r.slug === first.region);
+  const generatedImage = generatedSchoolFamilyImage(slug);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
@@ -85,7 +87,7 @@ function TopicPage() {
           </p>
         </div>
         <img
-          src={topicImage(first.thumbnail_key)}
+          src={generatedImage ?? topicImage(first.thumbnail_key)}
           alt={first.topic_title ?? first.title}
           className="aspect-video w-full rounded-2xl border border-border object-cover"
         />
