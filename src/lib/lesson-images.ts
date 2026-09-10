@@ -17,23 +17,28 @@ import kueche from "@/assets/lesson-kueche.jpg";
 import pflege from "@/assets/lesson-pflege.jpg";
 import kasse from "@/assets/lesson-kasse.jpg";
 import lager from "@/assets/lesson-lager.jpg";
+import elternsprechtagApproved from "@/lib/generated-elternsprechtag-image";
+import kindergartenApproved from "@/lib/generated-kindergarten-image";
+import schuleApproved from "@/lib/generated-schule-image";
+import lehrerApproved from "@/lib/generated-lehrer-image";
+import kindKrankApproved from "@/lib/generated-kind-krank-image";
 
 /* Einheitlicher Bäckerei-Illustrationssatz: 01–10 */
-import bakery01 from "@/assets/bakery-illustrated-01.webp"; // Begrüßung / Gespräch an der Theke
-import bakery02 from "@/assets/bakery-illustrated-02.webp"; // Mara schaut die Auslage an
-import bakery03 from "@/assets/bakery-illustrated-03.webp"; // Verkäuferin zeigt zwei Kuchenoptionen
-import bakery04 from "@/assets/bakery-illustrated-04.webp"; // Mara wählt / zeigt auf Gebäck
-import bakery05 from "@/assets/bakery-illustrated-05.webp"; // Übergabe eines Kuchenstücks
-import bakery06 from "@/assets/bakery-illustrated-06.webp"; // Brot + Schneidemaschine, vor dem Schneiden
-import bakery07 from "@/assets/bakery-illustrated-07.webp"; // Brot wird tatsächlich geschnitten
-import bakery08 from "@/assets/bakery-illustrated-08.webp"; // Kasse / Tüte / Preis
-import bakery09 from "@/assets/bakery-illustrated-09.webp"; // Kartenzahlung
-import bakery10 from "@/assets/bakery-illustrated-10.webp"; // Tüte nehmen / Verabschiedung
-import bakeryWindow from "@/assets/bakery-illustrated-window.jpg"; // Blick aus der Wohnung auf die Bäckerei
-import bakeryStreet from "@/assets/bakery-illustrated-street.jpg"; // Außen / Straße vor der Bäckerei
-import bakeryWallet from "@/assets/bakery-illustrated-wallet.jpg"; // Mara öffnet die Geldbörse, zu wenig Bargeld
-import bakeryReceipt from "@/assets/bakery-illustrated-receipt.jpg"; // Übergabe des Kassenbons nach Kartenzahlung
-import bakeryWalkHome from "@/assets/bakery-illustrated-walk-home.jpg"; // Rückweg über die Straße mit Bäckereitüte
+import bakery01 from "@/assets/bakery-illustrated-01.webp";
+import bakery02 from "@/assets/bakery-illustrated-02.webp";
+import bakery03 from "@/assets/bakery-illustrated-03.webp";
+import bakery04 from "@/assets/bakery-illustrated-04.webp";
+import bakery05 from "@/assets/bakery-illustrated-05.webp";
+import bakery06 from "@/assets/bakery-illustrated-06.webp";
+import bakery07 from "@/assets/bakery-illustrated-07.webp";
+import bakery08 from "@/assets/bakery-illustrated-08.webp";
+import bakery09 from "@/assets/bakery-illustrated-09.webp";
+import bakery10 from "@/assets/bakery-illustrated-10.webp";
+import bakeryWindow from "@/assets/bakery-illustrated-window.jpg";
+import bakeryStreet from "@/assets/bakery-illustrated-street.jpg";
+import bakeryWallet from "@/assets/bakery-illustrated-wallet.jpg";
+import bakeryReceipt from "@/assets/bakery-illustrated-receipt.jpg";
+import bakeryWalkHome from "@/assets/bakery-illustrated-walk-home.jpg";
 
 function placeDiagram(preposition: string): string {
   const positions: Record<string, { x: number; y: number; extra?: string }> = {
@@ -46,11 +51,15 @@ function placeDiagram(preposition: string): string {
     zwischen: { x: 320, y: 230, extra: "between" },
     "gegenüber": { x: 510, y: 230, extra: "opposite" },
   };
-  const p = (positions[preposition] ?? positions["neben"]) as { x: number; y: number; extra?: string };
+  const p = positions[preposition] ?? positions.neben;
   const between = p.extra === "between";
   const opposite = p.extra === "opposite";
   const ref1X = between ? 190 : opposite ? 190 : 255;
-  const ref2 = between ? '<rect x="410" y="145" width="120" height="170" rx="18" fill="#ddd7cc" stroke="#292722" stroke-width="4"/>' : opposite ? '<rect x="430" y="145" width="120" height="170" rx="18" fill="#ddd7cc" stroke="#292722" stroke-width="4"/>' : '';
+  const ref2 = between
+    ? '<rect x="410" y="145" width="120" height="170" rx="18" fill="#ddd7cc" stroke="#292722" stroke-width="4"/>'
+    : opposite
+      ? '<rect x="430" y="145" width="120" height="170" rx="18" fill="#ddd7cc" stroke="#292722" stroke-width="4"/>'
+      : '';
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
     <rect width="640" height="360" fill="#f6f1e7"/>
     <rect x="${ref1X}" y="145" width="130" height="170" rx="18" fill="#ddd7cc" stroke="#292722" stroke-width="4"/>
@@ -77,18 +86,22 @@ export const LESSON_IMAGES: Record<string, string> = {
   wohnung,
   reparatur,
   bahnhof,
-  schule,
+  schule: schuleApproved,
   buero,
   kueche,
   pflege,
   kasse,
   lager,
+  elternsprechtag: elternsprechtagApproved,
+  kindergarten: kindergartenApproved,
+  lehrer: lehrerApproved,
+  "kind-krank": kindKrankApproved,
   arzt: hausarzt,
   sicherheit: baustelle,
   "patienten-ansprechen": pflege,
   "erster-arbeitstag": buero,
   "wohnung-besichtigen": wohnung,
-  elternabend: schule,
+  elternabend: schuleApproved,
   "place-auf": placeDiagram("auf"),
   "place-in": placeDiagram("in"),
   "place-an": placeDiagram("an"),
@@ -102,7 +115,16 @@ export const LESSON_IMAGES: Record<string, string> = {
 export const THUMBNAIL_KEYS = Object.keys(LESSON_IMAGES);
 
 export function lessonImage(key: string | null | undefined): string {
+  if (key?.startsWith("data:image/")) return key;
   if (key && LESSON_IMAGES[key]) return LESSON_IMAGES[key];
+
+  // Sequenzielle Szenenschlüssel wie kindergarten-02 oder kind-krank-11
+  // dürfen niemals auf das allgemeine Supermarktbild zurückfallen.
+  if (key) {
+    const baseKey = key.replace(/-\d+$/, "");
+    if (LESSON_IMAGES[baseKey]) return LESSON_IMAGES[baseKey];
+  }
+
   return supermarkt;
 }
 
@@ -176,7 +198,6 @@ export const SCENE_IMAGES: Record<string,string> = {
   'markt-karte': s_markt_karte,
   'markt-ausgang': s_markt_ausgang,
 
-  /* Semantische Bäckerei-Schlüssel */
   'baeck-eintreten': bakery02,
   'baeck-auslage': bakery02,
   'baeck-bestellen': bakery01,
@@ -186,7 +207,6 @@ export const SCENE_IMAGES: Record<string,string> = {
   'baeck-bezahlen': bakery09,
   'baeck-erhalten': bakery10,
 
-  /* Die bestehenden sequenziellen Keys werden nach Szeneninhalt gemappt. */
   'baeck-new-01': bakery02,
   'baeck-new-02': bakery02,
   'baeck-new-03': bakery02,
@@ -203,7 +223,6 @@ export const SCENE_IMAGES: Record<string,string> = {
   'baeck-new-14': bakery09,
   'baeck-new-15': bakery10,
 
-  /* Direkte Keys für spätere exakte Zuordnung. */
   'baeck-ill-01': bakery01,
   'baeck-ill-02': bakery02,
   'baeck-ill-03': bakery03,
@@ -215,7 +234,6 @@ export const SCENE_IMAGES: Record<string,string> = {
   'baeck-ill-09': bakery09,
   'baeck-ill-10': bakery10,
 
-  /* Außen- und Kontextmotive */
   'baeck-fenster': bakeryWindow,
   'baeck-strasse': bakeryStreet,
   'baeck-wallet': bakeryWallet,
