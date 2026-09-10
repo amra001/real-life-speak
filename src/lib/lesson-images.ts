@@ -51,7 +51,7 @@ function placeDiagram(preposition: string): string {
     zwischen: { x: 320, y: 230, extra: "between" },
     "gegenüber": { x: 510, y: 230, extra: "opposite" },
   };
-  const p = positions[preposition] ?? positions.neben;
+  const p = positions[preposition] ?? { x: 520, y: 230 };
   const between = p.extra === "between";
   const opposite = p.extra === "opposite";
   const ref1X = between ? 190 : opposite ? 190 : 255;
