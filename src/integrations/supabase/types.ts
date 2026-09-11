@@ -14,6 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      _a1_master_blob: {
+        Row: {
+          chunk: string
+          piece: number
+        }
+        Insert: {
+          chunk: string
+          piece: number
+        }
+        Update: {
+          chunk?: string
+          piece?: number
+        }
+        Relationships: []
+      }
+      _a1_master_gate: {
+        Row: {
+          nonce: string
+        }
+        Insert: {
+          nonce: string
+        }
+        Update: {
+          nonce?: string
+        }
+        Relationships: []
+      }
+      _a1_master_payloads: {
+        Row: {
+          imported: boolean
+          payload: Json
+          slug: string
+        }
+        Insert: {
+          imported?: boolean
+          payload: Json
+          slug: string
+        }
+        Update: {
+          imported?: boolean
+          payload?: Json
+          slug?: string
+        }
+        Relationships: []
+      }
+      _a1_master_stage: {
+        Row: {
+          chunk: string
+          seq: number
+        }
+        Insert: {
+          chunk: string
+          seq: number
+        }
+        Update: {
+          chunk?: string
+          seq?: number
+        }
+        Relationships: []
+      }
       _translation_jobs_test: {
         Row: {
           lang: string | null
@@ -29,6 +89,24 @@ export type Database = {
           lang?: string | null
           req_id?: number | null
           source_text?: string | null
+        }
+        Relationships: []
+      }
+      bank_import_staging: {
+        Row: {
+          chunk_no: number
+          level: string
+          payload: string
+        }
+        Insert: {
+          chunk_no: number
+          level: string
+          payload: string
+        }
+        Update: {
+          chunk_no?: number
+          level?: string
+          payload?: string
         }
         Relationships: []
       }
@@ -177,6 +255,7 @@ export type Database = {
       lesson_scenes: {
         Row: {
           german_text: string
+          hint: string | null
           id: string
           image_key: string | null
           lesson_id: string
@@ -186,6 +265,7 @@ export type Database = {
         }
         Insert: {
           german_text: string
+          hint?: string | null
           id?: string
           image_key?: string | null
           lesson_id: string
@@ -195,6 +275,7 @@ export type Database = {
         }
         Update: {
           german_text?: string
+          hint?: string | null
           id?: string
           image_key?: string | null
           lesson_id?: string
@@ -615,9 +696,35 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      _a1_batch: { Args: { p_n: number }; Returns: Json }
+      _a1_master_import: {
+        Args: { p: Json; p_slug: string }
+        Returns: undefined
+      }
+      _a1_master_import_fast: {
+        Args: { p: Json; p_slug: string }
+        Returns: undefined
+      }
+      _a1_master_rpc: {
+        Args: { p_nonce: string; p_payload: Json; p_slug: string }
+        Returns: Json
+      }
+      _a1_unpack: { Args: never; Returns: number }
       _apply_translation_batch: {
         Args: { p_category: string; p_kind: string; p_marker: string }
         Returns: number
+      }
+      _bank_import_core: {
+        Args: { p_lesson: string; p_payload: Json }
+        Returns: undefined
+      }
+      _bank_import_questions: {
+        Args: { p_lesson: string; p_payload: Json }
+        Returns: undefined
+      }
+      _lesson_prepare_replace: {
+        Args: { p_lesson: string }
+        Returns: undefined
       }
       _queue_translation_batch: {
         Args: {
