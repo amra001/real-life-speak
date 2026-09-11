@@ -160,9 +160,10 @@ export function StandardLessonPage({ slug }: { slug: string }) {
   const placeQuestions = questions.filter((q) => q.section === "places");
   const grammarQuestions = questions.filter((q) => q.section === "grammar");
   const builderQuestions = questions.filter((q) => q.section === "dialog_builder");
-  const practice = [...rawPractice, ...autoQuestions(scenes, "practice", Math.max(0, PRACTICE_MIN - rawPractice.length))];
-  const tests = [...rawTests, ...autoQuestions(scenes, "test", Math.max(0, TEST_COUNT - rawTests.length))].slice(0, TEST_COUNT);
-  const builder = builderQuestions.length ? builderQuestions : dialogBuilder(rawDialogs, scenes);
+  const isA1 = lesson.level === "A1";
+  const practice = isA1 ? rawPractice : [...rawPractice, ...autoQuestions(scenes, "practice", Math.max(0, PRACTICE_MIN - rawPractice.length))];
+  const tests = isA1 ? rawTests : [...rawTests, ...autoQuestions(scenes, "test", Math.max(0, TEST_COUNT - rawTests.length))].slice(0, TEST_COUNT);
+  const builder = isA1 ? builderQuestions : (builderQuestions.length ? builderQuestions : dialogBuilder(rawDialogs, scenes));
   const tr = (value?: Record<string, string>) => translate(value ?? {});
   const levelInfo = LEVEL_INFO[lesson.level as keyof typeof LEVEL_INFO];
   const region = REGIONS.find((r) => r.slug === lesson.region);
