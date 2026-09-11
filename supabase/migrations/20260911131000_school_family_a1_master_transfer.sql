@@ -10,6 +10,11 @@ CREATE INDEX IF NOT EXISTS idx_dialogs_lesson_id ON public.dialogs(lesson_id);
 CREATE INDEX IF NOT EXISTS idx_quiz_questions_lesson_id ON public.quiz_questions(lesson_id);
 CREATE INDEX IF NOT EXISTS idx_quiz_answers_question_id ON public.quiz_answers(question_id);
 
+CREATE TABLE IF NOT EXISTS public._school_family_seed_chunks (
+  slug text PRIMARY KEY,
+  payload text NOT NULL DEFAULT ''
+);
+
 CREATE OR REPLACE FUNCTION public._seed_school_family_a1(p_slug text, p jsonb)
 RETURNS void
 LANGUAGE plpgsql
