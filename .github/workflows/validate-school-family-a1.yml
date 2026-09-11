@@ -1,0 +1,20 @@
+name: Validate Schule und Familie A1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/2026091113*_*.sql'
+      - 'scripts/validate-school-family-a1.py'
+      - '.github/workflows/validate-school-family-a1.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate master payloads
+        run: python3 scripts/validate-school-family-a1.py
