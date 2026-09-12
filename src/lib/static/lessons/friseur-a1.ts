@@ -16,7 +16,7 @@ export const friseurA1 = {
     duration_seconds: 1800,
     thumbnail_key: null,
     video_url: null,
-    is_premium: true,
+    is_premium: false,
     status: "published",
     popularity: 10,
     grammar_topics: ["W-Fragen", "Modalverb können", "Höfliche Sie-Form", "Zahlen und Preise"],
