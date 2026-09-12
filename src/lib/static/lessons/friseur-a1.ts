@@ -218,192 +218,234 @@ export const friseurA1 = {
     ] },
 
     // ===== Abschlusstest (40 Fragen: Geschichte, Vokabular, Grammatik, Dialog, Wissen) =====
-    { id: "friseur-a1-t1", position: 1, kind: "single_choice", section: "test", prompt: "Was fragt der Friseur zuerst?", explanation: "„Haben Sie einen Termin?“", data: null, quiz_answers: [
+    { id: "friseur-a1-t1", position: 1, kind: "single_choice", section: "test", prompt: "Was fragt der Friseur zuerst?", explanation: "„Haben Sie einen Termin?“", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t1-a1", position: 1, text: "Haben Sie einen Termin?", is_correct: true },
       { id: "friseur-a1-t1-a2", position: 2, text: "Wie ist das Wetter?", is_correct: false },
       { id: "friseur-a1-t1-a3", position: 3, text: "Wo wohnen Sie?", is_correct: false },
     ] },
-    { id: "friseur-a1-t2", position: 2, kind: "true_false", section: "test", prompt: "Der Kunde bezahlt 25 Euro.", explanation: "Richtig, das steht im Text.", data: null, quiz_answers: [
+    { id: "friseur-a1-t2", position: 2, kind: "true_false", section: "test", prompt: "Der Kunde bezahlt 25 Euro.", explanation: "Richtig, das steht im Text.", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t2-a1", position: 1, text: "Richtig", is_correct: true },
       { id: "friseur-a1-t2-a2", position: 2, text: "Falsch", is_correct: false },
     ] },
-    { id: "friseur-a1-t3", position: 3, kind: "gap", section: "test", prompt: "Nur zwei ___, bitte.", explanation: "Gemeint ist die Maßeinheit: „Zentimeter“.", data: null, quiz_answers: [
+    { id: "friseur-a1-t3", position: 3, kind: "gap", section: "test", prompt: "Nur zwei ___, bitte.", explanation: "Gemeint ist die Maßeinheit: „Zentimeter“.", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t3-a1", position: 1, text: "Zentimeter", is_correct: true },
     ] },
-    { id: "friseur-a1-t4", position: 4, kind: "single_choice", section: "test", prompt: "Welches Wort passt zu „die Haare schneiden“?", explanation: "„der Friseur“ ist die Person, die Haare schneidet.", data: null, quiz_answers: [
+    { id: "friseur-a1-t4", position: 4, kind: "single_choice", section: "test", prompt: "Welches Wort passt zu „die Haare schneiden“?", explanation: "„der Friseur“ ist die Person, die Haare schneidet.", data: H("die Frage je ženskog roda, u akuzativu se ne mijenja: eine Frage.", "die Frage dişildir, akuzatifte değişmez: eine Frage.", "die Frage жіночого роду, у знахідному не змінюється: eine Frage.", "die Frage este feminin, la acuzativ nu se schimbă: eine Frage.", "die Frage مؤنثة، لا تتغير في حالة المفعول: eine Frage."), quiz_answers: [
       { id: "friseur-a1-t4-a1", position: 1, text: "der Friseur", is_correct: true },
       { id: "friseur-a1-t4-a2", position: 2, text: "der Bäcker", is_correct: false },
       { id: "friseur-a1-t4-a3", position: 3, text: "der Busfahrer", is_correct: false },
     ] },
-    { id: "friseur-a1-t5", position: 5, kind: "single_choice", section: "test", prompt: "Ich habe ein___ Frage. (die Frage, Akkusativ) Welche Endung?", explanation: "die Frage bleibt im Akkusativ „eine Frage“ — feminine Form ändert sich nicht.", data: null, quiz_answers: [
+    { id: "friseur-a1-t5", position: 5, kind: "single_choice", section: "test", prompt: "Ich habe ein___ Frage. (die Frage, Akkusativ) Welche Endung?", explanation: "die Frage bleibt im Akkusativ „eine Frage“ — feminine Form ändert sich nicht.", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t5-a1", position: 1, text: "e", is_correct: true },
       { id: "friseur-a1-t5-a2", position: 2, text: "en", is_correct: false },
       { id: "friseur-a1-t5-a3", position: 3, text: "", is_correct: false },
     ] },
-    { id: "friseur-a1-t6", position: 6, kind: "single_choice", section: "test", prompt: "Warum geht die Person zum Friseur?", explanation: "„Ich gehe zum Friseur, weil meine Haare zu lang sind.“", data: null, quiz_answers: [
+    { id: "friseur-a1-t6", position: 6, kind: "single_choice", section: "test", prompt: "Warum geht die Person zum Friseur?", explanation: "„Ich gehe zum Friseur, weil meine Haare zu lang sind.“", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t6-a1", position: 1, text: "Weil die Haare zu lang sind.", is_correct: true },
       { id: "friseur-a1-t6-a2", position: 2, text: "Weil sie eine Party hat.", is_correct: false },
       { id: "friseur-a1-t6-a3", position: 3, text: "Weil der Salon schließt.", is_correct: false },
     ] },
-    { id: "friseur-a1-t7", position: 7, kind: "true_false", section: "test", prompt: "Der Kunde hat vorher einen Termin gebucht.", explanation: "Falsch — der Kunde kommt ohne Termin.", data: null, quiz_answers: [
+    { id: "friseur-a1-t7", position: 7, kind: "true_false", section: "test", prompt: "Der Kunde hat vorher einen Termin gebucht.", explanation: "Falsch — der Kunde kommt ohne Termin.", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t7-a1", position: 1, text: "Richtig", is_correct: false },
       { id: "friseur-a1-t7-a2", position: 2, text: "Falsch", is_correct: true },
     ] },
-    { id: "friseur-a1-t8", position: 8, kind: "single_choice", section: "test", prompt: "Wie lange muss der Kunde ohne Termin warten?", explanation: "„Wir haben in zehn Minuten Zeit.“", data: null, quiz_answers: [
+    { id: "friseur-a1-t8", position: 8, kind: "single_choice", section: "test", prompt: "Wie lange muss der Kunde ohne Termin warten?", explanation: "„Wir haben in zehn Minuten Zeit.“", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t8-a1", position: 1, text: "zehn Minuten", is_correct: true },
       { id: "friseur-a1-t8-a2", position: 2, text: "eine Stunde", is_correct: false },
       { id: "friseur-a1-t8-a3", position: 3, text: "einen Tag", is_correct: false },
     ] },
-    { id: "friseur-a1-t9", position: 9, kind: "single_choice", section: "test", prompt: "Wo setzt sich der Kunde hin?", explanation: "„Setzen Sie sich hier vor den Spiegel.“", data: null, quiz_answers: [
+    { id: "friseur-a1-t9", position: 9, kind: "single_choice", section: "test", prompt: "Wo setzt sich der Kunde hin?", explanation: "„Setzen Sie sich hier vor den Spiegel.“", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t9-a1", position: 1, text: "vor den Spiegel", is_correct: true },
       { id: "friseur-a1-t9-a2", position: 2, text: "neben die Tür", is_correct: false },
       { id: "friseur-a1-t9-a3", position: 3, text: "unter das Fenster", is_correct: false },
     ] },
-    { id: "friseur-a1-t10", position: 10, kind: "gap", section: "test", prompt: "Ist das Wasser zu ___ oder zu kalt?", explanation: "Die Friseurin fragt nach der Wassertemperatur: „warm“.", data: null, quiz_answers: [
+    { id: "friseur-a1-t10", position: 10, kind: "gap", section: "test", prompt: "Ist das Wasser zu ___ oder zu kalt?", explanation: "Die Friseurin fragt nach der Wassertemperatur: „warm“.", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t10-a1", position: 1, text: "warm", is_correct: true },
     ] },
-    { id: "friseur-a1-t11", position: 11, kind: "single_choice", section: "test", prompt: "Was bietet die Friseurin am Ende zusätzlich an?", explanation: "„Möchten Sie noch etwas Haarspray oder Gel?“", data: null, quiz_answers: [
+    { id: "friseur-a1-t11", position: 11, kind: "single_choice", section: "test", prompt: "Was bietet die Friseurin am Ende zusätzlich an?", explanation: "„Möchten Sie noch etwas Haarspray oder Gel?“", data: H("Frizerka nudi jos nesto na kraju.", "Kuaför sonda ek bir sey teklif ediyor.", "Перукарка пропонує щось додаткове наприкінці.", "Frizerita ofera ceva in plus la final.", "تعرض الحلاقة شيئًا إضافيًا في النهاية."), quiz_answers: [
       { id: "friseur-a1-t11-a1", position: 1, text: "Haarspray oder Gel", is_correct: true },
       { id: "friseur-a1-t11-a2", position: 2, text: "einen Kaffee", is_correct: false },
       { id: "friseur-a1-t11-a3", position: 3, text: "ein Buch", is_correct: false },
     ] },
-    { id: "friseur-a1-t12", position: 12, kind: "single_choice", section: "test", prompt: "Wann soll der Kunde wiederkommen?", explanation: "„Kommen Sie doch in sechs Wochen wieder.“", data: null, quiz_answers: [
+    { id: "friseur-a1-t12", position: 12, kind: "single_choice", section: "test", prompt: "Wann soll der Kunde wiederkommen?", explanation: "„Kommen Sie doch in sechs Wochen wieder.“", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t12-a1", position: 1, text: "in sechs Wochen", is_correct: true },
       { id: "friseur-a1-t12-a2", position: 2, text: "morgen", is_correct: false },
       { id: "friseur-a1-t12-a3", position: 3, text: "nächstes Jahr", is_correct: false },
     ] },
-    { id: "friseur-a1-t13", position: 13, kind: "single_choice", section: "test", prompt: "Was bedeutet „die Spitzen“?", explanation: "Die Spitzen sind die Enden der Haare.", data: null, quiz_answers: [
+    { id: "friseur-a1-t13", position: 13, kind: "single_choice", section: "test", prompt: "Was bedeutet „die Spitzen“?", explanation: "Die Spitzen sind die Enden der Haare.", data: H("der Spiegel — u njemu se čovjek vidi.", "der Spiegel — insan kendini onda görür.", "der Spiegel — у ньому людина бачить себе.", "der Spiegel — în el se vede omul.", "der Spiegel — فيه يرى الإنسان نفسه."), quiz_answers: [
       { id: "friseur-a1-t13-a1", position: 1, text: "die Enden der Haare", is_correct: true },
       { id: "friseur-a1-t13-a2", position: 2, text: "die Wurzeln der Haare", is_correct: false },
       { id: "friseur-a1-t13-a3", position: 3, text: "die Farbe der Haare", is_correct: false },
     ] },
-    { id: "friseur-a1-t14", position: 14, kind: "single_choice", section: "test", prompt: "Was ist „der Kamm“?", explanation: "Ein Werkzeug, mit dem man Haare kämmt/ordnet.", data: null, quiz_answers: [
+    { id: "friseur-a1-t14", position: 14, kind: "single_choice", section: "test", prompt: "Was ist „der Kamm“?", explanation: "Ein Werkzeug, mit dem man Haare kämmt/ordnet.", data: H("der Kamm sluzi za ceslanje kose.", "der Kamm sac taramaya yarar.", "der Kamm служить для розчісування волосся.", "der Kamm serveste pentru a pieptana parul.", "der Kamm يستخدم لتمشيط الشعر."), quiz_answers: [
       { id: "friseur-a1-t14-a1", position: 1, text: "Ein Werkzeug zum Kämmen", is_correct: true },
       { id: "friseur-a1-t14-a2", position: 2, text: "Ein Getränk", is_correct: false },
       { id: "friseur-a1-t14-a3", position: 3, text: "Ein Kleidungsstück", is_correct: false },
     ] },
-    { id: "friseur-a1-t15", position: 15, kind: "single_choice", section: "test", prompt: "Was macht man mit „der Schere“?", explanation: "Mit der Schere schneidet man die Haare.", data: null, quiz_answers: [
+    { id: "friseur-a1-t15", position: 15, kind: "single_choice", section: "test", prompt: "Was macht man mit „der Schere“?", explanation: "Mit der Schere schneidet man die Haare.", data: H("das Problem je srednjeg roda, u akuzativu ostaje „ein Problem“.", "das Problem nötrdür, akuzatifte „ein Problem“ olarak kalır.", "das Problem середнього роду, у знахідному залишається „ein Problem“.", "das Problem este neutru, la acuzativ rămâne „ein Problem“.", "das Problem محايد، يبقى في حالة المفعول „ein Problem“."), quiz_answers: [
       { id: "friseur-a1-t15-a1", position: 1, text: "Haare schneiden", is_correct: true },
       { id: "friseur-a1-t15-a2", position: 2, text: "Haare waschen", is_correct: false },
       { id: "friseur-a1-t15-a3", position: 3, text: "Haare färben", is_correct: false },
     ] },
-    { id: "friseur-a1-t16", position: 16, kind: "single_choice", section: "test", prompt: "Was ist das Gegenteil von „lang“ bei Haaren?", explanation: "Das Gegenteil von lang ist kurz.", data: null, quiz_answers: [
+    { id: "friseur-a1-t16", position: 16, kind: "single_choice", section: "test", prompt: "Was ist das Gegenteil von „lang“ bei Haaren?", explanation: "Das Gegenteil von lang ist kurz.", data: H("„bei wem?“ – „bei dem Friseur“, skraceno „beim Friseur“ (dativ).", "„bei kimde?“ – „bei dem Friseur“, kisaca „beim Friseur“ (datif).", "„bei wem?“ (у кого?) – „bei dem Friseur“, скорочено „beim Friseur“ (давальний).", "„bei wem?“ (la cine?) – „bei dem Friseur“, prescurtat „beim Friseur“ (dativ).", "„bei wem?“ (عند من؟) – „bei dem Friseur“، اختصارا „beim Friseur“ (حالة الجر)."), quiz_answers: [
       { id: "friseur-a1-t16-a1", position: 1, text: "kurz", is_correct: true },
       { id: "friseur-a1-t16-a2", position: 2, text: "warm", is_correct: false },
       { id: "friseur-a1-t16-a3", position: 3, text: "billig", is_correct: false },
     ] },
-    { id: "friseur-a1-t17", position: 17, kind: "gap", section: "test", prompt: "Der Kunde sitzt vor dem ___. (er sieht sich selbst)", explanation: "„der Spiegel“ — man sieht sich darin.", data: null, quiz_answers: [
+    { id: "friseur-a1-t17", position: 17, kind: "gap", section: "test", prompt: "Der Kunde sitzt vor dem ___. (er sieht sich selbst)", explanation: "„der Spiegel“ — man sieht sich darin.", data: H("Kod modalnih glagola (kann) infinitiv ide na kraj recenice.", "Modal fiillerde (kann) mastar cumlenin sonuna gider.", "У модальних дієсловах (kann) інфінітив стоїть у кінці речення.", "La verbele modale (kann) infinitivul sta la sfarsitul propozitiei.", "مع الأفعال الشرطية (kann) يأتي المصدر في نهاية الجملة."), quiz_answers: [
       { id: "friseur-a1-t17-a1", position: 1, text: "Spiegel", is_correct: true },
     ] },
-    { id: "friseur-a1-t18", position: 18, kind: "single_choice", section: "test", prompt: "Welcher Satz ist richtig?", explanation: "der Termin → im Satz „Ich habe“ wird daraus „einen Termin“.", data: null, quiz_answers: [
+    { id: "friseur-a1-t18", position: 18, kind: "single_choice", section: "test", prompt: "Welcher Satz ist richtig?", explanation: "der Termin → im Satz „Ich habe“ wird daraus „einen Termin“.", data: H("die Haare je mnozina, zato „Ihre“ sa -e.", "die Haare cogul oldugu icin „Ihre“ -e ile.", "die Haare — множина, тому „Ihre“ з -e.", "die Haare este plural, de aceea „Ihre“ cu -e.", "die Haare جمع، لذلك „Ihre“ بحرف -e."), quiz_answers: [
       { id: "friseur-a1-t18-a1", position: 1, text: "Ich habe einen Termin.", is_correct: true },
       { id: "friseur-a1-t18-a2", position: 2, text: "Ich habe ein Termin.", is_correct: false },
       { id: "friseur-a1-t18-a3", position: 3, text: "Ich habe eine Termin.", is_correct: false },
     ] },
-    { id: "friseur-a1-t19", position: 19, kind: "single_choice", section: "test", prompt: "Welcher Satz ist richtig?", explanation: "„das Problem“ ändert sich nicht: „ein Problem“ bleibt gleich.", data: null, quiz_answers: [
+    { id: "friseur-a1-t19", position: 19, kind: "single_choice", section: "test", prompt: "Welcher Satz ist richtig?", explanation: "„das Problem“ ändert sich nicht: „ein Problem“ bleibt gleich.", data: H("„Wie“ pita za nacin/izgled, ne za osobu ili razlog.", "„Wie“ sekli/gorunusu sorar, kisiyi veya sebebi degil.", "„Wie“ запитує про спосіб/вигляд, а не про особу чи причину.", "„Wie“ intreaba despre fel/aspect, nu despre persoana sau motiv.", "„Wie“ يسأل عن الطريقة/الشكل، وليس عن الشخص أو السبب."), quiz_answers: [
       { id: "friseur-a1-t19-a1", position: 1, text: "Kein Problem.", is_correct: true },
       { id: "friseur-a1-t19-a2", position: 2, text: "Keinen Problem.", is_correct: false },
       { id: "friseur-a1-t19-a3", position: 3, text: "Keine Problem.", is_correct: false },
     ] },
-    { id: "friseur-a1-t20", position: 20, kind: "single_choice", section: "test", prompt: "Der Friseur schneidet die Haare ___ der Schere. Welches Wort passt?", explanation: "„mit“ passt hier: man benutzt die Schere zum Schneiden.", data: null, quiz_answers: [
+    { id: "friseur-a1-t20", position: 20, kind: "single_choice", section: "test", prompt: "Der Friseur schneidet die Haare ___ der Schere. Welches Wort passt?", explanation: "„mit“ passt hier: man benutzt die Schere zum Schneiden.", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t20-a1", position: 1, text: "mit", is_correct: true },
       { id: "friseur-a1-t20-a2", position: 2, text: "für", is_correct: false },
       { id: "friseur-a1-t20-a3", position: 3, text: "ohne", is_correct: false },
     ] },
-    { id: "friseur-a1-t21", position: 21, kind: "single_choice", section: "test", prompt: "Ich warte ___ Friseur. Welches Wort passt?", explanation: "„beim“ ist die kurze Form von „bei dem“.", data: null, quiz_answers: [
+    { id: "friseur-a1-t21", position: 21, kind: "single_choice", section: "test", prompt: "Ich warte ___ Friseur. Welches Wort passt?", explanation: "„beim“ ist die kurze Form von „bei dem“.", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t21-a1", position: 1, text: "beim", is_correct: true },
       { id: "friseur-a1-t21-a2", position: 2, text: "bein", is_correct: false },
       { id: "friseur-a1-t21-a3", position: 3, text: "beis", is_correct: false },
     ] },
-    { id: "friseur-a1-t22", position: 22, kind: "single_choice", section: "test", prompt: "Wie fragt man höflich, ob jemand etwas möchte?", explanation: "„Möchten Sie …?“ ist die höfliche Form.", data: null, quiz_answers: [
+    { id: "friseur-a1-t22", position: 22, kind: "single_choice", section: "test", prompt: "Wie fragt man höflich, ob jemand etwas möchte?", explanation: "„Möchten Sie …?“ ist die höfliche Form.", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t22-a1", position: 1, text: "Möchten Sie …?", is_correct: true },
       { id: "friseur-a1-t22-a2", position: 2, text: "Möchtest du …?", is_correct: false },
       { id: "friseur-a1-t22-a3", position: 3, text: "Möchte ich …?", is_correct: false },
     ] },
-    { id: "friseur-a1-t23", position: 23, kind: "single_choice", section: "test", prompt: "Welcher Satz ist richtig?", explanation: "„Kann ich die Haare kürzer haben?“ — das Verb „haben“ steht am Ende.", data: null, quiz_answers: [
+    { id: "friseur-a1-t23", position: 23, kind: "single_choice", section: "test", prompt: "Welcher Satz ist richtig?", explanation: "„Kann ich die Haare kürzer haben?“ — das Verb „haben“ steht am Ende.", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t23-a1", position: 1, text: "Kann ich die Haare kürzer haben?", is_correct: true },
       { id: "friseur-a1-t23-a2", position: 2, text: "Kann haben ich die Haare kürzer?", is_correct: false },
       { id: "friseur-a1-t23-a3", position: 3, text: "Haben kann ich kürzer die Haare?", is_correct: false },
     ] },
-    { id: "friseur-a1-t24", position: 24, kind: "single_choice", section: "test", prompt: "Welcher Satz ist richtig?", explanation: "„Ihre Haare“ ist richtig, weil „die Haare“ Plural ist.", data: null, quiz_answers: [
+    { id: "friseur-a1-t24", position: 24, kind: "single_choice", section: "test", prompt: "Welcher Satz ist richtig?", explanation: "„Ihre Haare“ ist richtig, weil „die Haare“ Plural ist.", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t24-a1", position: 1, text: "Wie möchten Sie Ihre Haare?", is_correct: true },
       { id: "friseur-a1-t24-a2", position: 2, text: "Wie möchten Sie Ihr Haare?", is_correct: false },
       { id: "friseur-a1-t24-a3", position: 3, text: "Wie möchten Sie Ihres Haare?", is_correct: false },
     ] },
-    { id: "friseur-a1-t25", position: 25, kind: "single_choice", section: "test", prompt: "Welches Wort passt: „___ möchten Sie Ihre Haare?“", explanation: "„Wie“ fragt nach der Art/dem Aussehen.", data: null, quiz_answers: [
+    { id: "friseur-a1-t25", position: 25, kind: "single_choice", section: "test", prompt: "Welches Wort passt: „___ möchten Sie Ihre Haare?“", explanation: "„Wie“ fragt nach der Art/dem Aussehen.", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t25-a1", position: 1, text: "Wie", is_correct: true },
       { id: "friseur-a1-t25-a2", position: 2, text: "Wer", is_correct: false },
       { id: "friseur-a1-t25-a3", position: 3, text: "Warum", is_correct: false },
     ] },
-    { id: "friseur-a1-t26", position: 26, kind: "single_choice", section: "test", prompt: "Wer sagt im Dialog „Guten Tag, ich habe leider keinen Termin.“?", explanation: "Das sagt der Kunde beim Betreten des Salons.", data: null, quiz_answers: [
+    { id: "friseur-a1-t26", position: 26, kind: "single_choice", section: "test", prompt: "Wer sagt im Dialog „Guten Tag, ich habe leider keinen Termin.“?", explanation: "Das sagt der Kunde beim Betreten des Salons.", data: H("Ovo piše u tekstu/dijalogu.", "Bu, metinde/diyalogda böyle geçiyor.", "Це написано в тексті/діалозі.", "Așa scrie în text/dialog.", "هذا مكتوب في النص/الحوار."), quiz_answers: [
       { id: "friseur-a1-t26-a1", position: 1, text: "der Kunde", is_correct: true },
       { id: "friseur-a1-t26-a2", position: 2, text: "die Friseurin", is_correct: false },
       { id: "friseur-a1-t26-a3", position: 3, text: "niemand", is_correct: false },
     ] },
-    { id: "friseur-a1-t27", position: 27, kind: "single_choice", section: "test", prompt: "Was antwortet der Kunde auf „Möchten Sie noch etwas Haarspray oder Gel?“", explanation: "„Nein danke, das ist nicht nötig.“", data: null, quiz_answers: [
+    { id: "friseur-a1-t27", position: 27, kind: "single_choice", section: "test", prompt: "Was antwortet der Kunde auf „Möchten Sie noch etwas Haarspray oder Gel?“", explanation: "„Nein danke, das ist nicht nötig.“", data: H("der Termin -> akuzativ: einen Termin.", "der Termin -> akuzatif: einen Termin.", "der Termin -> знахідний: einen Termin.", "der Termin -> acuzativ: einen Termin.", "der Termin -> حالة المفعول: einen Termin."), quiz_answers: [
       { id: "friseur-a1-t27-a1", position: 1, text: "Nein danke, das ist nicht nötig.", is_correct: true },
       { id: "friseur-a1-t27-a2", position: 2, text: "Ja, ein Kilo bitte.", is_correct: false },
       { id: "friseur-a1-t27-a3", position: 3, text: "Der Zug fährt um acht.", is_correct: false },
     ] },
-    { id: "friseur-a1-t28", position: 28, kind: "true_false", section: "test", prompt: "Der Kunde bekommt vor dem Schneiden eine Haarwäsche.", explanation: "Richtig — laut Dialog 1 wird zuerst gewaschen.", data: null, quiz_answers: [
+    { id: "friseur-a1-t28", position: 28, kind: "true_false", section: "test", prompt: "Der Kunde bekommt vor dem Schneiden eine Haarwäsche.", explanation: "Richtig — laut Dialog 1 wird zuerst gewaschen.", data: H("Poslije „mit“ uvijek dolazi dativ: die Schere -> der Schere.", "„mit“ sonrasi her zaman datif: die Schere -> der Schere.", "Після „mit“ завжди давальний: die Schere -> der Schere.", "Dupa „mit“ urmeaza mereu dativul: die Schere -> der Schere.", "بعد „mit“ يأتي دائمًا حالة الجر: die Schere -> der Schere."), quiz_answers: [
       { id: "friseur-a1-t28-a1", position: 1, text: "Richtig", is_correct: true },
       { id: "friseur-a1-t28-a2", position: 2, text: "Falsch", is_correct: false },
     ] },
-    { id: "friseur-a1-t29", position: 29, kind: "single_choice", section: "test", prompt: "Wie reagiert die Friseurin auf die Bezahlung mit Karte?", explanation: "„Ja, natürlich, kein Problem.“", data: null, quiz_answers: [
+    { id: "friseur-a1-t29", position: 29, kind: "single_choice", section: "test", prompt: "Wie reagiert die Friseurin auf die Bezahlung mit Karte?", explanation: "„Ja, natürlich, kein Problem.“", data: H("Uctivo moli da se nesto ponovi.", "Bir seyin tekrar edilmesini nazikce rica ediyor.", "Ввічливо просить повторити.", "Roaga politicos sa se repete ceva.", "يطلب بأدب إعادة شيء ما."), quiz_answers: [
       { id: "friseur-a1-t29-a1", position: 1, text: "Ja, natürlich, kein Problem.", is_correct: true },
       { id: "friseur-a1-t29-a2", position: 2, text: "Nein, das geht nicht.", is_correct: false },
       { id: "friseur-a1-t29-a3", position: 3, text: "Nur mit Bargeld.", is_correct: false },
     ] },
-    { id: "friseur-a1-t30", position: 30, kind: "single_choice", section: "test", prompt: "Womit schneidet ein Friseur normalerweise die Haare?", explanation: "Mit einer Schere (manchmal auch mit einer Maschine) — nicht mit einer Nagelzange.", data: null, quiz_answers: [
+    { id: "friseur-a1-t30", position: 30, kind: "single_choice", section: "test", prompt: "Womit schneidet ein Friseur normalerweise die Haare?", explanation: "Mit einer Schere (manchmal auch mit einer Maschine) — nicht mit einer Nagelzange.", data: H("Frizer obicno koristi makaze, ne nesto drugo.", "Kuaför genelde makas kullanir, baska bir sey degil.", "Перукар зазвичай користується ножицями, а не чимось іншим.", "Frizerul foloseste de obicei foarfeca, nu altceva.", "يستخدم الحلاق عادة المقص وليس شيئًا آخر."), quiz_answers: [
       { id: "friseur-a1-t30-a1", position: 1, text: "mit einer Schere", is_correct: true },
       { id: "friseur-a1-t30-a2", position: 2, text: "mit einer Nagelzange", is_correct: false },
       { id: "friseur-a1-t30-a3", position: 3, text: "mit einem Löffel", is_correct: false },
     ] },
-    { id: "friseur-a1-t31", position: 31, kind: "true_false", section: "test", prompt: "In Deutschland braucht man normalerweise eine Ausbildung, um als Friseur/Friseurin zu arbeiten.", explanation: "Richtig — Friseur ist ein anerkannter Ausbildungsberuf (meist 3 Jahre).", data: null, quiz_answers: [
+    { id: "friseur-a1-t31", position: 31, kind: "true_false", section: "test", prompt: "In Deutschland braucht man normalerweise eine Ausbildung, um als Friseur/Friseurin zu arbeiten.", explanation: "Richtig — Friseur ist ein anerkannter Ausbildungsberuf (meist 3 Jahre).", data: H("U Njemackoj je frizer priznato zanimanje sa obukom.", "Almanyada kuaforluk egitimli bir meslektir.", "У Німеччині перукар - визнана професія з навчанням.", "In Germania, frizer este o meserie recunoscuta cu formare.", "في ألمانيا، الحلاقة مهنة معترف بها تتطلب تدريبًا."), quiz_answers: [
       { id: "friseur-a1-t31-a1", position: 1, text: "Richtig", is_correct: true },
       { id: "friseur-a1-t31-a2", position: 2, text: "Falsch", is_correct: false },
     ] },
-    { id: "friseur-a1-t32", position: 32, kind: "true_false", section: "test", prompt: "Friseure müssen auf Hygiene achten, z. B. Werkzeuge zwischen Kunden reinigen.", explanation: "Richtig — das ist wichtig, um Infektionen zu vermeiden.", data: null, quiz_answers: [
+    { id: "friseur-a1-t32", position: 32, kind: "true_false", section: "test", prompt: "Friseure müssen auf Hygiene achten, z. B. Werkzeuge zwischen Kunden reinigen.", explanation: "Richtig — das ist wichtig, um Infektionen zu vermeiden.", data: H("Higijena je vazna da se izbjegnu infekcije.", "Enfeksiyonlari onlemek icin hijyen onemlidir.", "Гігієна важлива, щоб уникнути інфекцій.", "Igiena este importanta pentru a evita infectiile.", "النظافة مهمة لتجنب العدوى."), quiz_answers: [
       { id: "friseur-a1-t32-a1", position: 1, text: "Richtig", is_correct: true },
       { id: "friseur-a1-t32-a2", position: 2, text: "Falsch", is_correct: false },
     ] },
-    { id: "friseur-a1-t33", position: 33, kind: "single_choice", section: "test", prompt: "Was trägt ein Kunde beim Haareschneiden meistens, damit die Kleidung sauber bleibt?", explanation: "Einen Umhang/ein Cape, das über die Schultern gelegt wird.", data: null, quiz_answers: [
+    { id: "friseur-a1-t33", position: 33, kind: "single_choice", section: "test", prompt: "Was trägt ein Kunde beim Haareschneiden meistens, damit die Kleidung sauber bleibt?", explanation: "Einen Umhang/ein Cape, das über die Schultern gelegt wird.", data: H("Ogrtac stiti odjecu od kose.", "Önlük kiyafeti sactan korur.", "Накидка захищає одяг від волосся.", "Pelerina protejeaza hainele de par.", "الرداء يحمي الملابس من الشعر."), quiz_answers: [
       { id: "friseur-a1-t33-a1", position: 1, text: "einen Umhang", is_correct: true },
       { id: "friseur-a1-t33-a2", position: 2, text: "einen Helm", is_correct: false },
       { id: "friseur-a1-t33-a3", position: 3, text: "einen Regenschirm", is_correct: false },
     ] },
-    { id: "friseur-a1-t34", position: 34, kind: "single_choice", section: "test", prompt: "Was passt NICHT in einen Friseursalon?", explanation: "Ein Ofen zum Backen von Brot gehört in eine Bäckerei, nicht in einen Friseursalon.", data: null, quiz_answers: [
+    { id: "friseur-a1-t34", position: 34, kind: "single_choice", section: "test", prompt: "Was passt NICHT in einen Friseursalon?", explanation: "Ein Ofen zum Backen von Brot gehört in eine Bäckerei, nicht in einen Friseursalon.", data: H("Pecnica za hljeb pripada pekari, ne frizerskom salonu.", "Ekmek firini firina aittir, kuaför salonuna degil.", "Піч для хліба належить пекарні, а не перукарні.", "Cuptorul de paine apartine brutariei, nu salonului de frizerie.", "فرن الخبز يخص المخبز، وليس صالون الحلاقة."), quiz_answers: [
       { id: "friseur-a1-t34-a1", position: 1, text: "ein Ofen zum Brotbacken", is_correct: true },
       { id: "friseur-a1-t34-a2", position: 2, text: "ein Spiegel", is_correct: false },
       { id: "friseur-a1-t34-a3", position: 3, text: "eine Schere", is_correct: false },
     ] },
-    { id: "friseur-a1-t35", position: 35, kind: "single_choice", section: "test", prompt: "Was ist ein guter Grund, vorher einen Termin zu machen?", explanation: "So muss man beim Friseur nicht warten.", data: null, quiz_answers: [
+    { id: "friseur-a1-t35", position: 35, kind: "single_choice", section: "test", prompt: "Was ist ein guter Grund, vorher einen Termin zu machen?", explanation: "So muss man beim Friseur nicht warten.", data: H("Termin znaci da ne morate cekati.", "Randevu beklemek zorunda kalmamak demektir.", "Запис означає, що не доведеться чекати.", "Programarea inseamna ca nu trebuie sa astepti.", "الموعد يعني أنك لن تنتظر."), quiz_answers: [
       { id: "friseur-a1-t35-a1", position: 1, text: "Man muss nicht warten.", is_correct: true },
       { id: "friseur-a1-t35-a2", position: 2, text: "Das Haar wächst schneller.", is_correct: false },
       { id: "friseur-a1-t35-a3", position: 3, text: "Es ist verboten, ohne Termin zu kommen.", is_correct: false },
     ] },
-    { id: "friseur-a1-t36", position: 36, kind: "single_choice", section: "test", prompt: "Welcher Satz ist grammatisch richtig?", explanation: "„einen Termin“ ist die korrekte Akkusativform von „der Termin“.", data: null, quiz_answers: [
+    { id: "friseur-a1-t36", position: 36, kind: "single_choice", section: "test", prompt: "Welcher Satz ist grammatisch richtig?", explanation: "„einen Termin“ ist die korrekte Akkusativform von „der Termin“.", data: H("der Termin -> akuzativ: einen Termin.", "der Termin -> akuzatif: einen Termin.", "der Termin -> знахідний: einen Termin.", "der Termin -> acuzativ: einen Termin.", "der Termin -> حالة المفعول: einen Termin."), quiz_answers: [
       { id: "friseur-a1-t36-a1", position: 1, text: "Ich habe einen Termin.", is_correct: true },
       { id: "friseur-a1-t36-a2", position: 2, text: "Ich habe ein Termin.", is_correct: false },
       { id: "friseur-a1-t36-a3", position: 3, text: "Ich habe der Termin.", is_correct: false },
     ] },
-    { id: "friseur-a1-t37", position: 37, kind: "single_choice", section: "test", prompt: "Welcher Satz ist grammatisch richtig?", explanation: "Nach „mit“ steht der Dativ: mit der Schere.", data: null, quiz_answers: [
+    { id: "friseur-a1-t37", position: 37, kind: "single_choice", section: "test", prompt: "Welcher Satz ist grammatisch richtig?", explanation: "Nach „mit“ steht der Dativ: mit der Schere.", data: H("Poslije mit uvijek dolazi dativ: die Schere -> der Schere.", "mit sonrasi her zaman datif: die Schere -> der Schere.", "Після mit завжди давальний: die Schere -> der Schere.", "Dupa mit urmeaza mereu dativul: die Schere -> der Schere.", "بعد mit يأتي دائمًا حالة الجر: die Schere -> der Schere."), quiz_answers: [
       { id: "friseur-a1-t37-a1", position: 1, text: "Sie schneidet mit der Schere.", is_correct: true },
       { id: "friseur-a1-t37-a2", position: 2, text: "Sie schneidet mit die Schere.", is_correct: false },
       { id: "friseur-a1-t37-a3", position: 3, text: "Sie schneidet mit das Schere.", is_correct: false },
     ] },
-    { id: "friseur-a1-t38", position: 38, kind: "gap", section: "test", prompt: "Bitte setzen Sie ___. (höfliche Aufforderung, Sie-Form)", explanation: "„sich“ — Bitte setzen Sie sich.", data: null, quiz_answers: [
+    { id: "friseur-a1-t38", position: 38, kind: "gap", section: "test", prompt: "Bitte setzen Sie ___. (höfliche Aufforderung, Sie-Form)", explanation: "„sich“ — Bitte setzen Sie sich.", data: H("Kod sich setzen zamjenica sich je obavezna.", "sich setzen ile sich zamiri zorunludur.", "У sich setzen займенник sich обов’язковий.", "La sich setzen pronumele sich este obligatoriu.", "في sich setzen الضمير sich إلزامي."), quiz_answers: [
       { id: "friseur-a1-t38-a1", position: 1, text: "sich", is_correct: true },
     ] },
-    { id: "friseur-a1-t39", position: 39, kind: "single_choice", section: "test", prompt: "Was ist die höfliche Bitte um Wiederholung?", explanation: "„Können Sie das bitte noch einmal sagen?“", data: null, quiz_answers: [
+    { id: "friseur-a1-t39", position: 39, kind: "single_choice", section: "test", prompt: "Was ist die höfliche Bitte um Wiederholung?", explanation: "„Können Sie das bitte noch einmal sagen?“", data: H("Uctivo moli da se nesto ponovi.", "Bir seyin tekrar edilmesini nazikce rica ediyor.", "Ввічливо просить повторити.", "Roaga politicos sa se repete ceva.", "يطلب بأدب إعادة شيء ما."), quiz_answers: [
       { id: "friseur-a1-t39-a1", position: 1, text: "Können Sie das bitte noch einmal sagen?", is_correct: true },
       { id: "friseur-a1-t39-a2", position: 2, text: "Sag das nochmal, du!", is_correct: false },
       { id: "friseur-a1-t39-a3", position: 3, text: "Ich verstehe nie etwas.", is_correct: false },
     ] },
-    { id: "friseur-a1-t40", position: 40, kind: "single_choice", section: "test", prompt: "Wie geht die Geschichte zu Ende?", explanation: "Der Kunde bezahlt mit Karte, bedankt sich und verabschiedet sich.", data: null, quiz_answers: [
+    { id: "friseur-a1-t40", position: 40, kind: "single_choice", section: "test", prompt: "Wie geht die Geschichte zu Ende?", explanation: "Der Kunde bezahlt mit Karte, bedankt sich und verabschiedet sich.", data: H("Na kraju price kupac placa i oprasta se.", "Hikayenin sonunda musteri odeyip vedalasiyor.", "Наприкінці історії клієнт платить і прощається.", "La finalul povestii clientul plateste si isi ia la revedere.", "في نهاية القصة يدفع الزبون ويودّع."), quiz_answers: [
       { id: "friseur-a1-t40-a1", position: 1, text: "Der Kunde bezahlt und verabschiedet sich.", is_correct: true },
       { id: "friseur-a1-t40-a2", position: 2, text: "Der Kunde geht ohne zu bezahlen.", is_correct: false },
       { id: "friseur-a1-t40-a3", position: 3, text: "Der Kunde macht einen neuen Termin für morgen.", is_correct: false },
+    ] },
+
+    // ===== Sprache & Grammatik: zum Anklicken =====
+    { id: "friseur-a1-g1", position: 1, kind: "single_choice", section: "grammar", prompt: "Welcher Satz ist richtig?", explanation: "der Termin ist männlich; nach „habe“ (Akkusativ) wird daraus „einen Termin“.", data: H("der Termin je muskog roda; poslije habe (akuzativ) postaje einen Termin.", "der Termin eril isimdir; habe sonrasi (akuzatif) einen Termin olur.", "der Termin чоловічого роду; після habe (знахідний) стає einen Termin.", "der Termin este masculin; dupa habe (acuzativ) devine einen Termin.", "der Termin مذكر؛ بعد habe (حالة المفعول) يصبح einen Termin."), quiz_answers: [
+      { id: "friseur-a1-g1-a1", position: 1, text: "Ich habe einen Termin.", is_correct: true },
+      { id: "friseur-a1-g1-a2", position: 2, text: "Ich habe ein Termin.", is_correct: false },
+      { id: "friseur-a1-g1-a3", position: 3, text: "Ich habe der Termin.", is_correct: false },
+    ] },
+    { id: "friseur-a1-g2", position: 2, kind: "single_choice", section: "grammar", prompt: "Welcher Satz ist richtig?", explanation: "die Frage ist feminin; im Akkusativ bleibt „eine Frage“ gleich.", data: H("die Frage je zenskog roda; u akuzativu ostaje eine Frage.", "die Frage disildir; akuzatifte eine Frage olarak kalir.", "die Frage жіночого роду; у знахідному залишається eine Frage.", "die Frage este feminin; la acuzativ ramane eine Frage.", "die Frage مؤنثة؛ تبقى في حالة المفعول eine Frage."), quiz_answers: [
+      { id: "friseur-a1-g2-a1", position: 1, text: "Ich habe eine Frage.", is_correct: true },
+      { id: "friseur-a1-g2-a2", position: 2, text: "Ich habe einen Frage.", is_correct: false },
+      { id: "friseur-a1-g2-a3", position: 3, text: "Ich habe ein Frage.", is_correct: false },
+    ] },
+    { id: "friseur-a1-g3", position: 3, kind: "single_choice", section: "grammar", prompt: "Welcher Satz ist richtig?", explanation: "das Problem ist sächlich; im Akkusativ ändert es sich nicht: „ein Problem“.", data: H("das Problem je srednjeg roda; u akuzativu se ne mijenja: ein Problem.", "das Problem notrdur; akuzatifte degismez: ein Problem.", "das Problem середнього роду; у знахідному не змінюється: ein Problem.", "das Problem este neutru; la acuzativ nu se schimba: ein Problem.", "das Problem محايد؛ لا يتغير في حالة المفعول: ein Problem."), quiz_answers: [
+      { id: "friseur-a1-g3-a1", position: 1, text: "Kein Problem.", is_correct: true },
+      { id: "friseur-a1-g3-a2", position: 2, text: "Keinen Problem.", is_correct: false },
+      { id: "friseur-a1-g3-a3", position: 3, text: "Keine Problem.", is_correct: false },
+    ] },
+    { id: "friseur-a1-g4", position: 4, kind: "single_choice", section: "grammar", prompt: "Welches Wort passt: „Der Friseur schneidet die Haare ___ der Schere.“?", explanation: "Nach „mit“ steht immer der Dativ: die Schere -> der Schere.", data: H("Poslije mit uvijek dolazi dativ: die Schere -> der Schere.", "mit sonrasi her zaman datif: die Schere -> der Schere.", "Після mit завжди давальний: die Schere -> der Schere.", "Dupa mit urmeaza mereu dativul: die Schere -> der Schere.", "بعد mit يأتي دائمًا حالة الجر: die Schere -> der Schere."), quiz_answers: [
+      { id: "friseur-a1-g4-a1", position: 1, text: "mit", is_correct: true },
+      { id: "friseur-a1-g4-a2", position: 2, text: "für", is_correct: false },
+      { id: "friseur-a1-g4-a3", position: 3, text: "ohne", is_correct: false },
+    ] },
+    { id: "friseur-a1-g5", position: 5, kind: "single_choice", section: "grammar", prompt: "Welches Wort passt: „Ich warte ___ Friseur.“?", explanation: "„beim“ ist die kurze Form von „bei dem“ (Dativ).", data: H("beim je kratak oblik od bei dem (dativ).", "beim, bei dem kelimesinin kisa halidir (datif).", "beim - коротка форма bei dem (давальний).", "beim este forma scurta a bei dem (dativ).", "beim هي الصيغة المختصرة لـ bei dem (حالة الجر)."), quiz_answers: [
+      { id: "friseur-a1-g5-a1", position: 1, text: "beim", is_correct: true },
+      { id: "friseur-a1-g5-a2", position: 2, text: "bein", is_correct: false },
+      { id: "friseur-a1-g5-a3", position: 3, text: "beis", is_correct: false },
+    ] },
+    { id: "friseur-a1-g6", position: 6, kind: "single_choice", section: "grammar", prompt: "Welches Wort passt: „___ möchten Sie Ihre Haare?“?", explanation: "„Wie“ fragt nach der Art/dem Aussehen.", data: H("Wie pita za nacin/izgled.", "Wie sekli/gorunusu sorar.", "Wie запитує про спосіб/вигляд.", "Wie intreaba despre fel/aspect.", "Wie يسأل عن الطريقة/الشكل."), quiz_answers: [
+      { id: "friseur-a1-g6-a1", position: 1, text: "Wie", is_correct: true },
+      { id: "friseur-a1-g6-a2", position: 2, text: "Wer", is_correct: false },
+      { id: "friseur-a1-g6-a3", position: 3, text: "Warum", is_correct: false },
+    ] },
+    { id: "friseur-a1-g7", position: 7, kind: "single_choice", section: "grammar", prompt: "Welcher Satz ist richtig?", explanation: "Bei Modalverben (kann) steht der Infinitiv am Satzende.", data: H("Kod modalnih glagola (kann) infinitiv ide na kraj recenice.", "Modal fiillerde (kann) mastar cumlenin sonuna gider.", "У модальних дієсловах (kann) інфінітив стоїть у кінці речення.", "La verbele modale (kann) infinitivul sta la sfarsitul propozitiei.", "مع الأفعال الشرطية (kann) يأتي المصدر في نهاية الجملة."), quiz_answers: [
+      { id: "friseur-a1-g7-a1", position: 1, text: "Kann ich die Haare kürzer haben?", is_correct: true },
+      { id: "friseur-a1-g7-a2", position: 2, text: "Kann haben ich die Haare kürzer?", is_correct: false },
+      { id: "friseur-a1-g7-a3", position: 3, text: "Haben kann ich kürzer die Haare?", is_correct: false },
+    ] },
+    { id: "friseur-a1-g8", position: 8, kind: "single_choice", section: "grammar", prompt: "Welcher Satz ist richtig?", explanation: "„Ihre Haare“ ist richtig, weil „die Haare“ Plural ist (Ihre mit -e).", data: H("die Haare je mnozina, zato Ihre sa -e.", "die Haare cogul oldugu icin Ihre -e ile.", "die Haare - множина, тому Ihre з -e.", "die Haare este plural, de aceea Ihre cu -e.", "die Haare جمع، لذلك Ihre بحرف -e."), quiz_answers: [
+      { id: "friseur-a1-g8-a1", position: 1, text: "Wie möchten Sie Ihre Haare?", is_correct: true },
+      { id: "friseur-a1-g8-a2", position: 2, text: "Wie möchten Sie Ihr Haare?", is_correct: false },
+      { id: "friseur-a1-g8-a3", position: 3, text: "Wie möchten Sie Ihres Haare?", is_correct: false },
     ] },
 
     // ===== Wo ist was? =====
