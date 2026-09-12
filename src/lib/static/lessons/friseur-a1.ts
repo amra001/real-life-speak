@@ -295,42 +295,42 @@ export const friseurA1 = {
     { id: "friseur-a1-t17", position: 17, kind: "gap", section: "test", prompt: "Der Kunde sitzt vor dem ___. (er sieht sich selbst)", explanation: "„der Spiegel“ — man sieht sich darin.", data: null, quiz_answers: [
       { id: "friseur-a1-t17-a1", position: 1, text: "Spiegel", is_correct: true },
     ] },
-    { id: "friseur-a1-t18", position: 18, kind: "single_choice", section: "test", prompt: "der Termin — welcher Artikel im Akkusativ nach „haben“?", explanation: "Männliche Nomen ändern sich im Akkusativ: der → einen.", data: null, quiz_answers: [
-      { id: "friseur-a1-t18-a1", position: 1, text: "einen Termin", is_correct: true },
-      { id: "friseur-a1-t18-a2", position: 2, text: "ein Termin", is_correct: false },
-      { id: "friseur-a1-t18-a3", position: 3, text: "eine Termin", is_correct: false },
+    { id: "friseur-a1-t18", position: 18, kind: "single_choice", section: "test", prompt: "Welcher Satz ist richtig?", explanation: "der Termin → im Satz „Ich habe“ wird daraus „einen Termin“.", data: null, quiz_answers: [
+      { id: "friseur-a1-t18-a1", position: 1, text: "Ich habe einen Termin.", is_correct: true },
+      { id: "friseur-a1-t18-a2", position: 2, text: "Ich habe ein Termin.", is_correct: false },
+      { id: "friseur-a1-t18-a3", position: 3, text: "Ich habe eine Termin.", is_correct: false },
     ] },
-    { id: "friseur-a1-t19", position: 19, kind: "single_choice", section: "test", prompt: "das Problem — welche Form im Akkusativ?", explanation: "Sächliche Nomen ändern sich im Akkusativ nicht: das bleibt ein.", data: null, quiz_answers: [
-      { id: "friseur-a1-t19-a1", position: 1, text: "ein Problem", is_correct: true },
-      { id: "friseur-a1-t19-a2", position: 2, text: "einen Problem", is_correct: false },
-      { id: "friseur-a1-t19-a3", position: 3, text: "eine Problem", is_correct: false },
+    { id: "friseur-a1-t19", position: 19, kind: "single_choice", section: "test", prompt: "Welcher Satz ist richtig?", explanation: "„das Problem“ ändert sich nicht: „ein Problem“ bleibt gleich.", data: null, quiz_answers: [
+      { id: "friseur-a1-t19-a1", position: 1, text: "Kein Problem.", is_correct: true },
+      { id: "friseur-a1-t19-a2", position: 2, text: "Keinen Problem.", is_correct: false },
+      { id: "friseur-a1-t19-a3", position: 3, text: "Keine Problem.", is_correct: false },
     ] },
-    { id: "friseur-a1-t20", position: 20, kind: "single_choice", section: "test", prompt: "Welche Präposition verlangt immer den Dativ?", explanation: "„mit“ steht immer mit Dativ.", data: null, quiz_answers: [
+    { id: "friseur-a1-t20", position: 20, kind: "single_choice", section: "test", prompt: "Der Friseur schneidet die Haare ___ der Schere. Welches Wort passt?", explanation: "„mit“ passt hier: man benutzt die Schere zum Schneiden.", data: null, quiz_answers: [
       { id: "friseur-a1-t20-a1", position: 1, text: "mit", is_correct: true },
       { id: "friseur-a1-t20-a2", position: 2, text: "für", is_correct: false },
       { id: "friseur-a1-t20-a3", position: 3, text: "ohne", is_correct: false },
     ] },
-    { id: "friseur-a1-t21", position: 21, kind: "single_choice", section: "test", prompt: "bei + dem = ?", explanation: "„bei dem“ verschmilzt zu „beim“.", data: null, quiz_answers: [
+    { id: "friseur-a1-t21", position: 21, kind: "single_choice", section: "test", prompt: "Ich warte ___ Friseur. Welches Wort passt?", explanation: "„beim“ ist die kurze Form von „bei dem“.", data: null, quiz_answers: [
       { id: "friseur-a1-t21-a1", position: 1, text: "beim", is_correct: true },
       { id: "friseur-a1-t21-a2", position: 2, text: "bein", is_correct: false },
       { id: "friseur-a1-t21-a3", position: 3, text: "beis", is_correct: false },
     ] },
-    { id: "friseur-a1-t22", position: 22, kind: "single_choice", section: "test", prompt: "Wie lautet die Sie-Form von „möchten“ in einer Frage?", explanation: "„Möchten Sie …?“ ist die höfliche Form.", data: null, quiz_answers: [
+    { id: "friseur-a1-t22", position: 22, kind: "single_choice", section: "test", prompt: "Wie fragt man höflich, ob jemand etwas möchte?", explanation: "„Möchten Sie …?“ ist die höfliche Form.", data: null, quiz_answers: [
       { id: "friseur-a1-t22-a1", position: 1, text: "Möchten Sie …?", is_correct: true },
       { id: "friseur-a1-t22-a2", position: 2, text: "Möchtest du …?", is_correct: false },
       { id: "friseur-a1-t22-a3", position: 3, text: "Möchte ich …?", is_correct: false },
     ] },
-    { id: "friseur-a1-t23", position: 23, kind: "single_choice", section: "test", prompt: "Wo steht der Infinitiv bei „Kann ich die Haare kürzer haben?“", explanation: "Bei Modalverben steht der Infinitiv am Satzende (Satzklammer).", data: null, quiz_answers: [
-      { id: "friseur-a1-t23-a1", position: 1, text: "am Satzende", is_correct: true },
-      { id: "friseur-a1-t23-a2", position: 2, text: "an Position 2", is_correct: false },
-      { id: "friseur-a1-t23-a3", position: 3, text: "ganz am Anfang", is_correct: false },
+    { id: "friseur-a1-t23", position: 23, kind: "single_choice", section: "test", prompt: "Welcher Satz ist richtig?", explanation: "„Kann ich die Haare kürzer haben?“ — das Verb „haben“ steht am Ende.", data: null, quiz_answers: [
+      { id: "friseur-a1-t23-a1", position: 1, text: "Kann ich die Haare kürzer haben?", is_correct: true },
+      { id: "friseur-a1-t23-a2", position: 2, text: "Kann haben ich die Haare kürzer?", is_correct: false },
+      { id: "friseur-a1-t23-a3", position: 3, text: "Haben kann ich kürzer die Haare?", is_correct: false },
     ] },
-    { id: "friseur-a1-t24", position: 24, kind: "single_choice", section: "test", prompt: "„Ihre Haare“ — warum die Endung -e?", explanation: "„die Haare“ ist Plural, deshalb „Ihre“ mit -e.", data: null, quiz_answers: [
-      { id: "friseur-a1-t24-a1", position: 1, text: "weil „Haare“ Plural ist", is_correct: true },
-      { id: "friseur-a1-t24-a2", position: 2, text: "weil „Haare“ männlich ist", is_correct: false },
-      { id: "friseur-a1-t24-a3", position: 3, text: "ohne Grund, Zufall", is_correct: false },
+    { id: "friseur-a1-t24", position: 24, kind: "single_choice", section: "test", prompt: "Welcher Satz ist richtig?", explanation: "„Ihre Haare“ ist richtig, weil „die Haare“ Plural ist.", data: null, quiz_answers: [
+      { id: "friseur-a1-t24-a1", position: 1, text: "Wie möchten Sie Ihre Haare?", is_correct: true },
+      { id: "friseur-a1-t24-a2", position: 2, text: "Wie möchten Sie Ihr Haare?", is_correct: false },
+      { id: "friseur-a1-t24-a3", position: 3, text: "Wie möchten Sie Ihres Haare?", is_correct: false },
     ] },
-    { id: "friseur-a1-t25", position: 25, kind: "single_choice", section: "test", prompt: "Welches Fragewort passt: „___ möchten Sie Ihre Haare?“", explanation: "„Wie“ fragt nach der Art.", data: null, quiz_answers: [
+    { id: "friseur-a1-t25", position: 25, kind: "single_choice", section: "test", prompt: "Welches Wort passt: „___ möchten Sie Ihre Haare?“", explanation: "„Wie“ fragt nach der Art/dem Aussehen.", data: null, quiz_answers: [
       { id: "friseur-a1-t25-a1", position: 1, text: "Wie", is_correct: true },
       { id: "friseur-a1-t25-a2", position: 2, text: "Wer", is_correct: false },
       { id: "friseur-a1-t25-a3", position: 3, text: "Warum", is_correct: false },
@@ -400,10 +400,10 @@ export const friseurA1 = {
       { id: "friseur-a1-t39-a2", position: 2, text: "Sag das nochmal, du!", is_correct: false },
       { id: "friseur-a1-t39-a3", position: 3, text: "Ich verstehe nie etwas.", is_correct: false },
     ] },
-    { id: "friseur-a1-t40", position: 40, kind: "single_choice", section: "test", prompt: "Was ist die Hauptidee der ganzen Geschichte?", explanation: "Der Kunde geht spontan (ohne Termin) zum Friseur, lässt Haare waschen und schneiden und bezahlt zufrieden mit Karte.", data: null, quiz_answers: [
-      { id: "friseur-a1-t40-a1", position: 1, text: "Ein spontaner Friseurbesuch ohne Termin, der gut endet.", is_correct: true },
-      { id: "friseur-a1-t40-a2", position: 2, text: "Ein Streit im Restaurant.", is_correct: false },
-      { id: "friseur-a1-t40-a3", position: 3, text: "Eine Zugfahrt in den Urlaub.", is_correct: false },
+    { id: "friseur-a1-t40", position: 40, kind: "single_choice", section: "test", prompt: "Wie geht die Geschichte zu Ende?", explanation: "Der Kunde bezahlt mit Karte, bedankt sich und verabschiedet sich.", data: null, quiz_answers: [
+      { id: "friseur-a1-t40-a1", position: 1, text: "Der Kunde bezahlt und verabschiedet sich.", is_correct: true },
+      { id: "friseur-a1-t40-a2", position: 2, text: "Der Kunde geht ohne zu bezahlen.", is_correct: false },
+      { id: "friseur-a1-t40-a3", position: 3, text: "Der Kunde macht einen neuen Termin für morgen.", is_correct: false },
     ] },
 
     // ===== Wo ist was? =====
@@ -419,6 +419,37 @@ export const friseurA1 = {
     ] },
     { id: "friseur-a1-p3", position: 3, kind: "gap", section: "places", prompt: "Der Friseur steht ___ dem Kunden. (hinter dem Stuhl)", explanation: "Der Friseur arbeitet von hinten am Kopf des Kunden: „hinter dem Kunden“.", data: H("Frizer radi iza glave klijenta.", "Kuaför müşterinin arkasında çalışır.", "Перукар працює позаду голови клієнта.", "Frizerul lucrează în spatele capului clientului.", "يعمل الحلاق خلف رأس الزبون."), quiz_answers: [
       { id: "friseur-a1-p3-a1", position: 1, text: "hinter", is_correct: true },
+    ] },
+    { id: "friseur-a1-p4", position: 4, kind: "single_choice", section: "places", prompt: "Der Kunde wäscht sich die Haare ___ dem Waschbecken. Welche Präposition passt?", explanation: "„am“ (an + dem) beschreibt: direkt am Waschbecken.", data: H("„am“ = an + dem, direkt bei etwas.", "„am“ = an + dem, bir şeyin hemen yanında.", "„am“ = an + dem, прямо біля чогось.", "„am“ = an + dem, chiar la ceva.", "„am“ = an + dem، مباشرة عند شيء ما."), quiz_answers: [
+      { id: "friseur-a1-p4-a1", position: 1, text: "am", is_correct: true },
+      { id: "friseur-a1-p4-a2", position: 2, text: "unter", is_correct: false },
+      { id: "friseur-a1-p4-a3", position: 3, text: "zwischen", is_correct: false },
+    ] },
+    { id: "friseur-a1-p5", position: 5, kind: "single_choice", section: "places", prompt: "Das Haarspray steht ___ dem Regal. Welche Präposition passt am besten?", explanation: "„auf“ beschreibt: oben auf einer Fläche.", data: H("„auf“ znači na gornjoj površini.", "„auf“ bir yüzeyin üstünde anlamına gelir.", "„auf“ означає на верхній поверхні.", "„auf“ înseamnă pe o suprafață.", "„auf“ تعني على سطح شيء ما."), quiz_answers: [
+      { id: "friseur-a1-p5-a1", position: 1, text: "auf", is_correct: true },
+      { id: "friseur-a1-p5-a2", position: 2, text: "unter", is_correct: false },
+      { id: "friseur-a1-p5-a3", position: 3, text: "hinter", is_correct: false },
+    ] },
+    { id: "friseur-a1-p6", position: 6, kind: "single_choice", section: "places", prompt: "Die Kundin wartet ___ dem Eingang, bis sie an der Reihe ist. Welche Präposition passt?", explanation: "„an“ beschreibt eine Position direkt bei einem Punkt (Tür/Eingang).", data: H("„an“ znači tačno kod ulaza.", "„an“ girişin tam yanında anlamına gelir.", "„an“ означає точно біля входу.", "„an“ înseamnă chiar la intrare.", "„an“ تعني عند المدخل مباشرة."), quiz_answers: [
+      { id: "friseur-a1-p6-a1", position: 1, text: "an", is_correct: true },
+      { id: "friseur-a1-p6-a2", position: 2, text: "über", is_correct: false },
+      { id: "friseur-a1-p6-a3", position: 3, text: "unter", is_correct: false },
+    ] },
+    { id: "friseur-a1-p7", position: 7, kind: "gap", section: "places", prompt: "Der Umhang liegt ___ den Schultern des Kunden. (auf)", explanation: "„auf den Schultern“ — der Umhang liegt oben auf den Schultern.", data: H("Ogrtač leži na ramenima.", "Önlük omuzların üzerinde durur.", "Накидка лежить на плечах.", "Pelerina stă pe umeri.", "الرداء يوضع على الكتفين."), quiz_answers: [
+      { id: "friseur-a1-p7-a1", position: 1, text: "auf", is_correct: true },
+    ] },
+    { id: "friseur-a1-p8", position: 8, kind: "single_choice", section: "places", prompt: "Die Kundin sitzt ___ dem Wartezimmer, bevor sie an die Reihe kommt. Welche Präposition passt?", explanation: "„in“ beschreibt: innerhalb eines Raumes.", data: H("„in“ znači unutar prostorije.", "„in“ bir odanın içinde anlamına gelir.", "„in“ означає всередині приміщення.", "„in“ înseamnă în interiorul unei camere.", "„in“ تعني داخل غرفة."), quiz_answers: [
+      { id: "friseur-a1-p8-a1", position: 1, text: "in", is_correct: true },
+      { id: "friseur-a1-p8-a2", position: 2, text: "auf", is_correct: false },
+      { id: "friseur-a1-p8-a3", position: 3, text: "neben", is_correct: false },
+    ] },
+    { id: "friseur-a1-p9", position: 9, kind: "single_choice", section: "places", prompt: "Der Fön hängt ___ der Wand. Welche Präposition passt?", explanation: "„an“ beschreibt: befestigt an einer senkrechten Fläche.", data: H("„an der Wand“ znači pričvršćeno na zid.", "„an der Wand“ duvara asılı anlamına gelir.", "„an der Wand“ означає прикріплено до стіни.", "„an der Wand“ înseamnă prins pe perete.", "„an der Wand“ تعني معلق على الجدار."), quiz_answers: [
+      { id: "friseur-a1-p9-a1", position: 1, text: "an", is_correct: true },
+      { id: "friseur-a1-p9-a2", position: 2, text: "unter", is_correct: false },
+      { id: "friseur-a1-p9-a3", position: 3, text: "zwischen", is_correct: false },
+    ] },
+    { id: "friseur-a1-p10", position: 10, kind: "gap", section: "places", prompt: "Die Kasse steht ___ der Tür. (neben)", explanation: "„neben der Tür“ — die Kasse ist direkt bei der Tür.", data: H("Kasa je odmah pored vrata.", "Kasa kapının hemen yanındadır.", "Каса прямо біля дверей.", "Casa este chiar lângă ușă.", "الصندوق بجانب الباب مباشرة."), quiz_answers: [
+      { id: "friseur-a1-p10-a1", position: 1, text: "neben", is_correct: true },
     ] },
 
     // ===== Dialog bauen =====

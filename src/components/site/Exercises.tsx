@@ -349,7 +349,7 @@ export function Exercises({ questions, lang, title, onFinish }: { questions: Que
               return <label key={a.id} className={`flex w-full cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-sm ${cls}`}><Checkbox checked={picked} disabled={isChecked} onCheckedChange={(v) => set(q.id, { multi: v ? [...(s.multi ?? []), a.id] : (s.multi ?? []).filter((x) => x !== a.id) })} /><span>{a.text}</span></label>;
             })}</div>}
 
-            {q.kind === "gap" && <Input className="mt-4" placeholder="Antwort eingeben" value={s.text ?? ""} disabled={isChecked} onChange={(e) => set(q.id, { text: e.target.value })} />}
+            {q.kind === "gap" && <Input className="mt-4" placeholder="Antwort eingeben" value={s.text ?? ""} disabled={isChecked} onChange={(e) => set(q.id, { text: e.target.value })} autoCorrect="off" autoCapitalize="off" autoComplete="off" spellCheck={false} />}
             {q.kind === "gap_select" && <div className="mt-4 flex flex-wrap gap-2">{q.options.map((o) => <button key={o} type="button" disabled={isChecked} onClick={() => set(q.id, { text: o })} className={`rounded-full border px-4 py-2 text-sm ${s.text === o ? "border-foreground bg-foreground text-background" : "border-border hover:bg-muted"}`}>{o}</button>)}</div>}
             {q.kind === "sentence_order" && <ChipBuilder words={q.items} value={s.order ?? []} disabled={isChecked} seed={q.id} onChange={(v) => set(q.id, { order: v })} />}
             {q.kind === "dialog_order" && <ChipBuilder words={q.items} value={s.order ?? []} disabled={isChecked} seed={`${q.id}-dialog`} onChange={(v) => set(q.id, { order: v })} />}
