@@ -137,16 +137,33 @@ function PremiumGate() {
 }
 
 export function StandardLessonPage({ slug }: { slug: string }) {
-  // enabled: only run on the client. Running this query during SSR raced with
-  // Vercel's serverless response lifecycle and produced a spurious one-time
-  // "Failed to fetch", which then got treated as a permanent not-found state.
-  const { data, isPending, error } = useQuery({ ...lessonQuery(slug), enabled: typeof window !== "undefined", retry: false });
+  // enabled: only run on the client. A rare race on the very first request
+  // after hydration can produce a spurious "Failed to fetch"; retry a couple
+  // of times automatically, and offer a manual retry so the page never gets
+  // permanently stuck on a transient failure.
+  const { data, isPending, isError, refetch, isRefetching } = useQuery({
+    ...lessonQuery(slug),
+    enabled: typeof window !== "undefined",
+    retry: 2,
+    retryDelay: 500,
+  });
   const { user } = useAuth();
   const { isPremium } = usePremium();
   const { lang, setLang, visible, setVisible, translate, langLabel } = useTranslationPreference();
   const [tab, setTab] = useState(0);
   if (isPending) return <div className="mx-auto max-w-5xl px-4 py-20">Lektion wird geladen …</div>;
-  if (!data?.lesson) return <div className="mx-auto max-w-5xl px-4 py-20 whitespace-pre-wrap">Lektion nicht gefunden.{`\n\nDEBUG4: ${error instanceof Error ? (error.stack ?? error.message) : JSON.stringify(error)}`}</div>;
+  if (!data?.lesson) {
+    return (
+      <div className="mx-auto max-w-5xl px-4 py-20 text-center">
+        <p>{isError ? "Die Lektion konnte gerade nicht geladen werden." : "Lektion nicht gefunden."}</p>
+        {isError && (
+          <Button className="mt-4" variant="outline" disabled={isRefetching} onClick={() => void refetch()}>
+            {isRefetching ? "Versuche erneut …" : "Erneut versuchen"}
+          </Button>
+        )}
+      </div>
+    );
+  }
 
   const lesson = data.lesson as any;
   const fullAccess = previewHost() || isPremium || !lesson.is_premium;
