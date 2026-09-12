@@ -137,12 +137,15 @@ function PremiumGate() {
 }
 
 export function StandardLessonPage({ slug }: { slug: string }) {
-  const { data, isLoading } = useQuery(lessonQuery(slug));
+  // enabled: only run on the client. Running this query during SSR raced with
+  // Vercel's serverless response lifecycle and produced a spurious one-time
+  // "Failed to fetch", which then got treated as a permanent not-found state.
+  const { data, isPending } = useQuery({ ...lessonQuery(slug), enabled: typeof window !== "undefined" });
   const { user } = useAuth();
   const { isPremium } = usePremium();
   const { lang, setLang, visible, setVisible, translate, langLabel } = useTranslationPreference();
   const [tab, setTab] = useState(0);
-  if (isLoading) return <div className="mx-auto max-w-5xl px-4 py-20">Lektion wird geladen …</div>;
+  if (isPending) return <div className="mx-auto max-w-5xl px-4 py-20">Lektion wird geladen …</div>;
   if (!data?.lesson) return <div className="mx-auto max-w-5xl px-4 py-20">Lektion nicht gefunden.</div>;
 
   const lesson = data.lesson as any;
