@@ -9,7 +9,7 @@ export const getRouter = () => {
   // hydration, leaving every lesson page stuck on "nicht gefunden".
   const queryClient = new QueryClient({
     defaultOptions: {
-      queries: { networkMode: "always", retry: false },
+      queries: { networkMode: "always" },
       mutations: { networkMode: "always" },
     },
   });
