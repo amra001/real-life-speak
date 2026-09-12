@@ -1,10 +1,12 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { SceneType } from "@/lib/scene-types";
 import { applyTopicSceneImages } from "@/lib/scene-types";
+import { ALLOWED_TOPIC_SLUGS } from "@/lib/taxonomy";
 
 import { bakeryA1Override } from "@/lib/static/bakery-a1";
 import { bakeryA2Override } from "@/lib/static/bakery-a2";
 import { bakeryB1Override } from "@/lib/static/bakery-b1";
+import { lessonOverrideRegistry } from "@/lib/static/registry";
 
 export type Lesson = {
   id: string;
@@ -232,13 +234,25 @@ export const lessonsQuery = () => ({
       .eq("status", "published")
       .order("popularity", { ascending: false });
     if (error) throw error;
-    return (data ?? []) as Lesson[];
+    return ((data ?? []) as Lesson[]).filter(
+      (l) => l.topic_slug != null && ALLOWED_TOPIC_SLUGS.has(l.topic_slug)
+    );
   },
 });
 
 export const lessonQuery = (slug: string) => ({
   queryKey: ["lesson", slug],
   queryFn: async () => {
+    const registryOverride = lessonOverrideRegistry[slug];
+    if (registryOverride) {
+      return registryOverride as unknown as {
+        lesson: Lesson;
+        scenes: Scene[];
+        vocab: Vocab[];
+        dialog: DialogLine[];
+        questions: Question[];
+      };
+    }
     if (slug === "in-der-baeckerei" || slug === "baeckerei-a1") {
       return bakeryLessonForSlug(slug);
     }

@@ -1,3 +1,33 @@
+/**
+ * Kuratierte Themenliste: 60 Alltagsthemen statt der historisch gewachsenen
+ * ~150 (u.a. Fach-Spezialisierungen wie Baustelle/Elektro/Logistik-Personal
+ * und Duplikate wie "chef"/"buero-chef"). Nur Themen in dieser Liste werden
+ * in Übersichten (Startseite, Lektionsbibliothek, Berufsseite) angezeigt.
+ * Direkte Links auf andere Slugs funktionieren weiterhin, sie sind nur nicht
+ * mehr in der Navigation sichtbar.
+ */
+export const ALLOWED_TOPIC_SLUGS = new Set([
+  // Alltag & Einkaufen
+  "supermarkt", "baeckerei", "kasse", "einkaufen", "kleidung", "friseur", "apotheke", "post", "bank",
+  // Gastro
+  "restaurant", "cafe",
+  // Gesundheit
+  "hausarzt", "facharzt", "zahnarzt", "medikamente", "krankenhaus",
+  // Verkehr & Reise
+  "bus", "bahnhof", "zug", "taxi", "strassenbahn", "flughafen", "reise", "mietwagen",
+  // Wohnen
+  "wohnung-suchen", "wohnung-besichtigen", "vermieter", "mietvertrag", "umzug", "nachbarn",
+  // Familie & Schule
+  "familie", "schule", "schulausflug", "elternsprechtag", "hausaufgaben", "kindergarten", "zeugnis",
+  // Arbeit allgemein
+  "chef", "kollegen", "meetings", "termin", "telefonieren", "email", "erster-arbeitstag",
+  "krankenstand", "urlaub", "vorstellungsgespraech", "lebenslauf",
+  // Probleme & Service
+  "reklamation", "reparatur", "strom", "wasser", "heizung", "hausverwaltung", "kundenberatung",
+  // Sonstiges
+  "freizeit", "sport", "hygiene", "hotel", "service",
+]);
+
 export const LEVELS = ["A1", "A2", "B1", "B2"] as const;
 export type Level = (typeof LEVELS)[number];
 
