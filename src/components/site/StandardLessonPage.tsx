@@ -249,7 +249,7 @@ export function StandardLessonPage({ slug }: { slug: string }) {
     { id: "grammar", label: "Sprache & Grammatik", render: () => fullAccess ? <GrammarSection level={lesson.level} notes={grammarNotes} questions={grammarQuestions} lang={lang}/> : <PremiumGate/> },
     { id: "practice", label: "Übungen", render: () => fullAccess ? <Exercises questions={practice} lang={lang}/> : <PremiumGate/> },
     { id: "builder", label: "Dialog bauen", render: () => fullAccess ? <div><h3 className="font-serif text-xl font-semibold">Dialog selbst bauen</h3><p className="mt-2 mb-4 text-sm text-muted-foreground">Klicke die Gesprächsteile in die richtige Reihenfolge.</p><Exercises questions={builder} lang={lang}/></div> : <PremiumGate/> },
-    { id: "test", label: "Abschlusstest", render: () => fullAccess ? <Exercises questions={tests} lang={lang} title="Abschlusstest · 50 Fragen" onFinish={(score: number, total: number) => void save(score, total)}/> : <PremiumGate/> },
+    { id: "test", label: "Abschlusstest", render: () => fullAccess ? <Exercises questions={tests} lang={lang} title={`Abschlusstest · ${tests.length} Fragen`} onFinish={(score: number, total: number) => void save(score, total)}/> : <PremiumGate/> },
   ];
 
   async function save(score: number, total: number) {
