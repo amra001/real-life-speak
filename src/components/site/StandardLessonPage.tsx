@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, Lock, Sparkles } from "lucide-react";
@@ -9,7 +9,7 @@ import { TranslationControls } from "@/components/site/TranslationControls";
 import { Translated } from "@/components/site/Translated";
 import { Exercises } from "@/components/site/Exercises";
 import { lessonImage } from "@/lib/lesson-images";
-import { lessonQuery, topicLessonsQuery } from "@/lib/data";
+import { lessonQuery, topicLessonsQuery, type Lesson, type Scene, type Vocab, type DialogLine, type Question } from "@/lib/data";
 import { categoryName, formatDuration, LEVEL_INFO, REGIONS, type TranslationLang } from "@/lib/taxonomy";
 import { useAuth } from "@/hooks/useAuth";
 import { usePremium } from "@/hooks/usePremium";
@@ -136,17 +136,56 @@ function PremiumGate() {
   return <div className="rounded-3xl border border-border bg-card p-8 text-center"><Lock className="mx-auto h-8 w-8"/><h3 className="mt-3 font-serif text-xl font-semibold">Premium-Lektion</h3><p className="mt-2 text-sm text-muted-foreground">Mit Premium wird die vollständige Lektion freigeschaltet.</p><Button asChild className="mt-5"><Link to="/preise"><Sparkles className="mr-2 h-4 w-4"/>Premium ansehen</Link></Button></div>;
 }
 
-export function StandardLessonPage({ slug }: { slug: string }) {
-  // enabled: only run on the client. A rare race on the very first request
-  // after hydration can produce a spurious "Failed to fetch"; retry a couple
-  // of times automatically, and offer a manual retry so the page never gets
-  // permanently stuck on a transient failure.
-  const { data, isPending, isError, refetch, isRefetching } = useQuery({
-    ...lessonQuery(slug),
-    enabled: typeof window !== "undefined",
-    retry: 2,
-    retryDelay: 500,
+/**
+ * Plain client-only data loader for a single lesson, deliberately not built
+ * on useQuery/react-query: on this route, useQuery reproducibly surfaced a
+ * bare "Failed to fetch" for every lesson (registry-based and DB-based
+ * alike) for real users, while a manual call to the exact same fetch logic
+ * always succeeded. Rather than keep patching an integration that can't be
+ * pinned down, this loads data directly with a plain effect + retry loop.
+ */
+function useLessonData(slug: string) {
+  const [state, setState] = useState<{ data: unknown; error: unknown; loading: boolean }>({
+    data: undefined,
+    error: undefined,
+    loading: true,
   });
+  const [attempt, setAttempt] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    setState((s) => ({ ...s, loading: true }));
+
+    const run = async (retriesLeft: number): Promise<void> => {
+      try {
+        const result = await lessonQuery(slug).queryFn();
+        if (!cancelled) setState({ data: result, error: undefined, loading: false });
+      } catch (err) {
+        if (cancelled) return;
+        if (retriesLeft > 0) {
+          await new Promise((r) => setTimeout(r, 400));
+          if (!cancelled) return run(retriesLeft - 1);
+        } else {
+          setState({ data: undefined, error: err, loading: false });
+        }
+      }
+    };
+    void run(2);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [slug, attempt]);
+
+  const retry = () => setAttempt((a) => a + 1);
+
+  return { ...state, retry };
+}
+
+export function StandardLessonPage({ slug }: { slug: string }) {
+  const { data: rawData, loading: isPending, error, retry } = useLessonData(slug);
+  const data = rawData as { lesson: Lesson; scenes: Scene[]; vocab: Vocab[]; dialog: DialogLine[]; questions: Question[] } | undefined | null;
+  const isError = !!error;
   const { user } = useAuth();
   const { isPremium } = usePremium();
   const { lang, setLang, visible, setVisible, translate, langLabel } = useTranslationPreference();
@@ -157,8 +196,8 @@ export function StandardLessonPage({ slug }: { slug: string }) {
       <div className="mx-auto max-w-5xl px-4 py-20 text-center">
         <p>{isError ? "Die Lektion konnte gerade nicht geladen werden." : "Lektion nicht gefunden."}</p>
         {isError && (
-          <Button className="mt-4" variant="outline" disabled={isRefetching} onClick={() => void refetch()}>
-            {isRefetching ? "Versuche erneut …" : "Erneut versuchen"}
+          <Button className="mt-4" variant="outline" onClick={retry}>
+            Erneut versuchen
           </Button>
         )}
       </div>
