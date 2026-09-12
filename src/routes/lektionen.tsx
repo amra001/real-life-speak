@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   BookOpen,
@@ -77,6 +77,21 @@ function Library() {
   const set = (patch: SearchState): void => {
     void navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true });
   };
+
+  // Freitextsuche: lokal tippen lassen und erst gedämpft (debounced) in die
+  // URL/den Suchstatus übernehmen. Vorher löste jeder Tastendruck sofort eine
+  // Navigation aus, was die Seite nach oben springen und den Fokus verlieren ließ.
+  const [qInput, setQInput] = useState(search.q ?? "");
+  useEffect(() => {
+    setQInput(search.q ?? "");
+  }, [search.q]);
+  useEffect(() => {
+    const handle = setTimeout(() => {
+      if (qInput !== (search.q ?? "")) set({ q: qInput || undefined });
+    }, 300);
+    return () => clearTimeout(handle);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [qInput]);
 
   const clearAll = () => {
     setAreaMode(undefined);
@@ -229,7 +244,7 @@ function Library() {
             <div className="border-t border-border pt-6">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input className="h-12 rounded-2xl pl-11" placeholder="Oder direkt suchen: Supermarkt, Hausarzt, Bewerbung …" value={search.q ?? ""} onChange={(e) => set({ q: e.target.value || undefined })} />
+                <Input className="h-12 rounded-2xl pl-11" placeholder="Oder direkt suchen: Supermarkt, Hausarzt, Bewerbung …" value={qInput} onChange={(e) => setQInput(e.target.value)} />
               </div>
 
               <button onClick={() => setShowMoreFilters((v) => !v)} className="mt-4 flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground">
