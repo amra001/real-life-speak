@@ -10,6 +10,7 @@ import { Translated } from "@/components/site/Translated";
 import { Exercises } from "@/components/site/Exercises";
 import { lessonImage } from "@/lib/lesson-images";
 import { lessonQuery, topicLessonsQuery, type Lesson, type Scene, type Vocab, type DialogLine, type Question } from "@/lib/data";
+import { lessonOverrideRegistry } from "@/lib/static/registry";
 import { categoryName, formatDuration, LEVEL_INFO, REGIONS, type TranslationLang } from "@/lib/taxonomy";
 import { useAuth } from "@/hooks/useAuth";
 import { usePremium } from "@/hooks/usePremium";
@@ -183,7 +184,18 @@ function useLessonData(slug: string) {
 }
 
 export function StandardLessonPage({ slug }: { slug: string }) {
-  const { data: rawData, loading: isPending, error, retry } = useLessonData(slug);
+  // Registry-based lessons are plain in-memory data — no fetch, no loading
+  // state, no race condition possible. Read them synchronously and skip the
+  // async loader entirely; the hook below still runs (rules of hooks) but its
+  // result is ignored whenever a registry entry exists.
+  const registryData = lessonOverrideRegistry[slug] as
+    | { lesson: Lesson; scenes: Scene[]; vocab: Vocab[]; dialog: DialogLine[]; questions: Question[] }
+    | undefined;
+  const asyncResult = useLessonData(slug);
+  const rawData = registryData ?? asyncResult.data;
+  const isPending = registryData ? false : asyncResult.loading;
+  const error = registryData ? undefined : asyncResult.error;
+  const retry = asyncResult.retry;
   const data = rawData as { lesson: Lesson; scenes: Scene[]; vocab: Vocab[]; dialog: DialogLine[]; questions: Question[] } | undefined | null;
   const isError = !!error;
   const { user } = useAuth();
