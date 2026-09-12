@@ -284,16 +284,17 @@ export const lessonQuery = (slug: string) => ({
     if (error) throw error;
     if (!lesson) return null;
 
-    const [scenes, vocab, dialog, questions] = await Promise.all([
-      supabase.from("lesson_scenes").select("*").eq("lesson_id", lesson.id).order("position"),
-      supabase.from("vocabulary").select("*").eq("lesson_id", lesson.id).order("position"),
-      supabase.from("dialogs").select("*").eq("lesson_id", lesson.id).order("position"),
-      supabase
-        .from("quiz_questions")
-        .select("*, quiz_answers(*)")
-        .eq("lesson_id", lesson.id)
-        .order("position"),
-    ]);
+    // Sequential, not Promise.all: four simultaneous first-time requests to a
+    // brand-new Supabase project reliably failed with a bare "Failed to fetch"
+    // for real users (reproducible, unrelated to RLS/env vars/extensions).
+    const scenes = await supabase.from("lesson_scenes").select("*").eq("lesson_id", lesson.id).order("position");
+    const vocab = await supabase.from("vocabulary").select("*").eq("lesson_id", lesson.id).order("position");
+    const dialog = await supabase.from("dialogs").select("*").eq("lesson_id", lesson.id).order("position");
+    const questions = await supabase
+      .from("quiz_questions")
+      .select("*, quiz_answers(*)")
+      .eq("lesson_id", lesson.id)
+      .order("position");
 
     const rawScenes = (scenes.data ?? []) as unknown as Scene[];
     const l = lesson as unknown as Lesson;
