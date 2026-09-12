@@ -74,6 +74,21 @@ export type Database = {
         }
         Relationships: []
       }
+      _a1_school_stage: {
+        Row: {
+          slug: string
+          txt: string
+        }
+        Insert: {
+          slug: string
+          txt?: string
+        }
+        Update: {
+          slug?: string
+          txt?: string
+        }
+        Relationships: []
+      }
       _translation_jobs_test: {
         Row: {
           lang: string | null
@@ -709,6 +724,14 @@ export type Database = {
         Args: { p_nonce: string; p_payload: Json; p_slug: string }
         Returns: Json
       }
+      _a1_school_import_fast: {
+        Args: { p: Json; p_slug: string }
+        Returns: undefined
+      }
+      _a1_school_rpc: {
+        Args: { p_nonce: string; p_payload: Json; p_slug: string }
+        Returns: Json
+      }
       _a1_unpack: { Args: never; Returns: number }
       _apply_translation_batch: {
         Args: { p_category: string; p_kind: string; p_marker: string }
@@ -734,6 +757,10 @@ export type Database = {
           p_marker: string
         }
         Returns: number
+      }
+      _seed_school_family_exact: {
+        Args: { p: Json; p_slug: string }
+        Returns: undefined
       }
       apply_global_dialog_translation_map: {
         Args: { p_map: Json }
