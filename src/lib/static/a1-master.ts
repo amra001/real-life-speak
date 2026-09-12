@@ -38,7 +38,9 @@ async function loadMaster(): Promise<CompactMaster> {
 
 function splitArticle(raw: string) {
   const match = raw.match(/^(der|die|das)\s+(.+)$/i);
-  return match ? { article: match[1].toLowerCase(), term: match[2] } : { article: '', term: raw };
+  return match
+    ? { article: (match[1] ?? '').toLowerCase(), term: match[2] ?? raw }
+    : { article: '', term: raw };
 }
 
 function answers(slug: string, section: string, qIndex: number, row: string[]) {
