@@ -15,7 +15,7 @@ export const friseurA1 = {
     topic_slug: "friseur",
     topic_title: "Beim Friseur",
     duration_seconds: 1800,
-    thumbnail_key: null,
+    thumbnail_key: "friseur-salon",
     video_url: null,
     is_premium: false,
     status: "published",
@@ -492,6 +492,29 @@ export const friseurA1 = {
     ] },
     { id: "friseur-a1-p10", position: 10, kind: "gap", section: "places", prompt: "Die Kasse steht ___ der Tür. (neben)", explanation: "„neben der Tür“ — die Kasse ist direkt bei der Tür.", data: H("Kasa je odmah pored vrata.", "Kasa kapının hemen yanındadır.", "Каса прямо біля дверей.", "Casa este chiar lângă ușă.", "الصندوق بجانب الباب مباشرة."), quiz_answers: [
       { id: "friseur-a1-p10-a1", position: 1, text: "neben", is_correct: true },
+    ] },
+    { id: "friseur-a1-p11", position: 11, kind: "single_choice", section: "places", prompt: "Schau dir das Bild an: Wo sitzt der Kunde? Welche Präposition passt?", explanation: "Der Kunde sitzt „vor dem Spiegel“ auf dem Frisierstuhl.", data: H("Pogledaj sliku: klijent sjedi ispred ogledala.", "Resme bak: müşteri aynanın önünde oturuyor.", "Подивись на малюнок: клієнт сидить перед дзеркалом.", "Uită-te la imagine: clientul stă în fața oglinzii.", "انظر إلى الصورة: يجلس الزبون أمام المرآة."), quiz_answers: [
+      { id: "friseur-a1-p11-a1", position: 1, text: "vor dem Spiegel", is_correct: true },
+      { id: "friseur-a1-p11-a2", position: 2, text: "unter dem Spiegel", is_correct: false },
+      { id: "friseur-a1-p11-a3", position: 3, text: "neben dem Spiegel", is_correct: false },
+    ] },
+    { id: "friseur-a1-p12", position: 12, kind: "single_choice", section: "places", prompt: "Schau dir das Bild an: Wo steht die Friseurin? Welche Präposition passt?", explanation: "Die Friseurin steht „hinter dem Kunden“, um die Haare zu schneiden.", data: H("Frizerka stoji iza klijenta.", "Kuaför müşterinin arkasında duruyor.", "Перукарка стоїть позаду клієнта.", "Frizerița stă în spatele clientului.", "تقف الحلاقة خلف الزبون."), quiz_answers: [
+      { id: "friseur-a1-p12-a1", position: 1, text: "hinter dem Kunden", is_correct: true },
+      { id: "friseur-a1-p12-a2", position: 2, text: "vor dem Kunden", is_correct: false },
+      { id: "friseur-a1-p12-a3", position: 3, text: "unter dem Kunden", is_correct: false },
+    ] },
+    { id: "friseur-a1-p13", position: 13, kind: "gap", section: "places", prompt: "Schau dir das Bild an: Der Kamm liegt ___ dem kleinen Tisch. (auf)", explanation: "Der Kamm liegt oben auf dem kleinen Tisch neben dem Stuhl.", data: H("Češalj leži na malom stolu.", "Tarak küçük masanın üzerinde duruyor.", "Гребінець лежить на маленькому столику.", "Pieptenele stă pe măsuța mică.", "المشط موضوع على الطاولة الصغيرة."), quiz_answers: [
+      { id: "friseur-a1-p13-a1", position: 1, text: "auf", is_correct: true },
+    ] },
+    { id: "friseur-a1-p14", position: 14, kind: "single_choice", section: "places", prompt: "Schau dir das Bild an: Wo hängt der Fön? Welche Präposition passt?", explanation: "Der Fön hängt „an der Wand“.", data: H("Fen za kosu visi na zidu.", "Saç kurutma makinesi duvarda asılı.", "Фен висить на стіні.", "Uscătorul de păr atârnă pe perete.", "مجفف الشعر معلق على الجدار."), quiz_answers: [
+      { id: "friseur-a1-p14-a1", position: 1, text: "an der Wand", is_correct: true },
+      { id: "friseur-a1-p14-a2", position: 2, text: "unter der Wand", is_correct: false },
+      { id: "friseur-a1-p14-a3", position: 3, text: "in der Wand", is_correct: false },
+    ] },
+    { id: "friseur-a1-p15", position: 15, kind: "single_choice", section: "places", prompt: "Schau dir das Bild an: Wo steht die Kasse? Welche Präposition passt?", explanation: "Die Kasse steht „in der Nähe der Tür“, am Eingang.", data: H("Kasa se nalazi blizu vrata, kod ulaza.", "Kasa kapının yakınında, girişte duruyor.", "Каса розташована біля дверей, при вході.", "Casa se află lângă ușă, la intrare.", "يقع الصندوق قرب الباب، عند المدخل."), quiz_answers: [
+      { id: "friseur-a1-p15-a1", position: 1, text: "in der Nähe der Tür", is_correct: true },
+      { id: "friseur-a1-p15-a2", position: 2, text: "unter der Tür", is_correct: false },
+      { id: "friseur-a1-p15-a3", position: 3, text: "zwischen der Tür", is_correct: false },
     ] },
 
     // ===== Dialog bauen =====

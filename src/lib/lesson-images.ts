@@ -39,6 +39,7 @@ import bakeryStreet from "@/assets/bakery-illustrated-street.jpg";
 import bakeryWallet from "@/assets/bakery-illustrated-wallet.jpg";
 import bakeryReceipt from "@/assets/bakery-illustrated-receipt.jpg";
 import bakeryWalkHome from "@/assets/bakery-illustrated-walk-home.jpg";
+import friseurSalon from "@/assets/lessons/friseur-salon.png";
 
 function placeDiagram(preposition: string): string {
   const positions: Record<string, { x: number; y: number; extra?: string }> = {
@@ -110,6 +111,7 @@ export const LESSON_IMAGES: Record<string, string> = {
   "place-vor": placeDiagram("vor"),
   "place-zwischen": placeDiagram("zwischen"),
   "place-gegenueber": placeDiagram("gegenüber"),
+  "friseur-salon": friseurSalon,
 };
 
 export const THUMBNAIL_KEYS = Object.keys(LESSON_IMAGES);
