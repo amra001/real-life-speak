@@ -225,6 +225,12 @@ function bakeryLessonForSlug(slug: string) {
   };
 }
 
+function registryLessons(): Lesson[] {
+  return Object.values(lessonOverrideRegistry).map(
+    (entry) => (entry as { lesson: Lesson }).lesson
+  );
+}
+
 export const lessonsQuery = () => ({
   queryKey: ["lessons"],
   queryFn: async (): Promise<Lesson[]> => {
@@ -234,9 +240,12 @@ export const lessonsQuery = () => ({
       .eq("status", "published")
       .order("popularity", { ascending: false });
     if (error) throw error;
-    return ((data ?? []) as Lesson[]).filter(
+    const dbLessons = ((data ?? []) as Lesson[]).filter(
       (l) => l.topic_slug != null && ALLOWED_TOPIC_SLUGS.has(l.topic_slug)
     );
+    const dbSlugs = new Set(dbLessons.map((l) => l.slug));
+    const extra = registryLessons().filter((l) => !dbSlugs.has(l.slug));
+    return [...dbLessons, ...extra];
   },
 });
 
@@ -399,7 +408,12 @@ export const topicLessonsQuery = (topicSlug: string) => ({
       .eq("status", "published")
       .order("level");
     if (error) throw error;
-    return (data ?? []) as Lesson[];
+    const dbLessons = (data ?? []) as Lesson[];
+    const dbSlugs = new Set(dbLessons.map((l) => l.slug));
+    const extra = registryLessons().filter(
+      (l) => l.topic_slug === topicSlug && !dbSlugs.has(l.slug)
+    );
+    return [...dbLessons, ...extra];
   },
 });
 
@@ -460,14 +474,24 @@ export const topicOverviewQuery = (topicSlug: string) => ({
     const rows = (data ?? []) as unknown as (Lesson & Record<string, { count: number }[]>)[];
     const num = (v: unknown): number =>
       Array.isArray(v) && v.length ? Number((v[0] as { count: number }).count ?? 0) : 0;
-    return rows
-      .map((r) => ({
-        ...(r as unknown as Lesson),
-        scenes: num(r["lesson_scenes"]),
-        vocab: num(r["vocabulary"]),
-        dialogs: num(r["dialogs"]),
-        questions: num(r["quiz_questions"]),
-      }))
-      .sort((a, b) => a.level.localeCompare(b.level));
+    const dbResults = rows.map((r) => ({
+      ...(r as unknown as Lesson),
+      scenes: num(r["lesson_scenes"]),
+      vocab: num(r["vocabulary"]),
+      dialogs: num(r["dialogs"]),
+      questions: num(r["quiz_questions"]),
+    }));
+    const dbSlugs = new Set(dbResults.map((r) => r.slug));
+    const extra = Object.values(lessonOverrideRegistry)
+      .map((entry) => entry as { lesson: Lesson; scenes: unknown[]; vocab: unknown[]; dialog: unknown[]; questions: unknown[] })
+      .filter((entry) => entry.lesson.topic_slug === topicSlug && !dbSlugs.has(entry.lesson.slug))
+      .map((entry) => ({
+        ...entry.lesson,
+        scenes: entry.scenes.length,
+        vocab: entry.vocab.length,
+        dialogs: entry.dialog.length,
+        questions: entry.questions.length,
+      }));
+    return [...dbResults, ...extra].sort((a, b) => a.level.localeCompare(b.level));
   },
 });

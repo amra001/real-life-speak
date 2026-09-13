@@ -21,7 +21,7 @@ import { toast } from "sonner";
 const SITUATIONS = 15;
 const PRACTICE_MIN = 20;
 const TEST_COUNT = 50;
-const CURATED_SCENE_TOPICS = new Set(["baeckerei", "bus", "supermarkt", "apotheke", "kindergarten"]);
+const CURATED_SCENE_TOPICS = new Set(["baeckerei", "bus", "supermarkt", "apotheke", "kindergarten", "friseur"]);
 
 type AnyScene = {
   id: string;
