@@ -4,6 +4,9 @@ import { friseurB1 } from "@/lib/static/lessons/friseur-b1";
 import { supermarktA1 } from "@/lib/static/lessons/supermarkt-a1";
 import { supermarktA2 } from "@/lib/static/lessons/supermarkt-a2";
 import { supermarktB1 } from "@/lib/static/lessons/supermarkt-b1";
+import { kasseA1 } from "@/lib/static/lessons/kasse-a1";
+import { kasseA2 } from "@/lib/static/lessons/kasse-a2";
+import { kasseB1 } from "@/lib/static/lessons/kasse-b1";
 
 /**
  * Registry: Lektions-Slug -> vollständiger, statischer Lektionsinhalt.
@@ -20,4 +23,7 @@ export const lessonOverrideRegistry: Record<string, unknown> = {
   "supermarkt-a1": supermarktA1,
   "supermarkt-a2": supermarktA2,
   "supermarkt-b1": supermarktB1,
+  "kasse-a1": kasseA1,
+  "kasse-a2": kasseA2,
+  "kasse-b1": kasseB1,
 };
